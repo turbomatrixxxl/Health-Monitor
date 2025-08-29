@@ -1,0 +1,93 @@
+Health-Monitor – Arhitectura completă (gratuită)
+
+Tehnologii principale
+- Frontend: React.js
+- Backend: C# (.NET Core / .NET 7)
+- Baza de date: MySQL Community Edition (sau SQLite local)
+- Autentificare: Firebase Authentication Free Tier (email/parolă, Google, Apple)
+- Grafice: Chart.js sau Recharts
+- Calendar activități: React Calendar
+- Export date: jsPDF (PDF), CSV manual
+- Hosting / Deploy: Render (Free Tier) pentru backend, Vercel / Netlify pentru frontend
+
+Structura aplicației și module
+
+1. Pagina principală
+- Prezentare scurtă a aplicației
+- Butoane: Login și Register
+- Design curat, responsive, culori: verde, alb, albastru deschis
+- Opțional: banner ilustrativ / slogan scurt
+
+2. Autentificare / Înregistrare
+- Autentificare email/parolă
+- Autentificare Google / Apple (Firebase Auth Free Tier)
+- Validări de securitate (minim 6 caractere parolă, verificare email)
+
+3. Panou principal (Dashboard)
+- Vizualizare agregată a datelor utilizatorului
+- Grafice zilnice/săptămânale:
+  - Alimentație (calorii, mese)
+  - Activitate fizică (pași, calorii arse, antrenamente)
+  - Somn (durată, calitate)
+  - Parametri medicali (tensiune, greutate, puls)
+- Componente vizuale: grafice liniare, bar charts, pie charts
+- Status general progres: „Astăzi ai atins 75% din obiectivele tale”
+
+4. Jurnal alimentar
+- Adăugare mese: mic dejun / prânz / cină / gustări
+- Opțiune manuală (gratuită)
+- Posibilitate de bază de date proprie cu alimente frecvente
+- Calcul automat calorii și macronutrienți
+
+5. Monitorizare somn
+- Adăugare manuală a duratei și calității somnului
+- Vizualizare grafice comparative (zilnic, săptămânal)
+
+6. Parametri medicali
+- Introducere manuală a datelor: greutate, tensiune, glicemie etc.
+- Vizualizare sub formă de grafice
+- Posibilă alertă vizuală dacă valorile depășesc limite sănătoase
+
+7. Calendar activități
+- Vizualizare activități programate: exerciții, mese, vizite medicale
+- Setare remindere manuale
+- Componente gratuite: React Calendar
+
+8. Notificări / Remindere
+- Notificări locale în aplicație (toast sau pop-up)
+- Exemple: „E timpul să bei apă!”, „Ai dormit doar 5h azi…”
+- Permite personalizarea frecvenței / tipurilor de notificări
+
+9. Export date
+- PDF: generare rapoarte cu jsPDF
+- CSV: generare manuală din datele aplicației
+- Include date și grafice relevante pentru monitorizarea sănătății
+
+10. Setări cont
+- Actualizare date personale
+- Ștergere cont
+- Setări notificări
+- Posibilități personalizare grafice / dashboard
+
+Structură folder proiect sugerată
+Health-Monitor/
+├─ frontend/
+│  ├─ src/
+│  │  ├─ components/
+│  │  ├─ pages/
+│  │  ├─ assets/
+│  │  ├─ App.js
+│  │  └─ index.js
+│  └─ package.json
+├─ backend/
+│  ├─ Controllers/
+│  ├─ Models/
+│  ├─ Services/
+│  ├─ appsettings.json
+│  ├─ Program.cs
+│  └─ Startup.cs
+├─ database/
+│  └─ MySQL.sql (sau SQLite DB)
+├─ docs/
+│  └─ architecture.txt (acest fișier)
+└─ README.md
