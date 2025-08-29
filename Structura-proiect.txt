@@ -91,3 +91,5 @@ Health-Monitor/
 ├─ docs/
 │  └─ architecture.txt (acest fișier)
 └─ README.md
+
+End...!
