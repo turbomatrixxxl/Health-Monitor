@@ -97,7 +97,7 @@ export default function UserLogout() {
               <div className={styles.modalLogoutActionCenter}>
                 {isTablet && (
                   <div className={styles.logo}>
-                    <h1>Health</h1>
+                    <h1>Health-Monitor</h1>
                     <Logo className={styles.logoHeaderContainer} />
                   </div>
                 )}
