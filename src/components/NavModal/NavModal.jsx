@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import Modal from "../commonComponents/Modal/Modal";
 import useToggle from "../../hooks/useToggle";
 
 import UserLogout from "../UserLogout/UserLogout";
+import UpdateUser from "../UpdateUser";
 import Logo from "../Logo/Logo";
+
 import { HiX } from "react-icons/hi";
 
 import { NavLink } from "react-router-dom";
@@ -42,6 +44,8 @@ export default function NavModal() {
   const [isLogoutModalVisible, toggleIsLogoutModalVisible] = useToggle(false);
   const modalRef = useRef();
 
+  const [userUpdateShown, setUserUpdateShown] = useState(false);
+
   useEffect(() => {
     // Disable scroll when modal is visible
     if (isLogoutModalVisible) {
@@ -66,8 +70,16 @@ export default function NavModal() {
   const isTablet = useMediaQuery({ query: breakpoints.tablet });
   const isDesktop = useMediaQuery({ query: breakpoints.desktop });
 
+  const handleUpdateUser = () => {
+    setUserUpdateShown(true);
+    console.log("click !!!");
+  };
+
   return (
     <>
+      {userUpdateShown && (
+        <UpdateUser theme={"light"} onClose={() => setUserUpdateShown(false)} />
+      )}
       <button
         type="button"
         onClick={toggleIsLogoutModalVisible}
@@ -108,7 +120,9 @@ export default function NavModal() {
                   )}
                 </div>
                 <div className={styles.rightCont}>
-                  {!isDesktop && isTablet && !isMobile && <UserLogout />}
+                  {!isDesktop && isTablet && !isMobile && (
+                    <UserLogout handleUpdateUserClick={handleUpdateUser} />
+                  )}
                   <button type="button" onClick={toggleIsLogoutModalVisible}>
                     <HiX size="16px" />
                   </button>

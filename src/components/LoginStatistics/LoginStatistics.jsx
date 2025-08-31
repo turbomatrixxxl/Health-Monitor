@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { useMediaQuery } from "react-responsive";
+
+import UpdateUser from "../UpdateUser";
 import UserLogout from "../UserLogout/UserLogout";
+
 import { useAuth } from "../../hooks/useAuth";
 import { usePrivate } from "../../hooks/usePrivate";
 
@@ -19,15 +22,25 @@ function LoginStatistics({ day }) {
   const { user } = useAuth();
   const { dailyCalorieSummary } = usePrivate();
 
+  const [userUpdateShown, setUserUpdateShown] = useState(false);
+
   // Validate the format dd-mm-yyyy
   const isValidDate = /^\d{2}.\d{2}.\d{4}$/.test(day);
   if (!isValidDate) {
     console.error(`Invalid date format: ${day}. Expected dd.mm.yyyy.`);
   }
 
+  const handleUpdateUser = () => {
+    setUserUpdateShown(true);
+    console.log("click !!!");
+  };
+
   return (
     <div className={styles.resultsCont}>
-      {isDesktop && <UserLogout />}
+      {userUpdateShown && (
+        <UpdateUser theme={"light"} onClose={() => setUserUpdateShown(false)} />
+      )}
+      {isDesktop && <UserLogout handleUpdateUserClick={handleUpdateUser} />}
       <div className={styles.statisticSuperCont}>
         <div className={styles.statisticCont}>
           <p className={styles.resultsToday}>Summary for {day}</p>

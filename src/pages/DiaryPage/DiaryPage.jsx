@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import useToggle from "../../hooks/useToggle";
 import Modal from "../../components/commonComponents/Modal/Modal";
 import UserLogout from "../../components/UserLogout/UserLogout";
+import UpdateUser from "../../components/UpdateUser";
 
 import styles from "./DiaryPage.module.css";
 
@@ -36,7 +37,7 @@ const breakpoints = {
 
 export default function DiaryPage() {
   const isMobile = useMediaQuery({ query: breakpoints.mobile });
-  const isTablet = useMediaQuery({ query: breakpoints.tablet });
+  // const isTablet = useMediaQuery({ query: breakpoints.tablet });
   const isDesktop = useMediaQuery({ query: breakpoints.desktop });
 
   const navigate = useNavigate();
@@ -91,6 +92,8 @@ export default function DiaryPage() {
   // console.log("date:", date);
   // console.log("quantity:", quantity);
   // console.log("searchTerm:", searchTerm);
+
+  const [userUpdateShown, setUserUpdateShown] = useState(false);
 
   useEffect(() => {
     if (products.length === 0) {
@@ -166,9 +169,14 @@ export default function DiaryPage() {
     return `${day}.${month}.${year}`;
   }
 
+  const handleUpdateUser = () => {
+    setUserUpdateShown(true);
+    console.log("click !!!");
+  };
+
   return (
     <section className={styles.section}>
-      {isDiaryMobileModalVisible && isMobile && !isTablet && !isDesktop && (
+      {isDiaryMobileModalVisible && isMobile && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <Modal
@@ -178,6 +186,12 @@ export default function DiaryPage() {
             >
               {isMobile && (
                 <div className={styles.mobileHeaderCont}>
+                  {userUpdateShown && (
+                    <UpdateUser
+                      theme={"light"}
+                      onClose={() => setUserUpdateShown(false)}
+                    />
+                  )}
                   <header className={styles.modalHeader}>
                     <Logo className={styles.logoHeaderContainer} />
                     <NavLinks />
@@ -202,7 +216,7 @@ export default function DiaryPage() {
                       </svg>
                     </button>
                     <div className={styles.modalUserLogoutCont}>
-                      <UserLogout />
+                      <UserLogout handleUpdateUserClick={handleUpdateUser} />
                     </div>
                   </div>
                 </div>
