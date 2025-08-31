@@ -123,7 +123,7 @@
   .notRecommendedCont {
     gap: 40px;
     width: fit-content;
-    background: url("../../images/Slim-Mom-down-Rotated-Logged-Tablet.png");
+    background: url("../../images/Health-Monitor-down-Rotated-Logged-Tablet.png");
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
@@ -141,7 +141,7 @@
 @media screen and (width >=1024px) {
   .resultsCont {
     align-items: center;
-    background: url("../../images/Slim-Mom-Left-Up-Logged-Desktop.png")
+    background: url("../../images/Health-Monitor-Left-Up-Logged-Desktop.png")
       lightgray 50% / cover no-repeat;
     background-position-y: 50%;
     background-position-x: right;

@@ -12,8 +12,8 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div onClick={handleTextClick} className={styles.footerText}>
-        <p>℗ & © GoIT 2024</p>
-        <p>Powered by Naramzoiu Radu Bogdan </p>
+        <p>℗ & © Bachelor’s thesis 2025</p>
+        <p>Powered by Ionela </p>
       </div>
       {/* Randează Modal-ul dacă este deschis */}
       {modalOpen && <Modal closeModal={() => setModalOpen(false)} />}

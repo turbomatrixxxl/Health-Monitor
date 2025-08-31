@@ -17,6 +17,8 @@ import useFormTouched from "../../hooks/useFormTouched";
 import { useAuth } from "../../hooks/useAuth";
 import clsx from "clsx";
 
+import { toast } from "react-toastify";
+
 import styles from "./LoginForm.module.css";
 
 function LoginForm() {
@@ -46,6 +48,8 @@ function LoginForm() {
 
     try {
       await dispatch(logIn(fields)).unwrap();
+
+      toast.success("Login successful!");
     } catch (error) {
       setFields((prevFields) => ({
         ...prevFields,

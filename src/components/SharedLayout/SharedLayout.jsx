@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
 
 import { Outlet } from "react-router-dom";
+
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import UpdateUser from "../UpdateUser";
+
 import { useAuth } from "../../hooks/useAuth";
 import { usePrivate } from "../../hooks/usePrivate";
 
@@ -15,39 +18,24 @@ import clsx from "clsx";
 import styles from "./SharedLayout.module.css";
 
 function SharedLayout() {
-  const { isLoggedIn, isLoggedOut, isRegistered } = useAuth();
+  const { isLoggedIn, isLoggedOut, errorAuth } = useAuth();
   const { message } = usePrivate();
 
-  const [toastShown, setToastShown] = useState(false);
   const [logoutShown, setLogoutShown] = useState(false);
-
-  useEffect(() => {
-    if (isRegistered) {
-      toast.success("Registration successful!");
-    }
-  }, [isRegistered]);
-
-  useEffect(() => {
-    if (isLoggedIn && !toastShown) {
-      toast.success("Login successful!");
-      setToastShown(true);
-      setLogoutShown(false);
-    }
-  }, [isLoggedIn, toastShown]);
+  const [userUpdateShown, setUserUpdateShown] = useState(false);
 
   useEffect(() => {
     if (isLoggedOut && !logoutShown) {
       toast.success("You are not Logged in!");
       setLogoutShown(true);
-      setToastShown(false);
     }
   }, [isLoggedOut, logoutShown]);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error);
-  //   }
-  // }, [error]);
+  useEffect(() => {
+    if (errorAuth) {
+      toast.error(errorAuth);
+    }
+  }, [errorAuth]);
 
   useEffect(() => {
     if (message) {
@@ -66,15 +54,23 @@ function SharedLayout() {
   //   isRegistered: isRegistered,
   // });
 
+  const handleUpdateUser = () => {
+    setUserUpdateShown(true);
+    console.log("click !!!");
+  };
+
   return (
     <div className={styles.cont}>
       <ToastContainer position="top-center" autoClose={5000} />
+      {userUpdateShown && (
+        <UpdateUser theme={"light"} onClose={() => setUserUpdateShown(false)} />
+      )}
       <div
         className={
           isLoggedIn ? styles.content : clsx(styles.content, styles.notLoggedIn)
         }
       >
-        <Header />
+        <Header handleHeaderClick={handleUpdateUser} />
         <main className={styles.main}>
           <Outlet />
         </main>

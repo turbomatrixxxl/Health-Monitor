@@ -40,24 +40,24 @@ const ModalFooter = ({ closeModal }) => {
     <div
       className={styles.modalFooter}
       onClick={closeOnClickOutside}
-      ref={modalRef}>
+      ref={modalRef}
+    >
       <div className={styles.modalBg}>
         <div className={styles.modalContent}>
           {screenCondition && <ModalLogo variant={"formLogo"} />}
           <h2>Fullstack Developer:</h2>
 
           <div className={styles.footerCards}>
-            {/* Card pentru Radu */}
+            {/* Card pentru Ionela */}
             <div
-              className={`${styles.footerTeamCard} ${animation} ${styles.Radu}`}>
+              className={`${styles.footerTeamCard} ${animation} ${styles.Ionela}`}
+            >
               <img
                 src={Radu} // Folosește variabila corectă pentru imagine
-                alt="Radu"
+                alt="Ionela"
                 className={styles.teamMemberImage}
               />
-              <span className={styles.footerTeamName}>
-                Naramzoiu Radu Bogdan
-              </span>
+              <span className={styles.footerTeamName}>Ionela</span>
               <em className={styles.footerTeamFunction}>Fullstack Developer</em>
               <div className={styles.socialLinks}>
                 <a
@@ -65,7 +65,8 @@ const ModalFooter = ({ closeModal }) => {
                   className={styles.footerGithubIcon}
                   aria-label="GitHub profile"
                   target="_blank"
-                  rel="noreferrer noopener">
+                  rel="noreferrer noopener"
+                >
                   <FaGithub />
                 </a>
                 <a
@@ -73,13 +74,12 @@ const ModalFooter = ({ closeModal }) => {
                   className={styles.footerLinkedinIcon}
                   aria-label="LinkedIn profile"
                   target="_blank"
-                  rel="noreferrer noopener">
+                  rel="noreferrer noopener"
+                >
                   <FaLinkedin />
                 </a>
               </div>
             </div>
-
-            {/* Adaugă alte carduri pentru membrii echipei dacă este necesar */}
           </div>
 
           <FormButton

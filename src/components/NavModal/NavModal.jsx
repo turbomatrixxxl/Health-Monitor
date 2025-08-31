@@ -11,7 +11,7 @@ import { HiX } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-import slimMomImage from "../../images/Slim Mom.jpg";
+import healthMonitorImage from "../../images/Health Monitor.jpg";
 
 import styles from "./NavModal.module.css";
 
@@ -102,7 +102,7 @@ export default function NavModal() {
                   {isMobile && (
                     <img
                       className={styles.slimMom}
-                      src={slimMomImage}
+                      src={healthMonitorImage}
                       alt="Slim"
                     />
                   )}

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+
 import { useMediaQuery } from "react-responsive";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom"; // Import Link
@@ -8,21 +10,24 @@ import { useAuth } from "../../hooks/useAuth";
 import Modal from "../commonComponents/Modal/Modal";
 import useToggle from "../../hooks/useToggle";
 
-import styles from "./UserLogout.module.css";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import Logo from "../Logo/Logo";
 import Button from "../commonComponents/Button";
+
+import { FaCog } from "react-icons/fa";
+
+import styles from "./UserLogout.module.css";
 
 const breakpoints = {
   mobile: "(max-width: 767px)",
   tablet: "(min-width:768px)",
 };
 
-export default function UserLogout() {
-  const { isLoggedIn, user } = useAuth();
+export default function UserLogout({ handleUpdateUserClick }) {
+  const { isLoggedIn, user, avatarUrl } = useAuth();
   const [isLogoutModalVisible, toggleIsLogoutModalVisible] = useToggle(false);
   const modalRef = useRef();
-  // console.log(user);
+  console.log(user);
 
   const dispatch = useDispatch();
 
@@ -65,7 +70,14 @@ export default function UserLogout() {
   return (
     <>
       <div className={styles.cont}>
-        <p>{user ? user.username ?? user.name : "User"}</p>
+        <img className={styles.userImageTablet} src={avatarUrl} alt="User" />
+        <p>
+          <button type="button" onClick={handleUpdateUserClick}>
+            <FaCog size={14} color={"#161616cc"} className={styles.cogIcon} />
+          </button>
+
+          {user ? user.username ?? user.name : "User"}
+        </p>
         <span>|</span>
         <LogoutButton handleLogoutModal={toggleIsLogoutModalVisible} />
       </div>
@@ -97,8 +109,24 @@ export default function UserLogout() {
               <div className={styles.modalLogoutActionCenter}>
                 {isTablet && (
                   <div className={styles.logo}>
-                    <h1>Health-Monitor</h1>
+                    <h1>
+                      <span className={styles.logoHealth}>Health</span>-
+                      <span className={styles.logoMonitor}>Monitor</span>
+                    </h1>
                     <Logo className={styles.logoHeaderContainer} />
+                  </div>
+                )}
+                {isMobile && (
+                  <div className={styles.mobileContent}>
+                    <h1 className={styles.title}>
+                      <span className={styles.logoHealth}>Health</span>-
+                      <span className={styles.logoMonitor}>Monitor</span>
+                    </h1>
+                    <img
+                      className={styles.userImage}
+                      src={avatarUrl}
+                      alt="User"
+                    />
                   </div>
                 )}
                 <p className={styles.question}>
@@ -133,3 +161,7 @@ export default function UserLogout() {
     </>
   );
 }
+
+UserLogout.propTypes = {
+  handleUpdateUserClick: PropTypes.func,
+};

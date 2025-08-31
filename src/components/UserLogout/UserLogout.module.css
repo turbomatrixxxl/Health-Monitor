@@ -15,15 +15,33 @@
   /* padding: 15px 20px; */
 }
 
+.userImageTablet {
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+}
+
 .cont > p {
+  align-items: end;
   display: flex;
   color: var(--black-text-color);
   font-family: Verdana;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
+  gap: 2px;
+  justify-content: center;
   line-height: normal;
   letter-spacing: 0.56px;
+}
+
+.cont > p > button {
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  outline: none;
 }
 
 .cont > span {
@@ -37,6 +55,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   padding: 0 20px;
   /* width: 100%; */
 }
@@ -107,8 +126,7 @@
   line-height: normal;
 
   margin-bottom: 40px;
-  margin-top: 239px;
-
+  margin-top: 50px;
   width: 214px;
 }
 
@@ -126,12 +144,47 @@
   /* Prevent scrolling */
 }
 
+.mobileContent {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--brand-color);
+  font-size: 29px;
+  font-weight: 700;
+  margin-top: 30px;
+}
+
+.logoHealth {
+  color: green;
+}
+
+.logoMonitor {
+  color: blue;
+}
+
+.userImage {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+}
+
 @media screen and (min-width: 768px) {
   .cont {
     background: white;
     width: fit-content;
     border: none;
     padding: 0;
+  }
+
+  .userImageTablet {
+    border-radius: 50%;
+    height: 44px;
+    width: 44px;
   }
 
   .modalLogoutActionCenter {
@@ -150,8 +203,8 @@
   }
 
   .logo h1 {
-    color: var(--Gray-5);
-    font-size: 30px;
+    color: var(--brand-color);
+    font-size: 29px;
     font-weight: 700;
   }
 
@@ -163,7 +216,7 @@
 
 @media screen and (min-width: 1024px) {
   .cont {
-    align-items: baseline;
+    align-items: center;
     background: #0000;
     /* height: -webkit-fill-available; */
     margin-left: auto;

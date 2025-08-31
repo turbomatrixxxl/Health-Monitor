@@ -1,4 +1,4 @@
-@import '../../../styles/variables.css';
+@import "../../../styles/variables.css";
 
 .modalClassName {
   align-items: center;
@@ -8,14 +8,14 @@
   background: rgba(34, 13, 91, 0.23);
   border: none;
   color: var(--transparency-60);
-  height: 100vh;
+  height: 100%;
   justify-content: center;
   left: 0;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .content {
@@ -33,7 +33,7 @@
   z-index: 100000;
 
   inset: 0px;
-  overflow: auto;
+  /* overflow: auto; */
 
   align-items: center;
   width: 100%;

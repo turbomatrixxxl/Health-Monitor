@@ -1,0 +1,293 @@
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+
+import { useAuth } from "../../hooks/useAuth";
+import {
+  refreshUser,
+  updateUserInfo,
+  updateUserAvatar,
+} from "../../redux/auth/operationsAuth";
+import useToggle from "../../hooks/useToggle";
+
+import clsx from "clsx";
+
+import Input from "../commonComponents/InputAdi";
+import UpdateButton from "../commonComponents/UpdateButton";
+
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import styles from "./UpdateUser.module.css";
+
+export default function UpdateUser({ onClose, theme }) {
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+
+  const formRef = useRef();
+  const modalRef = useRef();
+  const fileInputRef = useRef(null); // File input reference
+
+  const [userNewName, setUserNewName] = useState(user?.name);
+  const [userNewMail, setUserNewMail] = useState(user?.email);
+  const [userNewPassword, setUserNewPassword] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const [type, setType] = useState("password");
+  const [eyeVisible, toggleEyeVisible] = useToggle(true);
+  const [closedEyeVisible, toggleClosedEyeVisible] = useToggle(false);
+
+  const handleUserNameChange = (e) => setUserNewName(e.target.value);
+  const handleUserMailAddressChange = (e) => setUserNewMail(e.target.value);
+  const handleUserPasswordChange = (e) => setUserNewPassword(e.target.value);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Dispatch user info update
+    dispatch(
+      updateUserInfo({
+        username: userNewName,
+        email: userNewMail,
+        password: userNewPassword,
+      })
+    );
+
+    // Dispatch the avatar update if a file is selected
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("avatar", selectedFile);
+
+      dispatch(updateUserAvatar(formData))
+        .then((response) => {
+          // Handle success response
+          if (response) {
+            toast.success("Avatar updated successfully!"); // Success toast
+          } else {
+            toast.error("Failed to update avatar. Please try again."); // Error toast
+          }
+        })
+        .catch((error) => {
+          // console.error("Error during avatar upload:", error.message);
+          toast.error("An error occurred. Please try again later."); // Error toast
+        });
+    }
+
+    setTimeout(() => {
+      dispatch(refreshUser());
+    }, 500);
+
+    onClose();
+  };
+
+  useEffect(() => {
+    const handleEscapeKey = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [onClose]);
+
+  const handleModalClick = (e) => e.stopPropagation();
+
+  // Set correct avatar URL
+  const imageUrl = selectedFile
+    ? URL.createObjectURL(selectedFile)
+    : user?.avatarURL
+    ? user?.avatarURL.startsWith("http")
+      ? user?.avatarURL
+      : `https://taskpro-nodejs.onrender.com/${user.avatarURL}`
+    : "/default-avatar.jpg"; // Default fallback image
+
+  return (
+    <div
+      ref={modalRef}
+      onClick={(e) => {
+        if (!formRef.current.contains(e.target)) {
+          onClose();
+        }
+      }}
+      className={styles["modal-overlay-need"]}
+    >
+      <div
+        onClick={handleModalClick}
+        ref={formRef}
+        className={clsx(
+          styles.modalContainerNeed,
+          theme === "dark" ? styles.contDark : styles.contLight
+        )}
+      >
+        <button type="button" className={styles["close-btn"]} onClick={onClose}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            fill="none"
+          >
+            <path
+              d="M13.5 4.5L4.5 13.5"
+              stroke={theme === "dark" ? "white" : "black"}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M4.5 4.5L13.5 13.5"
+              stroke={theme === "dark" ? "white" : "black"}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        <h2
+          className={clsx(styles.text, {
+            [styles.textDark]: theme === "dark",
+          })}
+        >
+          Edit profile
+        </h2>
+
+        {/* Profile Image Section */}
+        <div
+          className={clsx(
+            styles.imgCont,
+            theme === "violet"
+              ? styles.imgContViolet
+              : theme === "light"
+              ? styles.imgContLight
+              : null
+          )}
+        >
+          <img className={styles.userImg} src={imageUrl} alt="User Avatar" />
+          <div className={styles.imgPlusCont}>
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+            <button
+              className={clsx(
+                styles.imgPlusBtn,
+                theme === "violet" ? styles.iconPlusViolet : styles.iconPlus
+              )}
+              onClick={() => fileInputRef.current.click()}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 4.16663V15.8333"
+                  stroke={theme === "violet" ? "white" : "#121212"}
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M4.16699 10H15.8337"
+                  stroke={theme === "violet" ? "white" : "#121212"}
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles["div-container"]}>
+          <div className={styles.inputsWrapper}>
+            <Input
+              className={styles.textarea}
+              theme={theme}
+              value={userNewName}
+              handleChange={handleUserNameChange}
+              placeholder={userNewName ?? "User"}
+              name="title"
+              type="text"
+            />
+            <Input
+              className={styles.textarea}
+              theme={theme}
+              value={userNewMail}
+              handleChange={handleUserMailAddressChange}
+              placeholder={userNewMail ?? "Email"}
+              name="Email"
+              type="text"
+            />
+            <div className={styles.inputWrapper}>
+              {eyeVisible && (
+                <VscEye
+                  onClick={() => {
+                    toggleEyeVisible();
+                    toggleClosedEyeVisible();
+                    setType("text");
+                  }}
+                  size="24px"
+                  className={clsx(
+                    styles.eyeIcon,
+                    theme === "dark" ? styles.eyeIconDark : null
+                  )}
+                />
+              )}
+              {closedEyeVisible && (
+                <VscEyeClosed
+                  onClick={() => {
+                    toggleEyeVisible();
+                    toggleClosedEyeVisible();
+                    setType("password");
+                  }}
+                  size="24px"
+                  className={clsx(
+                    styles.eyeIcon,
+                    theme === "dark" ? styles.eyeIconDark : null
+                  )}
+                />
+              )}
+              <Input
+                className={styles.textarea}
+                value={userNewPassword}
+                theme={theme}
+                handleChange={handleUserPasswordChange}
+                placeholder="New password"
+                name="Password"
+                type={type}
+              />
+            </div>
+          </div>
+
+          <UpdateButton
+            theme={theme}
+            className={styles.btn}
+            type="submit"
+            variant="send"
+          >
+            Send
+          </UpdateButton>
+        </form>
+      </div>
+    </div>
+  );
+}

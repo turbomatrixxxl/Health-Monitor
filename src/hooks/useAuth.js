@@ -9,12 +9,14 @@ import {
   selectIsisRegistered,
   selectIsemailResendStatus,
   selectIsLoggedOut,
+  selectAvatarURL,
 } from "../redux/auth/selectorsAuth";
 
 export const useAuth = () => {
   const tokenAuth = useSelector(selectAuthToken);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
+  const avatarUrl = useSelector(selectAvatarURL);
   const errorAuth = useSelector(selectError);
   const isRefreshing = useSelector(selectIsRefreshing);
   const isLoadingAuth = useSelector(selectIsLoading);
@@ -32,5 +34,6 @@ export const useAuth = () => {
     isRegistered,
     emailResendStatus,
     isLoggedOut,
+    avatarUrl,
   };
 };

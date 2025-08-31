@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { useMediaQuery } from "react-responsive";
 
 import Logo from "../Logo/Logo";
@@ -11,7 +13,7 @@ import clsx from "clsx";
 import UserLogout from "../UserLogout/UserLogout";
 import NavModal from "../NavModal/NavModal";
 
-import slimMomImage from "../../images/Slim Mom.jpg";
+import healthMonitorImage from "../../images/Health Monitor.jpg";
 
 import styles from "./Header.module.css";
 
@@ -21,7 +23,7 @@ const breakpoints = {
   desktop: "(min-width:1024px)",
 };
 
-function Header() {
+function Header({ handleHeaderClick }) {
   const { isLoggedIn } = useAuth();
 
   const isMobile = useMediaQuery({ query: breakpoints.mobile });
@@ -38,24 +40,34 @@ function Header() {
         >
           <Logo />
           {isLoggedIn && isMobile && (
-            <img className={styles.slimMom} src={slimMomImage} alt="Slim" />
+            <img
+              className={styles.slimMom}
+              src={healthMonitorImage}
+              alt="Monitor"
+            />
           )}
           {!isLoggedIn && <AuthLinks />}
           {isDesktop && isLoggedIn && <NavLinks />}
         </div>
         <div className={styles.rightCont}>
-          {!isMobile && !isDesktop && <UserLogout />}
+          {!isMobile && !isDesktop && (
+            <UserLogout handleUpdateUserClick={handleHeaderClick} />
+          )}
           {(isMobile || isTablet) && !isDesktop && isLoggedIn && <NavModal />}
         </div>
         {isLoggedIn && isDesktop && (
           <div className={styles.rightDesktopCont}>
-            <UserLogout />
+            <UserLogout handleUpdateUserClick={handleHeaderClick} />
           </div>
         )}
       </header>
-      {isMobile && <UserLogout />}
+      {isMobile && <UserLogout handleUpdateUserClick={handleHeaderClick} />}
     </>
   );
 }
+
+Header.propTypes = {
+  handleHeaderClick: PropTypes.func,
+};
 
 export default Header;

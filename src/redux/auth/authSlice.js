@@ -5,10 +5,13 @@ import {
   logOut,
   refreshUser,
   resendVerificationEmail,
+  updateUserInfo,
+  updateUserAvatar,
 } from "./operationsAuth";
 
 const initialState = {
   user: null,
+  avatarURL: null, // Add avatar URL here
   token: null,
   isLoading: false,
   isLoggedIn: false,
@@ -56,7 +59,7 @@ const authSlice = createSlice({
       .addCase(logIn.pending, handlePending)
       .addCase(logIn.fulfilled, (state, { payload }) => {
         state.user = payload.user;
-
+        state.avatarURL = payload.user.avatarURL || null;
         // console.log(payload.user);
 
         if (payload.user.verify === false) {
@@ -79,6 +82,7 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, { payload }) => {
         state.user = payload.user;
         // console.log(payload.user);
+        state.avatarURL = payload.user.avatarURL || null;
 
         if (state.user.verify) {
           state.isLoggedOut = false;
@@ -109,6 +113,7 @@ const authSlice = createSlice({
         }
 
         state.user = null;
+        state.avatarURL = null; // Clear avatar URL
         state.token = null;
         state.isLoggedIn = false;
         state.isLoading = false;
@@ -126,6 +131,7 @@ const authSlice = createSlice({
       .addCase(refreshUser.fulfilled, (state, { payload }) => {
         state.user = payload.data;
         // console.log(state.user);
+        state.avatarURL = payload.data.avatarURL || null;
 
         if (payload.verify === false) {
           // If not verified, ensure user is not logged in
@@ -155,6 +161,40 @@ const authSlice = createSlice({
       })
       .addCase(resendVerificationEmail.rejected, (state, action) => {
         state.emailResendStatus = null; // Reset resend status on error
+        state.error = action.payload;
+      })
+
+      // Update User Info
+      .addCase(updateUserInfo.pending, handlePending)
+      .addCase(updateUserInfo.fulfilled, (state, { payload }) => {
+        state.user = payload?.data?.user;
+        state.avatarURL = payload?.data?.user?.avatarURL || null; // Set the avatar URL
+        state.isLoading = false;
+        state.error = null;
+        state.isLoggedOut = false;
+        state.emailResendStatus = "User updated suscesfully...!";
+      })
+      .addCase(updateUserInfo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // Update User Avatar
+      .addCase(updateUserAvatar.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUserAvatar.fulfilled, (state, { payload }) => {
+        // console.log("Avatar payload :", payload);
+
+        state.avatarURL = payload.avatarUrl; // Set the new avatar URL
+        state.isLoading = false;
+        state.error = null;
+        state.isLoggedOut = false;
+      })
+      // Update User Avatar Rejected
+      .addCase(updateUserAvatar.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { Outlet, Navigate, Link } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -173,7 +173,7 @@ export default function HomePage() {
       )}{" "}
       {/* Pass handleSubmit as the onSubmit prop */}
       <Calculator handleClick={handleOpenModal} onSubmit={handleSubmit} />
-      <Outlet />
+      {/* <Outlet /> */}
     </section>
   );
 }
