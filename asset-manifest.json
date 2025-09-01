@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/Health-Monitor/static/css/main.c6130762.css",
-    "main.js": "/Health-Monitor/static/js/main.c2a155b6.js",
+    "main.js": "/Health-Monitor/static/js/main.0a160674.js",
     "static/css/330.4f55ad2a.chunk.css": "/Health-Monitor/static/css/330.4f55ad2a.chunk.css",
     "static/js/330.24a4ce65.chunk.js": "/Health-Monitor/static/js/330.24a4ce65.chunk.js",
     "static/css/948.f667c448.chunk.css": "/Health-Monitor/static/css/948.f667c448.chunk.css",
     "static/js/948.b116156e.chunk.js": "/Health-Monitor/static/js/948.b116156e.chunk.js",
-    "static/css/143.699f9811.chunk.css": "/Health-Monitor/static/css/143.699f9811.chunk.css",
+    "static/css/143.d62be7bc.chunk.css": "/Health-Monitor/static/css/143.d62be7bc.chunk.css",
     "static/js/143.ad2b26d1.chunk.js": "/Health-Monitor/static/js/143.ad2b26d1.chunk.js",
     "static/css/101.eeeecd8f.chunk.css": "/Health-Monitor/static/css/101.eeeecd8f.chunk.css",
     "static/js/101.e3ce63ac.chunk.js": "/Health-Monitor/static/js/101.e3ce63ac.chunk.js",
@@ -21,12 +21,12 @@
     "static/media/Radu.webp": "/Health-Monitor/static/media/Radu.81d208868a8e3740db5e.webp",
     "index.html": "/Health-Monitor/index.html",
     "main.c6130762.css.map": "/Health-Monitor/static/css/main.c6130762.css.map",
-    "main.c2a155b6.js.map": "/Health-Monitor/static/js/main.c2a155b6.js.map",
+    "main.0a160674.js.map": "/Health-Monitor/static/js/main.0a160674.js.map",
     "330.4f55ad2a.chunk.css.map": "/Health-Monitor/static/css/330.4f55ad2a.chunk.css.map",
     "330.24a4ce65.chunk.js.map": "/Health-Monitor/static/js/330.24a4ce65.chunk.js.map",
     "948.f667c448.chunk.css.map": "/Health-Monitor/static/css/948.f667c448.chunk.css.map",
     "948.b116156e.chunk.js.map": "/Health-Monitor/static/js/948.b116156e.chunk.js.map",
-    "143.699f9811.chunk.css.map": "/Health-Monitor/static/css/143.699f9811.chunk.css.map",
+    "143.d62be7bc.chunk.css.map": "/Health-Monitor/static/css/143.d62be7bc.chunk.css.map",
     "143.ad2b26d1.chunk.js.map": "/Health-Monitor/static/js/143.ad2b26d1.chunk.js.map",
     "101.eeeecd8f.chunk.css.map": "/Health-Monitor/static/css/101.eeeecd8f.chunk.css.map",
     "101.e3ce63ac.chunk.js.map": "/Health-Monitor/static/js/101.e3ce63ac.chunk.js.map",
@@ -38,6 +38,6 @@
   },
   "entrypoints": [
     "static/css/main.c6130762.css",
-    "static/js/main.c2a155b6.js"
+    "static/js/main.0a160674.js"
   ]
 }
