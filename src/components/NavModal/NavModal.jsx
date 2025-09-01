@@ -15,7 +15,7 @@ import styled from "styled-components";
 
 import healthMonitorImage from "../../images/Health Monitor.jpg";
 
-import clsx from "clsx";
+// import clsx from "clsx";
 
 import styles from "./NavModal.module.css";
 
