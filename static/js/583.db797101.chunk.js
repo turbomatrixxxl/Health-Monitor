@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkhealth_monitor=self.webpackChunkhealth_monitor||[]).push([[583],{583:(t,e,n)=>{n.r(e),n.d(e,{default:()=>r});n(5043);const s={};var o=n(579);const r=function(){return(0,o.jsx)("div",{className:s.cont,children:"ExportReportsPage"})}}}]);
+//# sourceMappingURL=583.db797101.chunk.js.map

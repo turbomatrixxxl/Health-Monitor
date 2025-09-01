@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkhealth_monitor=self.webpackChunkhealth_monitor||[]).push([[335],{5335:(e,t,n)=>{n.r(t),n.d(t,{default:()=>c});n(5043);const s={};var a=n(579);const c=function(){return(0,a.jsx)("div",{className:s.cont,children:"HealthMetricsPage"})}}}]);
+//# sourceMappingURL=335.642b69a5.chunk.js.map

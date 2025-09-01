@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkhealth_monitor=self.webpackChunkhealth_monitor||[]).push([[22],{8022:(e,t,n)=>{n.r(t),n.d(t,{default:()=>c});n(5043);const s={};var a=n(579);const c=function(){return(0,a.jsx)("div",{className:s.cont,children:"AlertsPage"})}}}]);
+//# sourceMappingURL=22.e8d17e8f.chunk.js.map

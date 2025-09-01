@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkhealth_monitor=self.webpackChunkhealth_monitor||[]).push([[31],{31:(e,t,n)=>{n.r(t),n.d(t,{default:()=>c});n(5043);const s={};var a=n(579);const c=function(){return(0,a.jsx)("div",{className:s.cont,children:"SleepPage"})}}}]);
+//# sourceMappingURL=31.336b1272.chunk.js.map
