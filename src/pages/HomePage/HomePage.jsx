@@ -36,7 +36,7 @@ export default function HomePage() {
   const modalRef = useRef();
 
   const { result } = usePublic();
-  // console.log(result?.recommendedDailyCaloriesIntake);
+  // console.log("result :", result);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -126,13 +126,15 @@ export default function HomePage() {
                 </div>
               )}
               <div className={styles.modalLogoutActionCenter}>
-                <button
-                  className={styles.closeModal}
-                  id="closeModal"
-                  onClick={toggleIsCalculatorModalVisible}
-                >
-                  <HiX size="16px" />
-                </button>
+                {result && (
+                  <button
+                    className={styles.closeModal}
+                    id="closeModal"
+                    onClick={toggleIsCalculatorModalVisible}
+                  >
+                    <HiX size="16px" />
+                  </button>
+                )}
                 {!result && isMobile && <Loader />}
                 {result ? (
                   <>
@@ -181,8 +183,8 @@ export default function HomePage() {
         <p>A web app to track and manage your healthy lifestyle</p>
       </div>
       <Calculator
-        onSubmit={() => {
-          handleSubmit();
+        onSubmit={(formData) => {
+          handleSubmit(formData);
           handleOpenModal();
         }}
       />

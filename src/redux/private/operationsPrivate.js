@@ -45,6 +45,8 @@ export const fetchPrivateCalculationData = createAsyncThunk(
     try {
       setAuthHeader();
       const response = await axios.get(url);
+      console.log("response.data :", response.data);
+
       return response.data;
     } catch (error) {
       return handleError(error, { rejectWithValue });

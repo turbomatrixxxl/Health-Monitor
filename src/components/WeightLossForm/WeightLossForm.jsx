@@ -117,10 +117,10 @@ export default function WeightLossForm({ onSubmit }) {
     : privateFormData?.bloodGroupIndex;
   const loading = !isLoggedIn ? isLoading : privateLoading;
 
-  // console.log(
-  //   "privateFormData?.bloodGroupIndex",
-  //   privateFormData?.bloodGroupIndex
-  // );
+  // console.log("height", height);
+  // console.log("age", age);
+  // console.log("currentWeight", currentWeight);
+  // console.log("desiredWeight", desiredWeight);
   // console.log("bloodGroupIndex", bloodGroupIndex);
 
   return (

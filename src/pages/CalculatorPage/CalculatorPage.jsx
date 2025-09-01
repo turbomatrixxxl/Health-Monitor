@@ -41,10 +41,10 @@ export default function CalculatorPage() {
     useToggle(false);
   const modalRef = useRef();
 
-  const { isLoggedIn, user } = useAuth();
-  const { error, privateDispatch } = usePrivate();
+  const { isLoggedIn } = useAuth();
+  const { error, privateDispatch, user } = usePrivate();
 
-  console.log("user :", user);
+  // console.log("user :", user);
 
   const isDesktop = useMediaQuery({ query: breakpoints.desktop });
 
@@ -250,8 +250,8 @@ export default function CalculatorPage() {
           </div>
         )}
         <Calculator
-          onSubmit={() => {
-            handleSubmit();
+          onSubmit={(formData) => {
+            handleSubmit(formData);
             handleProductsForSelectedDate(today);
             handleClick();
             toggleIsCalculatorModalVisible();

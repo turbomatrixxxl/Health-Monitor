@@ -58,8 +58,10 @@ const privateSlice = createSlice({
       })
       .addCase(fetchPrivateCalculationData.fulfilled, (state, action) => {
         state.isLoading = false;
-        const { recommendedDailyCaloriesIntake, user } = action.payload;
-        state.user = user; // Update user information
+        const { recommendedDailyCaloriesIntake, data } = action.payload;
+        state.user = data; // Update user information
+        console.log("privateUser :", data);
+
         state.recommendedDailyCaloriesIntake = recommendedDailyCaloriesIntake; // Add daily calories intake to user
       })
       .addCase(fetchPrivateCalculationData.rejected, (state, action) => {
