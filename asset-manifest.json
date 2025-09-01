@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/Health-Monitor/static/css/main.614d3df1.css",
+    "main.css": "/Health-Monitor/static/css/main.bcad6933.css",
     "main.js": "/Health-Monitor/static/js/main.d2f4fac9.js",
     "static/css/330.b3e87166.chunk.css": "/Health-Monitor/static/css/330.b3e87166.chunk.css",
     "static/js/330.a241ac47.chunk.js": "/Health-Monitor/static/js/330.a241ac47.chunk.js",
@@ -32,7 +32,7 @@
     "static/media/woman-7927039_640.png": "/Health-Monitor/static/media/woman-7927039_640.610a1f5798783f1aa226.png",
     "static/media/Ionela.jpg": "/Health-Monitor/static/media/Ionela.98691fc967dad66cf6b2.jpg",
     "index.html": "/Health-Monitor/index.html",
-    "main.614d3df1.css.map": "/Health-Monitor/static/css/main.614d3df1.css.map",
+    "main.bcad6933.css.map": "/Health-Monitor/static/css/main.bcad6933.css.map",
     "main.d2f4fac9.js.map": "/Health-Monitor/static/js/main.d2f4fac9.js.map",
     "330.b3e87166.chunk.css.map": "/Health-Monitor/static/css/330.b3e87166.chunk.css.map",
     "330.a241ac47.chunk.js.map": "/Health-Monitor/static/js/330.a241ac47.chunk.js.map",
@@ -55,7 +55,7 @@
     "968.1d3609ae.chunk.css.map": "/Health-Monitor/static/css/968.1d3609ae.chunk.css.map"
   },
   "entrypoints": [
-    "static/css/main.614d3df1.css",
+    "static/css/main.bcad6933.css",
     "static/js/main.d2f4fac9.js"
   ]
 }
