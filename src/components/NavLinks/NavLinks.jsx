@@ -1,40 +1,44 @@
 import React from "react";
-
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./NavLinks.module.css";
 
-const StyledLink = styled(NavLink)`
-  color: #9b9faa;
-  text-align: right;
-  font-family: Verdana;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.56px;
-  text-transform: uppercase;
-  text-decoration: none;
-
-  &.active {
-    color: #212121;
-  }
-`;
-
 export default function NavLinks() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const links = [
+    { path: "/diary", label: "Food Diary" },
+    { path: "/calculator", label: "Diet Calculator" },
+    { path: "/daily", label: "Daily Progress" },
+    { path: "/sleep", label: "Sleep" },
+    { path: "/physical", label: "Physical Activity" },
+    { path: "/alerts", label: "Alerts" },
+    { path: "/metrix", label: "Health Metrics" },
+    { path: "/export", label: "Export & Reports" },
+  ];
+
+  const handleChange = (e) => {
+    navigate(e.target.value); // redirect către ruta selectată
+  };
+
+  // dacă suntem pe "/", să fie echivalent cu "/calculator"
+  const currentPath =
+    location.pathname === "/" ? "/calculator" : location.pathname;
+
   return (
     <div className={styles.container}>
       <span>|</span>
-      <nav className={styles.nav}>
-        <StyledLink className={styles.auth} to={"/diary"}>
-          Food Diary
-        </StyledLink>
-
-        <StyledLink className={styles.auth} to={"/calculator"}>
-          Calculator
-        </StyledLink>
-      </nav>
+      <select
+        className={styles.dropdown}
+        value={currentPath} // linkul curent apare selectat
+        onChange={handleChange}
+      >
+        {links.map((link) => (
+          <option key={link.path} value={link.path}>
+            {link.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

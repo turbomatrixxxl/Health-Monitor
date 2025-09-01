@@ -75,4 +75,16 @@
     justify-content: end;
     width: 40%;
   }
+
+  .rightOtherPages {
+    align-items: center;
+    background: transparent;
+  }
+
+  .otherHeader {
+    justify-content: space-between;
+    border-bottom: solid 1px var(--Gray-5);
+    padding-right: 16px;
+    padding-bottom: 10px;
+  }
 }

@@ -60,7 +60,7 @@ const privateSlice = createSlice({
         state.isLoading = false;
         const { recommendedDailyCaloriesIntake, data } = action.payload;
         state.user = data; // Update user information
-        console.log("privateUser :", data);
+        // console.log("privateUser :", data);
 
         state.recommendedDailyCaloriesIntake = recommendedDailyCaloriesIntake; // Add daily calories intake to user
       })

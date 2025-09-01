@@ -86,6 +86,11 @@
   scale: 1.08;
 }
 
+/* .active {
+  color: blue;
+  background: var(--brand-color);
+} */
+
 @media screen and (width >=768px) {
   .modalLogoutActionCenter {
     padding: 100px;

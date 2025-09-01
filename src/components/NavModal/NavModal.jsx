@@ -10,10 +10,12 @@ import Logo from "../Logo/Logo";
 
 import { HiX } from "react-icons/hi";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import healthMonitorImage from "../../images/Health Monitor.jpg";
+
+import clsx from "clsx";
 
 import styles from "./NavModal.module.css";
 
@@ -21,7 +23,7 @@ const StyledLink = styled(NavLink)`
   color: #9b9faa;
   text-align: center;
   font-family: Verdana;
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -29,9 +31,21 @@ const StyledLink = styled(NavLink)`
   text-transform: uppercase;
   text-decoration: none;
 
+  border-radius: 6px;
+  background: rgb(16, 133, 16);
+  padding: 5px 10px;
+  width: 250px;
+  transition: all 0.35s ease-in-out;
+
   &.active {
     color: blue;
     background: var(--brand-color);
+  }
+
+  &:hover {
+    color: blue;
+    background: var(--brand-color);
+    scale: 1.08;
   }
 `;
 
@@ -44,6 +58,9 @@ const breakpoints = {
 export default function NavModal() {
   const [isLogoutModalVisible, toggleIsLogoutModalVisible] = useToggle(false);
   const modalRef = useRef();
+
+  const location = useLocation();
+  // console.log("location.pathname :", location.pathname);
 
   const [userUpdateShown, setUserUpdateShown] = useState(false);
 
@@ -145,8 +162,13 @@ export default function NavModal() {
 
                 <StyledLink
                   onClick={toggleIsLogoutModalVisible}
-                  className={styles.link}
-                  to={"/calculator"}
+                  to="/calculator"
+                  className={() =>
+                    location.pathname === "/" ||
+                    location.pathname === "/calculator"
+                      ? "active"
+                      : ""
+                  }
                 >
                   Diet Calculator
                 </StyledLink>

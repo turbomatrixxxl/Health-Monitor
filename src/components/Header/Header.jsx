@@ -16,6 +16,7 @@ import NavModal from "../NavModal/NavModal";
 import healthMonitorImage from "../../images/Health Monitor.jpg";
 
 import styles from "./Header.module.css";
+import { useLocation } from "react-router-dom";
 
 const breakpoints = {
   mobile: "(max-width: 767px)",
@@ -25,6 +26,9 @@ const breakpoints = {
 
 function Header({ handleHeaderClick }) {
   const { isLoggedIn } = useAuth();
+  const location = useLocation();
+
+  // console.log("location :", location);
 
   const isMobile = useMediaQuery({ query: breakpoints.mobile });
   const isTablet = useMediaQuery({ query: breakpoints.tablet });
@@ -33,7 +37,15 @@ function Header({ handleHeaderClick }) {
   return (
     <>
       <header
-        className={clsx(styles.header, isLoggedIn && styles.loggedHeader)}
+        className={clsx(
+          styles.header,
+          isLoggedIn &&
+            (location.pathname === "/" ||
+              location.pathname === "/diary" ||
+              location.pathname === "/calculator")
+            ? styles.loggedHeader
+            : styles.otherHeader
+        )}
       >
         <div
           className={clsx(styles.leftCont, !isLoggedIn && styles.loggedLeft)}
@@ -56,7 +68,15 @@ function Header({ handleHeaderClick }) {
           {(isMobile || isTablet) && !isDesktop && isLoggedIn && <NavModal />}
         </div>
         {isLoggedIn && isDesktop && (
-          <div className={styles.rightDesktopCont}>
+          <div
+            className={clsx(
+              styles.rightDesktopCont,
+              (location.pathname !== "/" ||
+                location.pathname !== "/diary" ||
+                location.pathname !== "/calculator") &&
+                styles.rightOtherPages
+            )}
+          >
             <UserLogout handleUpdateUserClick={handleHeaderClick} />
           </div>
         )}
