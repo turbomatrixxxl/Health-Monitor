@@ -28,7 +28,7 @@ export default function NavLinks() {
       <span>|</span>
       <nav className={styles.nav}>
         <StyledLink className={styles.auth} to={"/diary"}>
-          Diary
+          Food Diary
         </StyledLink>
 
         <StyledLink className={styles.auth} to={"/calculator"}>

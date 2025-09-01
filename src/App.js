@@ -24,6 +24,20 @@ const LazyLoginPage = React.lazy(() => import("./pages/LoginPage/LoginPage"));
 const LazyRegistrationPage = React.lazy(() =>
   import("./pages/RegisterPage/RegisterPage")
 );
+const LazyDailyProgressPage = React.lazy(() =>
+  import("./pages/DailyProgressPage")
+);
+const LazySleepPage = React.lazy(() => import("./pages/SleepPage"));
+const LazyPsyhicalActivityPage = React.lazy(() =>
+  import("./pages/PsyhicalActivityPage")
+);
+const LazyAlertsPage = React.lazy(() => import("./pages/AlertsPage"));
+const LazyHealthMetricsPage = React.lazy(() =>
+  import("./pages/HealthMetricsPage")
+);
+const LazyExportReportsPage = React.lazy(() =>
+  import("./pages/ExportReportsPage")
+);
 
 function App() {
   const { isLoggedIn, isRefreshing } = useAuth(); // Check user verification status
@@ -92,6 +106,66 @@ function App() {
             element={
               <PrivateRoute
                 component={<LazyDiaryPage />}
+                redirectTo="/verify-email"
+              />
+            }
+          />
+
+          <Route
+            path="/daily"
+            element={
+              <PrivateRoute
+                component={<LazyDailyProgressPage />}
+                redirectTo="/verify-email"
+              />
+            }
+          />
+
+          <Route
+            path="/sleep"
+            element={
+              <PrivateRoute
+                component={<LazySleepPage />}
+                redirectTo="/verify-email"
+              />
+            }
+          />
+
+          <Route
+            path="/physical"
+            element={
+              <PrivateRoute
+                component={<LazyPsyhicalActivityPage />}
+                redirectTo="/verify-email"
+              />
+            }
+          />
+
+          <Route
+            path="/alerts"
+            element={
+              <PrivateRoute
+                component={<LazyAlertsPage />}
+                redirectTo="/verify-email"
+              />
+            }
+          />
+
+          <Route
+            path="/metrix"
+            element={
+              <PrivateRoute
+                component={<LazyHealthMetricsPage />}
+                redirectTo="/verify-email"
+              />
+            }
+          />
+
+          <Route
+            path="/export"
+            element={
+              <PrivateRoute
+                component={<LazyExportReportsPage />}
                 redirectTo="/verify-email"
               />
             }

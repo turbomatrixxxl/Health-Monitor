@@ -25,11 +25,13 @@ export default function UpdateUser({ onClose, theme }) {
   const { user } = useAuth();
   const dispatch = useDispatch();
 
+  // console.log("user :", user);
+
   const formRef = useRef();
   const modalRef = useRef();
   const fileInputRef = useRef(null); // File input reference
 
-  const [userNewName, setUserNewName] = useState(user?.name);
+  const [userNewName, setUserNewName] = useState(user?.username);
   const [userNewMail, setUserNewMail] = useState(user?.email);
   const [userNewPassword, setUserNewPassword] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);

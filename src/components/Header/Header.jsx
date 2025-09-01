@@ -43,7 +43,7 @@ function Header({ handleHeaderClick }) {
             <img
               className={styles.slimMom}
               src={healthMonitorImage}
-              alt="Monitor"
+              alt="Monitor logo"
             />
           )}
           {!isLoggedIn && <AuthLinks />}

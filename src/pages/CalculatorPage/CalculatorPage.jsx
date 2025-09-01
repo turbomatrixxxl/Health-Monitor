@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Calculator from "../../components/Calculator/Calculator";
 import { useDispatch } from "react-redux";
 
@@ -20,6 +20,12 @@ import { logOut } from "../../redux/auth/operationsAuth";
 import { useAuth } from "../../hooks/useAuth";
 
 import styles from "./CalculatorPage.module.css";
+import useToggle from "../../hooks/useToggle";
+import Button from "../../components/commonComponents/Button";
+import Modal from "../../components/commonComponents/Modal/Modal";
+import { HiX } from "react-icons/hi";
+import Loader from "../../components/commonComponents/Loader";
+import { resetPrivateForm } from "../../redux/private/privateSlice";
 
 const breakpoints = {
   mobile: "(max-width: 767px)",
@@ -28,10 +34,17 @@ const breakpoints = {
 };
 
 export default function CalculatorPage() {
-  useLocation();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
-  const { isLoggedIn } = useAuth();
+  const [isCalculatorModalVisible, toggleIsCalculatorModalVisible] =
+    useToggle(false);
+  const modalRef = useRef();
+
+  const { isLoggedIn, user } = useAuth();
   const { error, privateDispatch } = usePrivate();
+
+  console.log("user :", user);
 
   const isDesktop = useMediaQuery({ query: breakpoints.desktop });
 
@@ -39,6 +52,31 @@ export default function CalculatorPage() {
   const navigate = useNavigate();
 
   const today = getFormattedDate();
+
+  useEffect(() => {
+    if (isCalculatorModalVisible) {
+      document.body.classList.add(styles.noScroll);
+    } else {
+      document.body.classList.remove(styles.noScroll);
+    }
+
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape") toggleIsCalculatorModalVisible();
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.body.classList.remove(styles.noScroll);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [isCalculatorModalVisible, toggleIsCalculatorModalVisible]);
+
+  const closeOnClickOutside = (event) => {
+    if (event.target !== event.currentTarget) {
+      toggleIsCalculatorModalVisible();
+    }
+  };
 
   useEffect(() => {
     const today = getFormattedDate(); // Ensure the correct format YYYY-MM-DD
@@ -86,11 +124,107 @@ export default function CalculatorPage() {
   function handleProductsForSelectedDate(date) {
     setTimeout(() => {
       privateDispatch(fetchConsumedProductsForSpecificDay({ date: date }));
-    }, 1000); // Delay of 500ms
+    }, 1000); // Delay of 1000ms
+  }
+
+  const isMobile = useMediaQuery({ query: breakpoints.mobile });
+
+  // Redirect to CalculatorPage if `/home` is accessed
+  if (location.pathname === "/home") {
+    return <Navigate to="/home/calculator" />;
   }
 
   return (
     <section className={styles.section}>
+      {isCalculatorModalVisible && (
+        <div
+          ref={modalRef}
+          className={styles.modalOverlay}
+          onClick={closeOnClickOutside}
+        >
+          <div className={styles.modalContent}>
+            <Modal
+              closeButton={styles.closeButton}
+              handleModalClose={toggleIsCalculatorModalVisible}
+              isModalVisible={isCalculatorModalVisible}
+            >
+              {isMobile && (
+                <div className={styles.mobileHeaderCont}>
+                  <header className={styles.modalHeader}>
+                    <Logo className={styles.logoHeaderContainer} />
+                  </header>
+                  <div className={styles.mobileSubHeaderCont}>
+                    <button
+                      onClick={toggleIsCalculatorModalVisible}
+                      className={styles.mobileHeaderExitButton}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="9"
+                        viewBox="0 0 15 9"
+                        fill="none"
+                      >
+                        <path
+                          d="M14 1.5V4.5H2M2 4.5L5.5 1M2 4.5L5.5 8"
+                          stroke="black"
+                          strokeWidth="2"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              )}
+              <div className={styles.modalLogoutActionCenter}>
+                <button
+                  className={styles.closeModal}
+                  id="closeModal"
+                  onClick={toggleIsCalculatorModalVisible}
+                >
+                  <HiX size="16px" />
+                </button>
+                {!user && isMobile && <Loader />}
+                {user ? (
+                  <>
+                    <h2>Your recommended daily calorie intake is</h2>
+                    <p className={styles.calories}>
+                      {user?.dietaryInfo?.dailyCalorieIntake || "N/A"}
+                      <span>kcal</span>
+                    </p>
+                    <div className={styles.line}></div>
+                    <p className={styles.notEat}>Foods you should not eat</p>
+                    <ol className={styles.list}>
+                      {user?.dietaryInfo?.restrictedAliments?.length > 0 ? (
+                        user?.dietaryInfo?.restrictedAliments?.map((item) => (
+                          <li key={item._id}>{item.title}</li>
+                        ))
+                      ) : (
+                        <p className={styles.empty}>No foods listed</p>
+                      )}
+                    </ol>
+                    <Link className={styles.link} to="/">
+                      <Button
+                        handleClick={() => {
+                          toggleIsCalculatorModalVisible();
+                          dispatch(resetPrivateForm);
+                        }}
+                        type="button"
+                        variant="colored"
+                      >
+                        Start losing weight
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  <p className={styles.empty}>
+                    Loading your recommendations...
+                  </p>
+                )}
+              </div>
+            </Modal>
+          </div>
+        </div>
+      )}
       {(error || !isLoggedIn) && (
         <div className={styles.errorMessage}>
           {error === "Not authorized" ? (
@@ -116,12 +250,12 @@ export default function CalculatorPage() {
           </div>
         )}
         <Calculator
-          handleClick={() => {
-            handleClick();
+          onSubmit={() => {
             handleSubmit();
             handleProductsForSelectedDate(today);
+            handleClick();
+            toggleIsCalculatorModalVisible();
           }}
-          onSubmit={handleSubmit}
         />
       </div>
       <LoginStatistics day={formatToDisplayDate(today)} />

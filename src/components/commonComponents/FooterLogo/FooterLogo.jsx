@@ -10,7 +10,10 @@ const Logo = ({ variant = "default" }) => {
       to="/"
     >
       <img src={logoImage} alt="Logo" />
-      <span>Health-Monitor</span>
+      <p>
+        <span className={styles.spanL}>Health</span>-
+        <span className={styles.spanR}>Monitor</span>
+      </p>
     </Link>
   );
 };

@@ -30,7 +30,8 @@ const StyledLink = styled(NavLink)`
   text-decoration: none;
 
   &.active {
-    color: white;
+    color: blue;
+    background: var(--brand-color);
   }
 `;
 
@@ -83,7 +84,7 @@ export default function NavModal() {
       <button
         type="button"
         onClick={toggleIsLogoutModalVisible}
-        className={styles.link}
+        className={styles.logoutBtn}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -123,27 +124,79 @@ export default function NavModal() {
                   {!isDesktop && isTablet && !isMobile && (
                     <UserLogout handleUpdateUserClick={handleUpdateUser} />
                   )}
-                  <button type="button" onClick={toggleIsLogoutModalVisible}>
-                    <HiX size="16px" />
-                  </button>
                 </div>
               </header>
 
               <nav className={styles.modalLogoutActionCenter}>
+                <button
+                  className={styles.modalCloseButton}
+                  type="button"
+                  onClick={toggleIsLogoutModalVisible}
+                >
+                  <HiX size="20px" />
+                </button>
                 <StyledLink
                   onClick={toggleIsLogoutModalVisible}
-                  className={styles.auth}
+                  className={styles.link}
                   to={"/diary"}
                 >
-                  Diary
+                  Food Diary
                 </StyledLink>
 
                 <StyledLink
                   onClick={toggleIsLogoutModalVisible}
-                  className={styles.auth}
+                  className={styles.link}
                   to={"/calculator"}
                 >
-                  Calculator
+                  Diet Calculator
+                </StyledLink>
+
+                <StyledLink
+                  onClick={toggleIsLogoutModalVisible}
+                  className={styles.link}
+                  to={"/daily"}
+                >
+                  Daily Progress
+                </StyledLink>
+
+                <StyledLink
+                  onClick={toggleIsLogoutModalVisible}
+                  className={styles.link}
+                  to={"/sleep"}
+                >
+                  Sleep
+                </StyledLink>
+
+                <StyledLink
+                  onClick={toggleIsLogoutModalVisible}
+                  className={styles.link}
+                  to={"/physical"}
+                >
+                  Psyhical Activity
+                </StyledLink>
+
+                <StyledLink
+                  onClick={toggleIsLogoutModalVisible}
+                  className={styles.link}
+                  to={"/alerts"}
+                >
+                  Alerts
+                </StyledLink>
+
+                <StyledLink
+                  onClick={toggleIsLogoutModalVisible}
+                  className={styles.link}
+                  to={"/metrix"}
+                >
+                  Health Metrics
+                </StyledLink>
+
+                <StyledLink
+                  onClick={toggleIsLogoutModalVisible}
+                  className={styles.link}
+                  to={"/export"}
+                >
+                  Export & Reports
                 </StyledLink>
               </nav>
             </Modal>

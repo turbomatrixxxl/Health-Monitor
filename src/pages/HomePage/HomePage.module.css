@@ -91,7 +91,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   height: -webkit-fill-available;
   width: -webkit-fill-available;
   background-color: white;
@@ -106,6 +106,22 @@
   line-height: 140%;
   margin-bottom: 42px;
   margin-top: 40px;
+  text-align: center;
+}
+
+.empty {
+  align-items: center;
+  background: green;
+  color: rgb(67, 14, 97);
+  display: flex;
+  font-family: Verdana;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 140%;
+  padding: 10px 30px;
+  width: 100%;
 }
 
 .calories {

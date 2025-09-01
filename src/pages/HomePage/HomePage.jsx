@@ -149,7 +149,7 @@ export default function HomePage() {
                           <li key={item._id}>{item.title}</li>
                         ))
                       ) : (
-                        <p>No foods listed</p>
+                        <p className={styles.empty}>No foods listed</p>
                       )}
                     </ol>
                     <Link className={styles.link} to="/login">
@@ -166,7 +166,9 @@ export default function HomePage() {
                     </Link>
                   </>
                 ) : (
-                  <p>Loading your recommendations...</p>
+                  <p className={styles.empty}>
+                    Loading your recommendations...
+                  </p>
                 )}
               </div>
             </Modal>
@@ -178,7 +180,12 @@ export default function HomePage() {
         <img className={styles.introImg} src={woman} alt="Meditation" />
         <p>A web app to track and manage your healthy lifestyle</p>
       </div>
-      <Calculator handleClick={handleOpenModal} onSubmit={handleSubmit} />
+      <Calculator
+        onSubmit={() => {
+          handleSubmit();
+          handleOpenModal();
+        }}
+      />
     </section>
   );
 }

@@ -21,7 +21,7 @@ const bloodTypeOptions = [
   { value: "4", label: "O" },
 ];
 
-export default function WeightLossForm({ onSubmit, handleClick }) {
+export default function WeightLossForm({ onSubmit }) {
   const { formData = {}, isLoading, dispatch } = usePublic();
 
   const { isLoggedIn, user } = useAuth();
@@ -211,12 +211,7 @@ export default function WeightLossForm({ onSubmit, handleClick }) {
         </div>
       </div>
 
-      <Button
-        handleClick={handleClick}
-        type="submit"
-        variant="colored"
-        disabled={!isValid || loading}
-      >
+      <Button type="submit" variant="colored" disabled={!isValid || loading}>
         {loading ? "Loading..." : "Start losing weight"}
       </Button>
     </form>
@@ -225,5 +220,4 @@ export default function WeightLossForm({ onSubmit, handleClick }) {
 
 WeightLossForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  handleClick: PropTypes.func,
 };

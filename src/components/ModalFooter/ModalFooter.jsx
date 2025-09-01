@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import styles from "./ModalFooter.module.css";
 import { useMediaQuery } from "react-responsive";
 import ModalLogo from "../commonComponents/FooterLogo/FooterLogo";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaPhoneAlt } from "react-icons/fa";
 import FormButton from "../commonComponents/FormButton/FormButton";
 import "animate.css";
 
 // Corectarea importului imaginii
-import Radu from "../../images/Radu.webp";
+import Ionela from "../../images/Ionela.jpg";
+
+import styles from "./ModalFooter.module.css";
 
 const ModalFooter = ({ closeModal }) => {
   const modalRef = useRef();
@@ -53,15 +54,15 @@ const ModalFooter = ({ closeModal }) => {
               className={`${styles.footerTeamCard} ${animation} ${styles.Ionela}`}
             >
               <img
-                src={Radu} // Folosește variabila corectă pentru imagine
+                src={Ionela} // Folosește variabila corectă pentru imagine
                 alt="Ionela"
                 className={styles.teamMemberImage}
               />
-              <span className={styles.footerTeamName}>Ionela</span>
+              <span className={styles.footerTeamName}>Bocoiu Ionela Maria</span>
               <em className={styles.footerTeamFunction}>Fullstack Developer</em>
               <div className={styles.socialLinks}>
                 <a
-                  href="https://github.com/turbomatrixxxl"
+                  href="https://github.com/BocoiuIonelaMaria"
                   className={styles.footerGithubIcon}
                   aria-label="GitHub profile"
                   target="_blank"
@@ -70,13 +71,11 @@ const ModalFooter = ({ closeModal }) => {
                   <FaGithub />
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/radu-bogdan-naramzoiu-fullstack-developer/"
-                  className={styles.footerLinkedinIcon}
-                  aria-label="LinkedIn profile"
-                  target="_blank"
-                  rel="noreferrer noopener"
+                  href="tel:+40745099526"
+                  className={styles.footerPhoneIcon}
+                  aria-label="Phone"
                 >
-                  <FaLinkedin />
+                  <FaPhoneAlt />
                 </a>
               </div>
             </div>
