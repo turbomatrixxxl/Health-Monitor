@@ -27,7 +27,7 @@ export default function UserLogout({ handleUpdateUserClick }) {
   const { isLoggedIn, user, avatarUrl } = useAuth();
   const [isLogoutModalVisible, toggleIsLogoutModalVisible] = useToggle(false);
   const modalRef = useRef();
-  console.log(user);
+  // console.log(user);
 
   const dispatch = useDispatch();
 
