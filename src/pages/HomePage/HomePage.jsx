@@ -21,6 +21,8 @@ import Loader from "../../components/commonComponents/Loader";
 
 import { resetForm } from "../../redux/public/publicCalculatorSlice";
 
+import woman from "../../images/woman-7927039_640.png";
+
 import styles from "./HomePage.module.css";
 
 const breakpoints = {
@@ -170,10 +172,13 @@ export default function HomePage() {
             </Modal>
           </div>
         </div>
-      )}{" "}
-      {/* Pass handleSubmit as the onSubmit prop */}
+      )}
+      <div className={styles.introCont}>
+        <h1>Monitor Your Health & Wellness</h1>
+        <img className={styles.introImg} src={woman} alt="Meditation" />
+        <p>A web app to track and manage your healthy lifestyle</p>
+      </div>
       <Calculator handleClick={handleOpenModal} onSubmit={handleSubmit} />
-      {/* <Outlet /> */}
     </section>
   );
 }

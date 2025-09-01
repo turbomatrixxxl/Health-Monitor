@@ -19,7 +19,7 @@
   font-weight: 700;
   line-height: normal;
   letter-spacing: 0.56px;
-  min-width: 240px;
+  /* min-width: 240px; */
   outline: none;
   padding: 8px 0;
 }

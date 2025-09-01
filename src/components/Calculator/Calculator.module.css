@@ -23,12 +23,15 @@
 @media screen and (width >=768px) {
   .cont {
     align-items: flex-start;
+    flex-grow: 1;
+    width: -webkit-fill-available;
   }
 
   .title {
-    font-size: 34px;
+    font-size: 24px;
+    padding: 20px 32px;
     text-align: inherit;
-    width: 520px;
+    /* width: 520px; */
   }
 }
 

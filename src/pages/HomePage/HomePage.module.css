@@ -1,11 +1,59 @@
 @import "../../styles/variables.css";
 
 .section {
+  align-items: center;
   background: transparent;
   display: flex;
+  flex-direction: column;
   height: -webkit-fill-available;
   width: -webkit-fill-available;
+  /* padding: 32px 20px; */
+  padding-bottom: 20px;
+}
+
+.introCont {
+  align-items: center;
+  background: lightgreen;
+  border-bottom: solid 1px black;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 25px;
   padding: 32px 20px;
+  width: -webkit-fill-available;
+}
+
+.introCont > h1 {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  color: #212121;
+  font-family: Verdana;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  text-align: center;
+}
+
+.introCont > p {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  /* color: #212121; */
+  color: rgb(17, 51, 201);
+  font-family: Verdana;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  text-align: center;
+  width: 260px;
+}
+
+.introImg {
+  height: 260px;
+  width: 260px;
 }
 
 .mobileHeaderCont {
@@ -141,7 +189,24 @@
 
 @media screen and (width >=768px) {
   .section {
+    flex-direction: row;
+    padding-bottom: 0;
+  }
+
+  .introCont {
+    border-bottom: none;
+    border-right: solid 1px black;
+    height: -webkit-fill-available;
+    justify-content: space-between;
+    margin-bottom: 0;
+    margin-right: 20px;
     padding: 20px 32px;
+    width: fit-content;
+  }
+
+  .introImg {
+    height: 200px;
+    width: 200px;
   }
 
   .closeModal {
@@ -168,7 +233,12 @@
 
 @media screen and (width >=1024px) {
   .section {
-    padding: 0px 16px;
-    padding-top: 30px;
+    /* padding: 0px 16px; */
+    border-top: solid 1px #e0e0e0;
+  }
+
+  .introImg {
+    height: 260px;
+    width: 300px;
   }
 }
