@@ -33,9 +33,9 @@ export default function SleepPage() {
 
     if (["fromMinute", "tillMinute"].includes(field)) {
       if (isNaN(val) || val < 0) val = 0;
-      if (val > 55) val = 55;
-      // rotunjim la multiplu de 5
-      val = Math.round(val / 5) * 5;
+      if (val > 59) val = 59;
+      //   // rotunjim la multiplu de 5
+      //   val = Math.ceil(val / 5) * 5;
       value = formatNumber(val);
     }
 
@@ -116,7 +116,7 @@ export default function SleepPage() {
                     type="number"
                     min="0"
                     max="55"
-                    step="5"
+                    step="1"
                     value={line.fromMinute}
                     onChange={(e) =>
                       updateLine(idx, "fromMinute", e.target.value)
@@ -164,7 +164,7 @@ export default function SleepPage() {
                     type="number"
                     min="0"
                     max="55"
-                    step="5"
+                    step="1"
                     value={line.tillMinute}
                     onChange={(e) =>
                       updateLine(idx, "tillMinute", e.target.value)
