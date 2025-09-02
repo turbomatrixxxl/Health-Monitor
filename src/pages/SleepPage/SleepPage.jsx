@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import styles from "./SleepPage.module.css";
 
 export default function SleepPage() {
-  const [filterDate, setFilterDate] = useState("");
+  const [filterDate, setFilterDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
 
   // o linie inițială
   const [lines, setLines] = useState([
@@ -77,7 +79,7 @@ export default function SleepPage() {
           <div className={styles.dateWrapper}>
             <input
               type="date"
-              value={filterDate}
+              value={filterDate ?? new Date().toISOString().split("T")[0]}
               onChange={(e) => setFilterDate(e.target.value)}
               className={styles.paramInput}
             />

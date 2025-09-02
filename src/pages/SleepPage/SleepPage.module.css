@@ -28,8 +28,10 @@
   border: solid 1px var(--Gray-5);
   background: lightblue;
   display: flex;
-  height: 300px;
+  /* height: 300px; */
   justify-content: center;
+  width: -webkit-fill-available;
+  aspect-ratio: 2 / 1;
 }
 
 .rightSideContTitle {
@@ -135,8 +137,9 @@
 }
 
 .timeInputGroup {
-  align-items: center;
+  align-items: end;
   display: flex;
+  /* font-size: 12px; */
   justify-content: space-between;
   width: 40%;
 }
@@ -160,7 +163,8 @@
   align-items: center;
   border: none;
   display: flex;
-  width: 30px;
+  font-size: clamp(12px, 2.5vw, 13px);
+  width: 29px;
 }
 
 .twoDots {
@@ -171,6 +175,7 @@
 
 .ampmSelect {
   border: none;
+  font-size: clamp(12px, 2.5vw, 13px);
   outline: none;
 }
 
@@ -211,8 +216,28 @@
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   padding: 10px 20px;
+}
+
+.adviceCont > h2 {
+  color: rgb(0, 17, 255);
+  display: flex;
+  font-family: Verdana;
+  font-size: clamp(14px, 2.5vw, 18px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+}
+
+.adviceCont > p {
+  color: rgb(16, 172, 16);
+  display: flex;
+  font-family: Verdana;
+  font-size: clamp(12px, 2.5vw, 14px);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 80%;
 }
 
 @media screen and (width >=768px) {
@@ -222,6 +247,10 @@
 
   .leftSideCont {
     width: 50%;
+  }
+
+  .graphCont {
+    margin-top: 18px;
   }
 
   .rightSideCont {
