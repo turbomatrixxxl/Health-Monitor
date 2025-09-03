@@ -68,6 +68,10 @@
   gap: 4px;
 }
 
+.alerts {
+  height: 95px;
+}
+
 .metrixTitle {
   align-items: center;
   border-bottom: 1px solid var(--Gray-5);
@@ -82,6 +86,20 @@
   padding: 2px 20px;
 }
 
+.remindersList {
+  display: flex;
+  flex-direction: column;
+  /* list-style: none; */
+  overflow-y: auto;
+  padding: 0;
+}
+
+.doneBtn {
+  background: green;
+  border-radius: 6px;
+  color: var(--Gray-5);
+}
+
 @media screen and (width >=768px) {
   .cont {
     flex-direction: row;
@@ -94,6 +112,10 @@
 
   .rightSideCont {
     flex-grow: 1;
+  }
+
+  .alerts {
+    height: -webkit-fill-available;
   }
 }
 

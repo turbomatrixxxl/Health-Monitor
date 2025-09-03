@@ -71,5 +71,5 @@ export default function calculateBPAndPulse(age, weight) {
   };
 }
 
-const noAge = calculateBPAndPulse();
-console.log("noAge :", noAge);
+// const noAge = calculateBPAndPulse();
+// console.log("noAge :", noAge);

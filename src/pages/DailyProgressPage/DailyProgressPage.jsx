@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { usePrivate } from "../../hooks/usePrivate";
 import { useAuth } from "../../hooks/useAuth";
@@ -18,8 +18,19 @@ export default function DailyProgressPage() {
   const { dailyCalorieSummary, privateDispatch } = usePrivate();
   //   console.log("dailyCalorieSummary :", dailyCalorieSummary);
 
+  const reminders = [
+    { id: 1, hour: "9:00 AM", text: "Drink water", done: false },
+    { id: 2, hour: "9:00 AM", text: "Drink water", done: false },
+    { id: 3, hour: "9:00 AM", text: "Drink water", done: false },
+    { id: 4, hour: "9:00 AM", text: "Drink water", done: false },
+    { id: 5, hour: "9:00 AM", text: "Drink water", done: false },
+    { id: 6, hour: "9:00 AM", text: "Drink water", done: false },
+  ];
+
+  const [rem, setRem] = useState(reminders);
+
   const { user } = useAuth();
-  console.log("user :", user);
+  // console.log("user :", user);
 
   const name = user?.username ?? "User";
   const age = user?.age ?? 0;
@@ -96,6 +107,15 @@ export default function DailyProgressPage() {
 
   //   console.log("globalPercentage :", globalPercentage);
 
+  function handleReminderDone(id) {
+    // Update the reminders state to mark the reminder as done
+    const newReminders = rem.map((reminder) =>
+      reminder.id === id ? { ...reminder, done: true } : reminder
+    );
+
+    return setRem(newReminders);
+  }
+
   return (
     <div className={styles.cont}>
       <div className={styles.leftSideCont}>
@@ -116,7 +136,40 @@ export default function DailyProgressPage() {
           </p>
         </div>
         <div className={clsx(styles.metrixCont, styles.alerts)}>
-          <h3 className={styles.title}>Dayly Reminders</h3>
+          {rem.length !== 0 ? (
+            <>
+              <h3 className={styles.metrixTitle}>Daily Reminders</h3>
+              <ul className={styles.remindersList}>
+                {rem.map(
+                  (reminder) =>
+                    !reminder?.done && (
+                      <li
+                        style={{ color: "red" }}
+                        className={styles.metrixTitle}
+                        key={`reminder-${reminder.id}`}
+                      >
+                        <span>{reminder?.hour}</span> -{" "}
+                        <span>{reminder?.text}</span>
+                        <button
+                          className={styles.doneBtn}
+                          onClick={() => handleReminderDone(reminder.id)}
+                          type="button"
+                        >
+                          Done
+                        </button>
+                      </li>
+                    )
+                )}
+              </ul>
+            </>
+          ) : (
+            <p
+              style={{ color: "red" }}
+              className={clsx(styles.metrixTitle, styles.alerts)}
+            >
+              No Reminders set !!!
+            </p>
+          )}
         </div>
       </div>
       <div className={styles.rightSideCont}>
@@ -396,6 +449,7 @@ export default function DailyProgressPage() {
               color: "red",
               background: "var(--Gray5)",
               textAlign: "left",
+              border: "1px solid red",
             }}
             className={styles.metrixTitle}
           >

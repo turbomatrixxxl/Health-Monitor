@@ -1,7 +1,17 @@
 import React, { useState } from "react";
+
+import { useAuth } from "../../hooks/useAuth";
+
+import calculateSleepHours from "../../Utils/calculateSleepHours";
+
 import styles from "./SleepPage.module.css";
 
 export default function SleepPage() {
+  const { user } = useAuth();
+  const age = user?.age ?? 0;
+
+  const sleepHours = age ? calculateSleepHours(age) : 0;
+
   const [filterDate, setFilterDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -197,9 +207,16 @@ export default function SleepPage() {
 
         <div className={styles.adviceCont}>
           <h2 className={styles.adviceTitle}>Suggestions</h2>
-          <p className={styles.advicep}>
-            Try to get at least 7 hours of sleep .
-          </p>
+          {age !== 0 ? (
+            <p className={styles.advicep}>
+              Try to get at least {sleepHours} hours of sleep .
+            </p>
+          ) : (
+            <p style={{ color: "red" }} className={styles.advicep}>
+              It seems that you did not set up your personal info. Please check
+              Diet Calculator page to set things right !
+            </p>
+          )}
         </div>
       </div>
     </div>
