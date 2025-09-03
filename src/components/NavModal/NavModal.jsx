@@ -152,13 +152,6 @@ export default function NavModal() {
                 >
                   <HiX size="20px" />
                 </button>
-                <StyledLink
-                  onClick={toggleIsLogoutModalVisible}
-                  className={styles.link}
-                  to={"/diary"}
-                >
-                  Food Diary
-                </StyledLink>
 
                 <StyledLink
                   onClick={toggleIsLogoutModalVisible}
@@ -179,6 +172,14 @@ export default function NavModal() {
                   to={"/daily"}
                 >
                   Daily Progress
+                </StyledLink>
+
+                <StyledLink
+                  onClick={toggleIsLogoutModalVisible}
+                  className={styles.link}
+                  to={"/diary"}
+                >
+                  Food Diary
                 </StyledLink>
 
                 <StyledLink

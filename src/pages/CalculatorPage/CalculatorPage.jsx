@@ -9,23 +9,27 @@ import {
   fetchPrivateCalculationData,
   fetchConsumedProductsForSpecificDay,
 } from "../../redux/private/operationsPrivate";
-
-import Logo from "../../components/Logo/Logo";
-import NavLinks from "../../components/NavLinks/NavLinks";
-
-import LoginStatistics from "../../components/LoginStatistics/LoginStatistics";
+import { resetPrivateForm } from "../../redux/private/privateSlice";
 import { usePrivate } from "../../hooks/usePrivate";
 
-import { logOut } from "../../redux/auth/operationsAuth";
 import { useAuth } from "../../hooks/useAuth";
+import { logOut } from "../../redux/auth/operationsAuth";
 
-import styles from "./CalculatorPage.module.css";
 import useToggle from "../../hooks/useToggle";
+
+import NavLinks from "../../components/NavLinks/NavLinks";
+
+import getFormattedDate from "../../Utils/getFormattedDate";
+
+import Logo from "../../components/Logo/Logo";
+import LoginStatistics from "../../components/LoginStatistics/LoginStatistics";
 import Button from "../../components/commonComponents/Button";
 import Modal from "../../components/commonComponents/Modal/Modal";
-import { HiX } from "react-icons/hi";
 import Loader from "../../components/commonComponents/Loader";
-import { resetPrivateForm } from "../../redux/private/privateSlice";
+
+import { HiX } from "react-icons/hi";
+
+import styles from "./CalculatorPage.module.css";
 
 const breakpoints = {
   mobile: "(max-width: 767px)",
@@ -96,17 +100,8 @@ export default function CalculatorPage() {
     }
   }, [error, isLoggedIn, thisDispatch, navigate]);
 
-  function getFormattedDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // Add leading zero if needed
-    const day = String(today.getDate()).padStart(2, "0"); // Add leading zero if needed
-    return `${year}-${month}-${day}`; // Return in YYYY-MM-DD format
-  }
-
   const handleClick = () => {
     privateDispatch(fetchConsumedProductsForSpecificDay({ date: today })); // Pass as an object
-    // dispatch(refreshUser())
   };
 
   // console.log(getFormattedDate());

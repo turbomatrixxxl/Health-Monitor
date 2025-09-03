@@ -7,9 +7,9 @@ export default function NavLinks() {
   const navigate = useNavigate();
 
   const links = [
-    { path: "/diary", label: "Food Diary" },
     { path: "/calculator", label: "Diet Calculator" },
     { path: "/daily", label: "Daily Progress" },
+    { path: "/diary", label: "Food Diary" },
     { path: "/sleep", label: "Sleep" },
     { path: "/physical", label: "Physical Activity" },
     { path: "/alerts", label: "Alerts" },
