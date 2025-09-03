@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { usePrivate } from "../../hooks/usePrivate";
-import { useAuth } from "../../hooks/useAuth";
+// import { useAuth } from "../../hooks/useAuth";
 
 import { fetchConsumedProductsForSpecificDay } from "../../redux/private/operationsPrivate";
 
@@ -32,17 +32,17 @@ export default function DailyProgressPage() {
   const updatedReminders = rem.filter((reminder) => !reminder.done);
   // console.log("updatedReminders :", updatedReminders.length);
 
-  const { user: authUser } = useAuth();
-  console.log("authUser:", authUser);
+  // const { user: authUser } = useAuth();
+  // console.log("authUser:", authUser);
 
   const { user: privateUser } = usePrivate();
   console.log("privateUser:", privateUser);
 
-  const name = authUser?.username ?? "User";
-  const age = authUser?.age ?? 0;
-  const height = authUser?.height ?? 0;
-  const weight = authUser?.weight ?? 0;
-  const desiredWeight = authUser?.desiredWeight ?? 0;
+  const name = privateUser?.username ?? "User";
+  const age = privateUser?.age ?? 0;
+  const height = privateUser?.height ?? 0;
+  const weight = privateUser?.weight ?? 0;
+  const desiredWeight = privateUser?.desiredWeight ?? 0;
 
   const neededSteps = calculateDailySteps(age, weight, desiredWeight, height);
   const neededSleep = calculateSleepHours(age);
