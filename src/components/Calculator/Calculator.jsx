@@ -17,6 +17,9 @@ export default function Calculator({ onSubmit }) {
           ? "First, enter your personal data to unlock full functionality and calculate your daily calorie needs."
           : "Calculate your daily calorie intake right now"}
       </h2>
+      <p className={styles.warn}>
+        Please fill <b>All</b> fields*
+      </p>
 
       <WeightLossForm onSubmit={onSubmit} />
     </div>

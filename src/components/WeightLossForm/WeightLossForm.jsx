@@ -132,7 +132,7 @@ export default function WeightLossForm({ onSubmit }) {
             type="number"
             placeholder="Height* /cm"
             name="height"
-            value={`${height} cm` || ""}
+            value={height || ""}
             handleChange={handleChange}
             required
           />
@@ -141,7 +141,7 @@ export default function WeightLossForm({ onSubmit }) {
             type="number"
             placeholder="Age* /years"
             name="age"
-            value={`${age} years` || ""}
+            value={age || ""}
             handleChange={handleChange}
             required
           />
@@ -150,7 +150,7 @@ export default function WeightLossForm({ onSubmit }) {
             type="number"
             placeholder="Current weight* /kg"
             name="currentWeight"
-            value={`${currentWeight} kg` || ""}
+            value={currentWeight || ""}
             handleChange={handleChange}
             required
           />
@@ -162,7 +162,7 @@ export default function WeightLossForm({ onSubmit }) {
             type="number"
             placeholder="Desired weight* /kg"
             name="desiredWeight"
-            value={`${desiredWeight} kg` || ""}
+            value={desiredWeight || ""}
             handleChange={handleChange}
             required
           />

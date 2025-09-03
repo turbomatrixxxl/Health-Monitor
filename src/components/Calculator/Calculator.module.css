@@ -20,6 +20,12 @@
   text-align: center;
 }
 
+.warn {
+  color: red;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 @media screen and (width >=768px) {
   .cont {
     align-items: flex-start;
@@ -28,7 +34,7 @@
   }
 
   .title {
-    padding: 20px 32px;
+    padding: 10px 32px;
     /* width: 520px; */
   }
 }

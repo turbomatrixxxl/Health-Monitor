@@ -52,7 +52,7 @@ function SharedLayout() {
   useEffect(() => {
     if (error === "Not authorized") {
       dispatch(logOut());
-      navigate("/login");
+      navigate("/login", { replace: true });
     }
   }, [error, dispatch, navigate]);
 
