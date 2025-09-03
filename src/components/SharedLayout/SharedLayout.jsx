@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 // import { useMediaQuery } from "react-responsive";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import UpdateUser from "../UpdateUser";
 
 import { useAuth } from "../../hooks/useAuth";
+import { logOut } from "../../redux/auth/operationsAuth";
+import { useDispatch } from "react-redux";
+
 import { usePrivate } from "../../hooks/usePrivate";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -19,7 +22,10 @@ import styles from "./SharedLayout.module.css";
 
 function SharedLayout() {
   const { isLoggedIn, isLoggedOut, errorAuth } = useAuth();
-  const { message } = usePrivate();
+  const { message, error } = usePrivate();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [logoutShown, setLogoutShown] = useState(false);
   const [userUpdateShown, setUserUpdateShown] = useState(false);
@@ -42,6 +48,13 @@ function SharedLayout() {
       toast.success(message);
     }
   }, [message]);
+
+  useEffect(() => {
+    if (error === "Not authorized") {
+      dispatch(logOut());
+      navigate("/login");
+    }
+  }, [error, dispatch, navigate]);
 
   // console.log({
   //   isLoggedIn: isLoggedIn,

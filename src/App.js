@@ -41,7 +41,8 @@ const LazyExportReportsPage = React.lazy(() =>
 
 function App() {
   const { isLoggedIn, isRefreshing } = useAuth(); // Check user verification status
-  const dispatch = useDispatch(); // To dispatch actions
+
+  const dispatch = useDispatch();
 
   // Dispatch refreshUser when the app starts (or when page is refreshed)
   useEffect(() => {

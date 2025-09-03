@@ -1,14 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import styles from "./Calculator.module.css";
+import { useAuth } from "../../hooks/useAuth";
+
 import WeightLossForm from "../WeightLossForm/WeightLossForm";
 
+import styles from "./Calculator.module.css";
+
 export default function Calculator({ onSubmit }) {
+  const { isLoggedIn } = useAuth();
+
   return (
     <div className={styles.cont}>
       <h2 className={styles.title}>
-        Calculate your daily calorie intake right now
+        {isLoggedIn
+          ? "First, enter your personal data to unlock full functionality and calculate your daily calorie needs."
+          : "Calculate your daily calorie intake right now"}
       </h2>
 
       <WeightLossForm onSubmit={onSubmit} />

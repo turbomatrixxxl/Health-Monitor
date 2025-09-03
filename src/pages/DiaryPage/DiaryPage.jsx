@@ -13,15 +13,14 @@ import { usePrivate } from "../../hooks/usePrivate";
 
 import LoginStatistics from "../../components/LoginStatistics/LoginStatistics";
 import Logo from "../../components/Logo/Logo";
+
 import NavLinks from "../../components/NavLinks/NavLinks";
 
 import { FiCalendar } from "react-icons/fi";
 
 import DiaryAddForm from "../../components/DiaryAddForm/DiaryAddForm";
 import Button from "../../components/commonComponents/Button";
-import { logOut } from "../../redux/auth/operationsAuth";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import useToggle from "../../hooks/useToggle";
 import Modal from "../../components/commonComponents/Modal/Modal";
 import UserLogout from "../../components/UserLogout/UserLogout";
@@ -40,11 +39,8 @@ export default function DiaryPage() {
   // const isTablet = useMediaQuery({ query: breakpoints.tablet });
   const isDesktop = useMediaQuery({ query: breakpoints.desktop });
 
-  const navigate = useNavigate();
-
-  const thisDispatch = useDispatch();
   const { products, dispatch } = usePublic();
-  const { privateDispatch, error, consumedProducts } = usePrivate();
+  const { privateDispatch, consumedProducts } = usePrivate();
 
   const [isDiaryMobileModalVisible, toggleisDiaryMobileModalVisible] =
     useToggle(false);
@@ -68,17 +64,6 @@ export default function DiaryPage() {
       document.removeEventListener("keydown", handleEscapeKey);
     };
   }, [isDiaryMobileModalVisible, toggleisDiaryMobileModalVisible]);
-
-  useEffect(() => {
-    if (error === "Not authorized") {
-      const timeout = setTimeout(() => {
-        thisDispatch(logOut());
-        navigate("/login");
-      }, 5000);
-
-      return () => clearTimeout(timeout); // Cleanup timeout
-    }
-  }, [error, thisDispatch, navigate]);
 
   function handleOpenModal() {
     toggleisDiaryMobileModalVisible();
@@ -254,23 +239,6 @@ export default function DiaryPage() {
           <div className={styles.leftCont}>
             <Logo />
             <NavLinks />
-          </div>
-        )}
-
-        {error && (
-          <div className={styles.errorMessage}>
-            {error === "Not authorized" ? (
-              <div className={styles.errorMessage}>
-                <p>
-                  For reasons of personal data security Your authorisation has
-                  expired ! We will shortly redirect You to your login page. If
-                  you want to continue Please Login again ! Thank You for
-                  understanding !
-                </p>
-              </div>
-            ) : (
-              error
-            )}
           </div>
         )}
 

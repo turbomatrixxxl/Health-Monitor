@@ -48,6 +48,9 @@ const privateSlice = createSlice({
       state.result = null;
       state.error = null;
     },
+    resetPrivateFormError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -145,7 +148,11 @@ const privateSlice = createSlice({
   },
 });
 
-export const { setPrivateFormData, resetPrivateForm, clearMessage } =
-  privateSlice.actions;
+export const {
+  setPrivateFormData,
+  resetPrivateForm,
+  clearMessage,
+  resetPrivateFormError,
+} = privateSlice.actions;
 
 export const privateReducer = privateSlice.reducer;

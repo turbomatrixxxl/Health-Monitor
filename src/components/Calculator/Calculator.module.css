@@ -11,9 +11,9 @@
   display: flex;
   flex-wrap: wrap;
 
-  color: #212121;
+  color: var(--brand-color);
   font-family: Verdana;
-  font-size: 18px;
+  font-size: clamp(12px, 3vw, 18px);
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
@@ -28,9 +28,7 @@
   }
 
   .title {
-    font-size: 24px;
     padding: 20px 32px;
-    text-align: inherit;
     /* width: 520px; */
   }
 }

@@ -130,27 +130,27 @@ export default function WeightLossForm({ onSubmit }) {
         <div className={styles.formLeftCont}>
           <Input
             type="number"
-            placeholder="Height*"
+            placeholder="Height* /cm"
             name="height"
-            value={height || ""}
+            value={`${height} cm` || ""}
             handleChange={handleChange}
             required
           />
 
           <Input
             type="number"
-            placeholder="Age*"
+            placeholder="Age* /years"
             name="age"
-            value={age || ""}
+            value={`${age} years` || ""}
             handleChange={handleChange}
             required
           />
 
           <Input
             type="number"
-            placeholder="Current weight*"
+            placeholder="Current weight* /kg"
             name="currentWeight"
-            value={currentWeight || ""}
+            value={`${currentWeight} kg` || ""}
             handleChange={handleChange}
             required
           />
@@ -160,9 +160,9 @@ export default function WeightLossForm({ onSubmit }) {
         <div className={styles.formRightCont}>
           <Input
             type="number"
-            placeholder="Desired weight*"
+            placeholder="Desired weight* /kg"
             name="desiredWeight"
-            value={desiredWeight || ""}
+            value={`${desiredWeight} kg` || ""}
             handleChange={handleChange}
             required
           />
@@ -212,7 +212,11 @@ export default function WeightLossForm({ onSubmit }) {
       </div>
 
       <Button type="submit" variant="colored" disabled={!isValid || loading}>
-        {loading ? "Loading..." : "Start losing weight"}
+        {loading
+          ? "Loading..."
+          : isLoggedIn
+          ? "Submit Info"
+          : "Start losing weight"}
       </Button>
     </form>
   );
