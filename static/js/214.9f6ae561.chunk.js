@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkhealth_monitor=self.webpackChunkhealth_monitor||[]).push([[214],{5214:(e,s,t)=>{t.r(s),t.d(s,{default:()=>r});t(5043);const n={};var a=t(579);const r=function(){return(0,a.jsx)("div",{className:n.cont,children:"DailyProgressPage"})}}}]);
-//# sourceMappingURL=214.9f6ae561.chunk.js.map
