@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: 20px;
   padding: 16px;
+  overflow-y: auto;
+  width: -webkit-fill-available;
 }
 
 .leftSideCont,
@@ -133,7 +135,7 @@
   border-top: none;
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 10px 5px;
 }
 
 .timeInputGroup {

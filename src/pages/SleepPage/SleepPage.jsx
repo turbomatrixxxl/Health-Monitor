@@ -74,15 +74,28 @@ export default function SleepPage() {
     setLines(lines.filter((_, i) => i !== index));
   };
 
+  const resetLines = () => {
+    setLines([
+      {
+        fromHour: "00",
+        fromMinute: "00",
+        fromAmPm: "AM",
+        tillHour: "00",
+        tillMinute: "00",
+        tillAmPm: "AM",
+      },
+    ]);
+  };
+
   return (
     <div className={styles.cont}>
       <div className={styles.leftSideCont}>
-        <h1 className={styles.title}>Sleep</h1>
+        <h1 className={styles.title}>Sleep statistics</h1>
         <div className={styles.graphCont}>Graphic container</div>
       </div>
 
       <div className={styles.rightSideCont}>
-        <p className={styles.rightSideContTitle}>Add sleep</p>
+        <h1 className={styles.title}>Add sleep</h1>
 
         {/* data */}
         <div className={styles.rightSideDate}>
@@ -101,13 +114,15 @@ export default function SleepPage() {
         <div className={styles.fromToCont}>
           <div className={styles.fromToTitle}>
             <p className={styles.from}>From</p>
-            <p className={styles.rem}>Rem</p>
+            <p className={styles.rem}>
+              {lines.length > 1 ? "Delete" : "Reset"}
+            </p>
             <p className={styles.to}>Till</p>
           </div>
 
           <div className={styles.lineRowCont}>
             {lines.map((line, idx) => (
-              <div key={idx} className={styles.lineRow}>
+              <div key={`line-${idx}`} className={styles.lineRow}>
                 {/* From */}
                 <div className={styles.timeInputGroup}>
                   <input
@@ -154,7 +169,13 @@ export default function SleepPage() {
                     ✕
                   </button>
                 ) : (
-                  <span className={styles.dash}>–</span>
+                  <button
+                    type="button"
+                    onClick={() => resetLines()}
+                    className={styles.removeBtn}
+                  >
+                    ✕
+                  </button>
                 )}
                 {/* Till */}
                 <div className={styles.timeInputGroup}>
@@ -212,9 +233,12 @@ export default function SleepPage() {
               Try to get at least {sleepHours} hours of sleep .
             </p>
           ) : (
-            <p style={{ color: "red" }} className={styles.advicep}>
+            <p
+              style={{ color: "red", lineHeight: "inherit" }}
+              className={styles.advicep}
+            >
               It seems that you did not set up your personal info. Please check
-              Diet Calculator page to set things right !
+              <b>Diet Calculator</b> page to set things right !
             </p>
           )}
         </div>

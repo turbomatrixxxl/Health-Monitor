@@ -13,6 +13,7 @@ import calculateNominalBPAndPulse from "../../Utils/calculateNominalBPAndPulse";
 import clsx from "clsx";
 
 import styles from "./DailyProgressPage.module.css";
+import Chart from "../../components/Chart";
 
 export default function DailyProgressPage() {
   const { dailyCalorieSummary, privateDispatch } = usePrivate();
@@ -27,7 +28,9 @@ export default function DailyProgressPage() {
     { id: 6, hour: "9:00 AM", text: "Drink water", done: false },
   ];
 
-  const [rem, setRem] = useState(reminders);
+  const [rem, setRem] = useState(...[reminders]);
+  const updatedReminders = rem.filter((reminder) => !reminder.done);
+  // console.log("updatedReminders :", updatedReminders.length);
 
   const { user } = useAuth();
   // console.log("user :", user);
@@ -64,27 +67,36 @@ export default function DailyProgressPage() {
     return num.toLocaleString("en-US");
   }
 
-  const condition = age && height && weight && desiredWeight;
+  const condition =
+    (age || age !== 0) &&
+    (height || height !== 0) &&
+    (weight || weight !== 0) &&
+    (desiredWeight || desiredWeight !== 0);
 
   const totalCalories = condition ? dailyCalorieSummary?.dailyCalorieIntake : 0;
-  const caloriesPer = condition
-    ? dailyCalorieSummary?.percentageCaloriesConsumed
-    : 0;
+  // const caloriesPer = condition
+  //   ? dailyCalorieSummary?.percentageCaloriesConsumed
+  //   : 0;
+  const caloriesPer = 0;
   const caloriesLeft = condition ? dailyCalorieSummary?.remainingCalories : 0;
 
-  const steps = 20000;
+  const steps = 0;
   const stepsPer = condition ? Math.round((100 * steps) / neededSteps) : 0;
   const stepsLeft = condition ? neededSteps - steps : 0;
   //   console.log("stepsLeft :", stepsLeft);
 
-  const sleep = 10;
+  const sleep = 0;
   const sleepPer = condition ? Math.round((100 * sleep) / neededSleep) : 0;
   const sleepLeft = condition ? neededSleep - sleep : 0;
   //   console.log("over :", sleepPer > 100);
 
-  const systolicR = 130;
-  const diastolicR = 60;
-  const pulse = 100;
+  const total = caloriesPer + stepsPer + sleepPer;
+
+  const systolicR = 0;
+  const diastolicR = 0;
+  const pulse = 0;
+  const heartCondition = systolicR + diastolicR === 0 || pulse === 0;
+  console.log("heartCondition :", heartCondition);
 
   function totalGoalsPercentage(cal, st, sl) {
     let calories = cal ?? 0;
@@ -116,27 +128,57 @@ export default function DailyProgressPage() {
     return setRem(newReminders);
   }
 
+  let free = 100 - globalPercentage;
+
+  if (free < 0) {
+    free = 0;
+  }
+
+  // console.log("percent :", caloriesPer, stepsPer, sleepPer, free);
+  console.log("sleepLeft === neededSleep :", sleepLeft === neededSleep);
+
   return (
     <div className={styles.cont}>
       <div className={styles.leftSideCont}>
         <h1 className={styles.title}>Daily Progress</h1>
         <div className={styles.graphCont}>
-          <div>Graphic container</div>
-          <p
-            className={clsx(
-              styles.graphicResult,
-              globalPercentage <= 50 && styles.badResult,
-              globalPercentage > 50 &&
-                globalPercentage < 80 &&
-                styles.mediumResult,
-              globalPercentage >= 80 && styles.goodResult
-            )}
-          >
-            You have reached {globalPercentage}% of your goals today
-          </p>
+          <Chart
+            calories={caloriesPer}
+            steps={stepsPer}
+            sleep={sleepPer}
+            free={free}
+            totalPercent={globalPercentage}
+          />
+          {total > 0 ? (
+            <p
+              className={clsx(
+                styles.graphicResult,
+                globalPercentage <= 50 && styles.badResult,
+                globalPercentage > 50 &&
+                  globalPercentage < 80 &&
+                  styles.mediumResult,
+                globalPercentage >= 80 && styles.goodResult
+              )}
+            >
+              You have reached {globalPercentage}% of your goals today
+            </p>
+          ) : (
+            <p
+              className={clsx(
+                styles.graphicResult,
+                globalPercentage <= 50 && styles.badResult,
+                globalPercentage > 50 &&
+                  globalPercentage < 80 &&
+                  styles.mediumResult,
+                globalPercentage >= 80 && styles.goodResult
+              )}
+            >
+              No entries for today ! Please, add some records !
+            </p>
+          )}
         </div>
         <div className={clsx(styles.metrixCont, styles.alerts)}>
-          {rem.length !== 0 ? (
+          {updatedReminders.length !== 0 ? (
             <>
               <h3 className={styles.metrixTitle}>Daily Reminders</h3>
               <ul className={styles.remindersList}>
@@ -176,6 +218,7 @@ export default function DailyProgressPage() {
         <h1 className={styles.title}>Daily Records</h1>
         {condition ? (
           <>
+            {/* Calories */}
             <div className={styles.metrixCont}>
               {totalCalories ? (
                 <p className={styles.metrixTitle}>
@@ -217,25 +260,33 @@ export default function DailyProgressPage() {
                   {caloriesPer}%
                 </span>
               </p>
-              <p className={styles.metrixTitle}>
-                <span className={styles.metrixName}>Remaining calories :</span>
-                <span
-                  className={clsx(
-                    styles.metrixQuantity,
-                    (caloriesPer === 0 ||
-                      caloriesPer > 100 ||
-                      caloriesPer <= 50) &&
-                      styles.badResult,
-                    caloriesPer < 80 &&
-                      caloriesLeft > 50 &&
-                      styles.mediumResult,
-                    caloriesPer >= 80 && styles.goodResult
-                  )}
-                >
-                  {formatNumber(caloriesLeft)} calories
-                </span>
-              </p>
+              {caloriesPer !== 0 ? (
+                <p className={styles.metrixTitle}>
+                  <span className={styles.metrixName}>
+                    Remaining calories :
+                  </span>
+                  <span
+                    className={clsx(
+                      styles.metrixQuantity,
+                      (caloriesPer > 100 || caloriesPer <= 50) &&
+                        styles.badResult,
+                      caloriesPer < 80 &&
+                        caloriesLeft > 50 &&
+                        styles.mediumResult,
+                      caloriesPer >= 80 && styles.goodResult
+                    )}
+                  >
+                    {formatNumber(caloriesLeft)} calories
+                  </span>
+                </p>
+              ) : (
+                <p style={{ color: "red" }} className={styles.metrixTitle}>
+                  No entry for today ! Please, input meals entries !
+                </p>
+              )}
             </div>
+
+            {/* Steps */}
             <div className={styles.metrixCont}>
               {neededSteps !== 0 ? (
                 <p className={styles.metrixTitle}>
@@ -270,22 +321,31 @@ export default function DailyProgressPage() {
                   {stepsPer}%
                 </span>
               </p>
-              <p className={styles.metrixTitle}>
-                <span className={styles.metrixName}>
-                  Remaining steps to do :
-                </span>
-                <span
-                  className={clsx(
-                    styles.metrixQuantity,
-                    (stepsPer === 0 || stepsPer <= 50) && styles.badResult,
-                    stepsPer < 80 && stepsPer > 50 && styles.mediumResult,
-                    stepsPer >= 80 && styles.goodResult
-                  )}
-                >
-                  {formatNumber(stepsLeft)} steps
-                </span>
-              </p>
+              {stepsPer !== 0 ? (
+                <p className={styles.metrixTitle}>
+                  <span className={styles.metrixName}>
+                    Remaining steps to do :
+                  </span>
+                  <span
+                    className={clsx(
+                      styles.metrixQuantity,
+                      (stepsPer === 0 || stepsPer <= 50) && styles.badResult,
+                      stepsPer < 80 && stepsPer > 50 && styles.mediumResult,
+                      stepsPer >= 80 && styles.goodResult
+                    )}
+                  >
+                    {formatNumber(stepsLeft)} steps
+                  </span>
+                </p>
+              ) : (
+                <p style={{ color: "red" }} className={styles.metrixTitle}>
+                  No steps recorded for today ! Please, walk more or input
+                  record !
+                </p>
+              )}
             </div>
+
+            {/* Sleep */}
             <div className={styles.metrixCont}>
               {neededSleep !== 0 ? (
                 <p className={styles.metrixTitle}>
@@ -321,10 +381,21 @@ export default function DailyProgressPage() {
                   {sleepPer}%
                 </span>
               </p>
-              {sleepLeft > 0 ? (
+              {sleepPer === 0 ? (
+                <p
+                  style={{
+                    color: "red",
+                    background: "var(--Gray5)",
+                    textAlign: "left",
+                  }}
+                  className={styles.metrixTitle}
+                >
+                  No sleep recorded yet for today ! Please, input sleep record !
+                </p>
+              ) : sleepLeft > 0 ? (
                 <p className={styles.metrixTitle}>
                   <span className={styles.metrixName}>
-                    Remaining steps to do :
+                    Remaining hours to sleep :
                   </span>
                   <span
                     className={clsx(
@@ -351,6 +422,8 @@ export default function DailyProgressPage() {
                 </p>
               )}
             </div>
+
+            {/* Heart Metrics */}
             <div className={styles.metrixCont}>
               {heartsMetrics !== 0 ? (
                 <>
@@ -384,19 +457,8 @@ export default function DailyProgressPage() {
                   check Diet Calculator page to set things right !
                 </p>
               )}
-              {systolicR >= systolicMin &&
-              systolicR <= systolicMax &&
-              diastolicR >= heartRateMin &&
-              diastolicR <= heartRateMax ? (
-                <p className={styles.metrixTitle}>
-                  <span className={styles.metrixName}>{name} BP :</span>
-                  <span
-                    className={clsx(styles.metrixQuantity, styles.goodResult)}
-                  >
-                    {systolicR}/{diastolicR} mm/Hg
-                  </span>
-                </p>
-              ) : (
+
+              {heartCondition ? (
                 <p
                   style={{
                     color: "red",
@@ -405,41 +467,76 @@ export default function DailyProgressPage() {
                   }}
                   className={styles.metrixTitle}
                 >
-                  It seems that your blood pressure is too{" "}
-                  {diastolicR < diastolicMin || systolicR < systolicMin
-                    ? "low"
-                    : diastolicR > diastolicMax || systolicR > systolicMax
-                    ? "high"
-                    : ""}
-                  ! Please consult doctor !
-                </p>
-              )}
-              {pulse >= heartRateMin && pulse <= heartRateMax ? (
-                <p className={styles.metrixTitle}>
-                  <span className={styles.metrixName}>{name} BP :</span>
-                  <span
-                    className={clsx(styles.metrixQuantity, styles.goodResult)}
-                  >
-                    {pulse} bpm
-                  </span>
+                  It seems that You did not recorded heart inputs for today !
+                  Please input datas !
                 </p>
               ) : (
-                <p
-                  style={{
-                    color: "red",
-                    background: "var(--Gray5)",
-                    textAlign: "left",
-                  }}
-                  className={styles.metrixTitle}
-                >
-                  It seems that your pulse is too{" "}
-                  {pulse < heartRateMin
-                    ? "low"
-                    : pulse > heartRateMax
-                    ? "high"
-                    : ""}
-                  ! Please consult doctor !
-                </p>
+                <>
+                  {systolicR >= systolicMin &&
+                  systolicR <= systolicMax &&
+                  diastolicR >= diastolicMin &&
+                  diastolicR <= diastolicMax ? (
+                    <p className={styles.metrixTitle}>
+                      <span className={styles.metrixName}>{name} BP :</span>
+                      <span
+                        className={clsx(
+                          styles.metrixQuantity,
+                          styles.goodResult
+                        )}
+                      >
+                        {systolicR}/{diastolicR} mm/Hg
+                      </span>
+                    </p>
+                  ) : (
+                    <p
+                      style={{
+                        color: "red",
+                        background: "var(--Gray5)",
+                        textAlign: "left",
+                      }}
+                      className={styles.metrixTitle}
+                    >
+                      It seems that your blood pressure is too{" "}
+                      {diastolicR < diastolicMin || systolicR < systolicMin
+                        ? "low"
+                        : diastolicR > diastolicMax || systolicR > systolicMax
+                        ? "high"
+                        : ""}
+                      ! Please consult doctor !
+                    </p>
+                  )}
+
+                  {pulse >= heartRateMin && pulse <= heartRateMax ? (
+                    <p className={styles.metrixTitle}>
+                      <span className={styles.metrixName}>{name} Pulse :</span>
+                      <span
+                        className={clsx(
+                          styles.metrixQuantity,
+                          styles.goodResult
+                        )}
+                      >
+                        {pulse} bpm
+                      </span>
+                    </p>
+                  ) : (
+                    <p
+                      style={{
+                        color: "red",
+                        background: "var(--Gray5)",
+                        textAlign: "left",
+                      }}
+                      className={styles.metrixTitle}
+                    >
+                      It seems that your pulse is too{" "}
+                      {pulse < heartRateMin
+                        ? "low"
+                        : pulse > heartRateMax
+                        ? "high"
+                        : ""}
+                      ! Please consult doctor !
+                    </p>
+                  )}
+                </>
               )}
             </div>
           </>

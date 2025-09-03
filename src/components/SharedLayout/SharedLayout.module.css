@@ -1,7 +1,8 @@
 .cont {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: -webkit-fill-available;
+  overflow-y: hidden;
   width: 100%;
 }
 
@@ -9,13 +10,17 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow-y: hidden;
 }
 
 .main {
+  align-items: center;
   background: transparent;
-  /* display: flex; */
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  overflow: hidden;
+  justify-content: center;
+  overflow-y: auto;
   width: -webkit-fill-available;
 }
 
