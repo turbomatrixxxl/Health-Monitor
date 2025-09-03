@@ -30,6 +30,9 @@ const privateSlice = createSlice({
   name: "private",
   initialState,
   reducers: {
+    setPrivateUser: (state, action) => {
+      state.user = action.payload;
+    },
     clearMessage(state) {
       state.message = null;
     },
@@ -149,6 +152,7 @@ const privateSlice = createSlice({
 });
 
 export const {
+  setPrivateUser,
   setPrivateFormData,
   resetPrivateForm,
   clearMessage,

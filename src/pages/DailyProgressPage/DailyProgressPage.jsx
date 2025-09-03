@@ -32,14 +32,17 @@ export default function DailyProgressPage() {
   const updatedReminders = rem.filter((reminder) => !reminder.done);
   // console.log("updatedReminders :", updatedReminders.length);
 
-  const { user } = useAuth();
-  // console.log("user :", user);
+  const { user: authUser } = useAuth();
+  console.log("authUser:", authUser);
 
-  const name = user?.username ?? "User";
-  const age = user?.age ?? 0;
-  const height = user?.height ?? 0;
-  const weight = user?.weight ?? 0;
-  const desiredWeight = user?.desiredWeight ?? 0;
+  const { user: privateUser } = usePrivate();
+  console.log("privateUser:", privateUser);
+
+  const name = authUser?.username ?? "User";
+  const age = authUser?.age ?? 0;
+  const height = authUser?.height ?? 0;
+  const weight = authUser?.weight ?? 0;
+  const desiredWeight = authUser?.desiredWeight ?? 0;
 
   const neededSteps = calculateDailySteps(age, weight, desiredWeight, height);
   const neededSleep = calculateSleepHours(age);

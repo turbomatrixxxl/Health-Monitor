@@ -40,7 +40,7 @@ const LazyExportReportsPage = React.lazy(() =>
 );
 
 function App() {
-  const { isLoggedIn, isRefreshing } = useAuth(); // Check user verification status
+  const { isLoggedIn, isRefreshing, user } = useAuth(); // Check user verification status
 
   const dispatch = useDispatch();
 
@@ -50,6 +50,12 @@ function App() {
       dispatch(refreshUser());
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (isLoggedIn && user) {
+      dispatch({ type: "private/setPrivateUser", payload: user });
+    }
+  }, [dispatch, isLoggedIn, user]);
 
   if (isRefreshing) {
     return <Loader />; // Loader while checking refresh status
