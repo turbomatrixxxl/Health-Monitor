@@ -14,6 +14,7 @@ import clsx from "clsx";
 
 import styles from "./DailyProgressPage.module.css";
 import Chart from "../../components/Chart";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function DailyProgressPage() {
   const { dailyCalorieSummary, privateDispatch } = usePrivate();
@@ -32,17 +33,14 @@ export default function DailyProgressPage() {
   const updatedReminders = rem.filter((reminder) => !reminder.done);
   // console.log("updatedReminders :", updatedReminders.length);
 
-  // const { user: authUser } = useAuth();
+  const { user: authUser } = useAuth();
   // console.log("authUser:", authUser);
 
-  const { user: privateUser } = usePrivate();
-  console.log("privateUser:", privateUser);
-
-  const name = privateUser?.username ?? "User";
-  const age = privateUser?.age ?? 0;
-  const height = privateUser?.height ?? 0;
-  const weight = privateUser?.weight ?? 0;
-  const desiredWeight = privateUser?.desiredWeight ?? 0;
+  const name = authUser?.username ?? "User";
+  const age = authUser?.age ?? 0;
+  const height = authUser?.height ?? 0;
+  const weight = authUser?.weight ?? 0;
+  const desiredWeight = authUser?.desiredWeight ?? 0;
 
   const neededSteps = calculateDailySteps(age, weight, desiredWeight, height);
   const neededSleep = calculateSleepHours(age);
@@ -87,14 +85,14 @@ export default function DailyProgressPage() {
   const stepsLeft = condition ? neededSteps - steps : 0;
   //   console.log("stepsLeft :", stepsLeft);
 
-  const sleep = 6;
+  const sleep = 2;
   const sleepPer = condition ? Math.round((100 * sleep) / neededSleep) : 0;
   const sleepLeft = condition ? neededSleep - sleep : 0;
   //   console.log("over :", sleepPer > 100);
 
   const total = caloriesPer + stepsPer + sleepPer;
 
-  const systolicR = 120;
+  const systolicR = 130;
   const diastolicR = 80;
   const pulse = 80;
   const heartCondition = systolicR + diastolicR === 0 || pulse === 0;
@@ -550,6 +548,7 @@ export default function DailyProgressPage() {
               background: "var(--Gray5)",
               textAlign: "left",
               border: "1px solid red",
+              flexWrap: "wrap",
             }}
             className={styles.metrixTitle}
           >

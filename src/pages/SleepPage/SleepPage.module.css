@@ -251,10 +251,6 @@
     width: 50%;
   }
 
-  .graphCont {
-    margin-top: 18px;
-  }
-
   .rightSideCont {
     flex-grow: 1;
   }

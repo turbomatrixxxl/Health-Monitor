@@ -238,7 +238,7 @@ export default function SleepPage() {
               className={styles.advicep}
             >
               It seems that you did not set up your personal info. Please check
-              <b>Diet Calculator</b> page to set things right !
+              Diet Calculator page to set things right !
             </p>
           )}
         </div>

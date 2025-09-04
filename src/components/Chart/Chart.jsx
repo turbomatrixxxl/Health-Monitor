@@ -41,7 +41,7 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
     cal > 0 && {
       name: "Daily Cal",
       value: cal,
-      backgroundColor: "orange",
+      backgroundColor: calories > 100 ? "orangered" : "orange",
       borderWidth: 0,
       hoverOffset: 5,
     },
@@ -55,12 +55,12 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
     sl > 0 && {
       name: "Sleep",
       value: sl,
-      backgroundColor: "blue",
+      backgroundColor: sleep < 50 || sleep > 100 ? "darkred" : "blue",
       borderWidth: 0,
       hoverOffset: 5,
     },
     fre > 0 && {
-      name: "Fre",
+      name: "Free",
       value: fre,
       backgroundColor: "var(--Gray-5)",
       borderWidth: 0,
@@ -87,6 +87,16 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
 
   //   console.log(sortedData);
 
+  const tooltipCondition = (name) => {
+    return name === "Daily Cal"
+      ? Number(calories)
+      : name === "Steps"
+      ? Number(steps)
+      : name === "Sleep"
+      ? Number(sleep)
+      : Number(0);
+  };
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       //   console.log(payload[0].payload.fill);
@@ -98,10 +108,9 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
             theme === "violet" && styles.violet
           )}
         >
-          <p
-            style={{ color: "white" }}
-            className={styles.tooltipNameContainer}
-          >{`${payload[0].name}`}</p>
+          <p style={{ color: "white" }} className={styles.tooltipNameContainer}>
+            {payload[0].name}
+          </p>
           <div className={styles.tooltipSumContainer}>
             <div
               style={{
@@ -109,7 +118,9 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
                 borderRadius: "2.5px",
               }}
             ></div>
-            <span style={{ color: "white" }}>{Number(payload[0].value)} %</span>
+            <span style={{ color: "white" }}>
+              {tooltipCondition(payload[0].name)} %
+            </span>
           </div>
         </div>
       );
@@ -148,7 +159,11 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
 
       <div className={clsx(styles.chartCont, textAnimationClasses)}>
         <p
-          style={{ color: "orange" }}
+          style={
+            calories > 100 || calories < 50
+              ? { color: "orangered" }
+              : { color: "orange" }
+          }
           className={clsx(
             styles.chartBalance,
             theme === "light" && styles.light,
@@ -172,7 +187,9 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
           <span>%</span>
         </p>{" "}
         <p
-          style={{ color: "blue" }}
+          style={
+            sleep > 100 || sleep < 50 ? { color: "darkred" } : { color: "blue" }
+          }
           className={clsx(
             styles.chartBalance,
             theme === "light" && styles.light,

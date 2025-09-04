@@ -74,7 +74,10 @@ function LoginStatistics({ day }) {
             </li>
             <li key="normal" className={styles.statisticListItem}>
               <span className={styles.statisticListItemSpan}>n% of normal</span>
-              <span className={styles.statisticListItemSpan}>
+              <span
+                style={{ marginBottom: "4px" }}
+                className={styles.statisticListItemSpan}
+              >
                 {dailyCalorieSummary?.percentageCaloriesConsumed > 0
                   ? dailyCalorieSummary.percentageCaloriesConsumed
                   : "0"}{" "}

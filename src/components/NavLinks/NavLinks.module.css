@@ -14,7 +14,7 @@
 }
 
 .dropdown {
-  appearance: none;
+  /* appearance: none; */
   background: lightgreen;
   border-radius: 6px;
   border: 1px solid var(--Gray-5);

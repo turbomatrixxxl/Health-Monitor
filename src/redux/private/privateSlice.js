@@ -132,6 +132,8 @@ const privateSlice = createSlice({
             consumedProducts,
           } = action.payload;
 
+          // console.log("fetch :", action.payload);
+
           state.dailyCalorieSummary = {
             dailyCalorieIntake,
             totalCaloriesConsumed,
