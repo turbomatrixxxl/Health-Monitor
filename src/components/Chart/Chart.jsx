@@ -94,6 +94,8 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
       ? Number(steps)
       : name === "Sleep"
       ? Number(sleep)
+      : name === "Free"
+      ? Number(free)
       : Number(0);
   };
 
