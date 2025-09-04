@@ -77,29 +77,28 @@ export default function DailyProgressPage() {
     (desiredWeight || desiredWeight !== 0);
 
   const totalCalories = condition ? dailyCalorieSummary?.dailyCalorieIntake : 0;
-  // const caloriesPer = condition
-  //   ? dailyCalorieSummary?.percentageCaloriesConsumed
-  //   : 0;
-  const caloriesPer = 0;
+  const caloriesPer = condition
+    ? dailyCalorieSummary?.percentageCaloriesConsumed
+    : 0;
   const caloriesLeft = condition ? dailyCalorieSummary?.remainingCalories : 0;
 
-  const steps = 0;
+  const steps = 5000;
   const stepsPer = condition ? Math.round((100 * steps) / neededSteps) : 0;
   const stepsLeft = condition ? neededSteps - steps : 0;
   //   console.log("stepsLeft :", stepsLeft);
 
-  const sleep = 0;
+  const sleep = 6;
   const sleepPer = condition ? Math.round((100 * sleep) / neededSleep) : 0;
   const sleepLeft = condition ? neededSleep - sleep : 0;
   //   console.log("over :", sleepPer > 100);
 
   const total = caloriesPer + stepsPer + sleepPer;
 
-  const systolicR = 0;
-  const diastolicR = 0;
-  const pulse = 0;
+  const systolicR = 120;
+  const diastolicR = 80;
+  const pulse = 80;
   const heartCondition = systolicR + diastolicR === 0 || pulse === 0;
-  console.log("heartCondition :", heartCondition);
+  // console.log("heartCondition :", heartCondition);
 
   function totalGoalsPercentage(cal, st, sl) {
     let calories = cal ?? 0;
@@ -138,7 +137,8 @@ export default function DailyProgressPage() {
   }
 
   // console.log("percent :", caloriesPer, stepsPer, sleepPer, free);
-  console.log("sleepLeft === neededSleep :", sleepLeft === neededSleep);
+
+  // console.log("sleepLeft === neededSleep :", sleepLeft === neededSleep);
 
   return (
     <div className={styles.cont}>
