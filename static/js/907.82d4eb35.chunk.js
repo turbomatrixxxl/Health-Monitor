@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkhealth_monitor=self.webpackChunkhealth_monitor||[]).push([[907],{8907:(t,e,c)=>{c.r(e),c.d(e,{default:()=>a});c(5043);const n={};var s=c(579);const a=function(){return(0,s.jsx)("div",{className:n.cont,children:"PsyhicalActivityPage"})}}}]);
-//# sourceMappingURL=907.82d4eb35.chunk.js.map
