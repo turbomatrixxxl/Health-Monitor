@@ -1,7 +1,270 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { usePrivate } from "../../hooks/usePrivate";
+
+import convertActivityToSteps from "../../Utils/convertActivityToSteps";
+import calculateMinimumDailyActivity from "../../Utils/calculateMinimumDailyActivity";
 
 import styles from "./PsyhicalActivityPage.module.css";
+import clsx from "clsx";
+import ActivitySelect from "../../components/ActivitySelect";
 
 export default function PsyhicalActivityPage() {
-  return <div className={styles.cont}>PsyhicalActivityPage</div>;
+  const { user } = usePrivate();
+  console.log("user psyhical :", user);
+
+  const age = user?.age ?? 0;
+  const height = user?.height ?? 0;
+  const weight = user?.weight ?? 0;
+  const desiredWeight = user?.desiredWeight ?? 0;
+
+  // const activities = [
+  //   "football",
+  //   "tennis",
+  //   "basketball",
+  //   "gym",
+  //   "fitness",
+  //   "cycling",
+  //   "running",
+  //   "jogging",
+  //   "swimming",
+  //   "hockey",
+  //   "rugby",
+  //   "volley",
+  //   "yoga",
+  //   "walking",
+  //   "dancing",
+  //   "skiing",
+  //   "snowboarding",
+  //   "surfing",
+  //   "boxing",
+  //   "climbing",
+  //   "other",
+  // ];
+
+  const [filterDate, setFilterDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+
+  // o linie inițială
+  const [lines, setLines] = useState([
+    {
+      exerciseType: "walking",
+      date: filterDate,
+      minutes: "00",
+      intensity: "min",
+      steps: 0,
+    },
+  ]);
+
+  const totalSteps = lines.map((line) => line.steps).reduce((a, b) => a + b, 0);
+  console.log("totalSteps :", totalSteps);
+
+  const minDailyActivity = calculateMinimumDailyActivity(
+    age,
+    height,
+    weight,
+    desiredWeight
+  );
+
+  // funcție pentru actualizarea unei valori într-o linie
+  const updateLine = (index, field, value) => {
+    const newLines = [...lines];
+
+    newLines[index][field] = value;
+    newLines[index].steps = convertActivityToSteps(
+      newLines[index].exerciseType,
+      newLines[index].minutes,
+      age,
+      weight,
+      height,
+      newLines[index].intensity
+    );
+
+    setLines(newLines);
+  };
+
+  // adaugă o linie nouă
+  const addLine = () => {
+    setLines([
+      ...lines,
+      {
+        exerciseType: "walking",
+        date: filterDate,
+        minutes: "00",
+        intensity: "min",
+        steps: 0,
+      },
+    ]);
+  };
+
+  // șterge o linie după index
+  const removeLine = (index) => {
+    setLines(lines.filter((_, i) => i !== index));
+  };
+
+  const resetLines = () => {
+    setLines([
+      {
+        exerciseType: "walking",
+        date: filterDate,
+        minutes: "00",
+        intensity: "min",
+        steps: 0,
+      },
+    ]);
+  };
+
+  const formatNumber = (num) => String(num).padStart(2, "0");
+
+  return (
+    <div className={styles.cont}>
+      <div className={styles.leftSideCont}>
+        <h1 className={styles.title}>Physical Activity</h1>
+        <div className={styles.graphCont}>Graphic container</div>
+      </div>
+
+      <div className={styles.rightSideCont}>
+        <h1 className={styles.title}>Add exercise activities</h1>
+
+        {/* data */}
+        <div className={styles.rightSideDate}>
+          <div className={styles.dateWrapper}>
+            <input
+              type="date"
+              value={filterDate ?? new Date().toISOString().split("T")[0]}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className={styles.paramInput}
+            />
+          </div>
+          <p className={styles.rightSideDateP}>Choose date</p>
+        </div>
+
+        {/* from - till lines */}
+        <div className={styles.fromToCont}>
+          <div className={styles.fromToTitle}>
+            <p className={styles.fromExercise}>Exercise Type</p>
+            <p className={styles.from}>Minutes</p>
+            <p className={styles.from}>Intensity</p>
+
+            <p className={styles.rem}>
+              {lines.length > 1 ? "Delete" : "Reset"}
+            </p>
+          </div>
+
+          <div className={styles.lineRowCont}>
+            {lines.map((line, idx) => (
+              <div key={`physical-${idx}`} className={styles.lineRow}>
+                {/* From */}
+                {/* <select
+                  className={clsx(styles.activitySelect)}
+                  id="activity-select"
+                  value={line?.exerciseType}
+                  onChange={(e) =>
+                    updateLine(idx, "exerciseType", e.target.value)
+                  }
+                >
+                  {activities.map((act) => (
+                    <option key={act} value={act}>
+                      {act.charAt(0).toUpperCase() + act.slice(1)}
+                    </option>
+                  ))}
+                </select> */}
+                <ActivitySelect
+                  value={line.exerciseType}
+                  onChange={(val) => updateLine(idx, "exerciseType", val)}
+                  theme="light"
+                />
+
+                <div className={styles.minutes}>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={formatNumber(line?.minutes)}
+                    onChange={(e) => updateLine(idx, "minutes", e.target.value)}
+                    className={clsx(styles.timeInput)}
+                  />
+                </div>
+                <div className={styles.minMax}>
+                  <select
+                    style={
+                      line?.intensity === "min"
+                        ? { color: "green", fontWeight: "bold" }
+                        : { color: "var(--brand-color)", fontWeight: "bold" }
+                    }
+                    value={line?.intensity}
+                    onChange={(e) =>
+                      updateLine(idx, "intensity", e.target.value)
+                    }
+                    className={styles.ampmSelect}
+                  >
+                    <option
+                      style={{ color: "green", fontWeight: "bold" }}
+                      value="min"
+                    >
+                      Min
+                    </option>
+                    <option
+                      style={{
+                        color: "var(--brand-color)",
+                        fontWeight: "bold",
+                      }}
+                      value="max"
+                    >
+                      Max
+                    </option>
+                  </select>
+                </div>
+                {/* buton remove */}
+                {lines.length > 1 ? (
+                  <button
+                    type="button"
+                    onClick={() => removeLine(idx)}
+                    className={styles.removeBtn}
+                  >
+                    ✕
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => resetLines()}
+                    className={styles.removeBtn}
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* add line */}
+        <div className={styles.addSleepCont}>
+          <p>Add exercise</p>
+          <button onClick={addLine} type="button" className={styles.addBtn}>
+            Add +
+          </button>
+        </div>
+
+        <div className={styles.adviceCont}>
+          <h2 className={styles.adviceTitle}>Suggestions</h2>
+          {minDailyActivity !== 0 ? (
+            <p className={styles.advicep}>
+              Try to get at least {minDailyActivity} minutes of activity
+              everyday.
+            </p>
+          ) : (
+            <p
+              style={{ color: "red", lineHeight: "inherit" }}
+              className={styles.advicep}
+            >
+              It seems that you did not set up your personal info. Please check
+              Diet Calculator page to set things right !
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

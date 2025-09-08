@@ -17,10 +17,12 @@ export default function Input({
   paddingLeft,
   autoComplete,
   handleBlur,
+  min = 0,
 }) {
   return (
     <div style={{ width: width || "auto" }} className={styles.inputContainer}>
       <input
+        min={min}
         autoComplete={autoComplete || "off"}
         style={{ paddingLeft: paddingLeft || "0px" }}
         onChange={handleChange}
@@ -48,6 +50,7 @@ Input.propTypes = {
   name: PropTypes.string,
   type: PropTypes.string,
   variant: PropTypes.string,
+  min: PropTypes.number,
   handleChange: PropTypes.func,
   required: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   placeholder: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

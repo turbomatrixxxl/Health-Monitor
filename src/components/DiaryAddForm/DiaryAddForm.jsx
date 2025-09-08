@@ -55,6 +55,7 @@ function DiaryAddForm({
       <input
         className={clsx(styles.input, styles.quantity)}
         type="number"
+        min="0"
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
         placeholder="Grams *"

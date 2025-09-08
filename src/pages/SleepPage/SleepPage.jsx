@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 
-import { useAuth } from "../../hooks/useAuth";
-
 import calculateSleepHours from "../../Utils/calculateSleepHours";
+import { usePrivate } from "../../hooks/usePrivate";
 
 import styles from "./SleepPage.module.css";
 
 export default function SleepPage() {
-  const { user } = useAuth();
+  const { user } = usePrivate();
+  const userConditions =
+    user?.age !== 0 &&
+    user?.height !== 0 &&
+    user?.weight !== 0 &&
+    user?.desiredWeight !== 0;
+
   const age = user?.age ?? 0;
 
-  const sleepHours = age ? calculateSleepHours(age) : 0;
+  const sleepHours = userConditions ? calculateSleepHours(age) : 0;
 
   const [filterDate, setFilterDate] = useState(
     new Date().toISOString().split("T")[0]

@@ -12,9 +12,9 @@ import calculateNominalBPAndPulse from "../../Utils/calculateNominalBPAndPulse";
 
 import clsx from "clsx";
 
-import styles from "./DailyProgressPage.module.css";
 import Chart from "../../components/Chart";
-import { useAuth } from "../../hooks/useAuth";
+
+import styles from "./DailyProgressPage.module.css";
 
 export default function DailyProgressPage() {
   const { dailyCalorieSummary, privateDispatch } = usePrivate();
@@ -33,14 +33,14 @@ export default function DailyProgressPage() {
   const updatedReminders = rem.filter((reminder) => !reminder.done);
   // console.log("updatedReminders :", updatedReminders.length);
 
-  const { user: authUser } = useAuth();
-  // console.log("authUser:", authUser);
+  const { user } = usePrivate();
+  // console.log("user:", user);
 
-  const name = authUser?.username ?? "User";
-  const age = authUser?.age ?? 0;
-  const height = authUser?.height ?? 0;
-  const weight = authUser?.weight ?? 0;
-  const desiredWeight = authUser?.desiredWeight ?? 0;
+  const name = user?.username ?? "User";
+  const age = user?.age ?? 0;
+  const height = user?.height ?? 0;
+  const weight = user?.weight ?? 0;
+  const desiredWeight = user?.desiredWeight ?? 0;
 
   const neededSteps = calculateDailySteps(age, weight, desiredWeight, height);
   const neededSleep = calculateSleepHours(age);

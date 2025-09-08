@@ -13,6 +13,7 @@ import VerifyEmailPage from "./pages/VerifyEmailPageComponent/VerifyEmailPageCom
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 import "./App.css";
+import { setPrivateUser } from "./redux/private/privateSlice.js";
 
 // Lazy-loaded pages
 const LazyCalculatorPage = React.lazy(() =>
@@ -53,7 +54,7 @@ function App() {
 
   useEffect(() => {
     if (isLoggedIn && user) {
-      dispatch({ type: "private/setPrivateUser", payload: user });
+      dispatch(setPrivateUser(user));
     }
   }, [dispatch, isLoggedIn, user]);
 
