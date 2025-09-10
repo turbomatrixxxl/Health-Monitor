@@ -12,8 +12,8 @@ export default function NavLinks() {
     { path: "/diary", label: "Food Diary" },
     { path: "/sleep", label: "Sleep" },
     { path: "/physical", label: "Physical Activity" },
-    { path: "/alerts", label: "Alerts" },
     { path: "/metrix", label: "Health Metrics" },
+    { path: "/alerts", label: "Alerts" },
     { path: "/export", label: "Export & Reports" },
   ];
 

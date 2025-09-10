@@ -188,7 +188,7 @@
 }
 
 .removeBtn:hover {
-  scale: 1.05;
+  /* scale: 1.05; */
   color: red;
 }
 

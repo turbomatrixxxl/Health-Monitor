@@ -11,40 +11,16 @@ import ActivitySelect from "../../components/ActivitySelect";
 
 export default function PsyhicalActivityPage() {
   const { user } = usePrivate();
-  console.log("user psyhical :", user);
+  // console.log("user psyhical :", user);
 
   const age = user?.age ?? 0;
   const height = user?.height ?? 0;
   const weight = user?.weight ?? 0;
   const desiredWeight = user?.desiredWeight ?? 0;
 
-  // const activities = [
-  //   "football",
-  //   "tennis",
-  //   "basketball",
-  //   "gym",
-  //   "fitness",
-  //   "cycling",
-  //   "running",
-  //   "jogging",
-  //   "swimming",
-  //   "hockey",
-  //   "rugby",
-  //   "volley",
-  //   "yoga",
-  //   "walking",
-  //   "dancing",
-  //   "skiing",
-  //   "snowboarding",
-  //   "surfing",
-  //   "boxing",
-  //   "climbing",
-  //   "other",
-  // ];
+  const today = new Date().toISOString().split("T")[0];
 
-  const [filterDate, setFilterDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [filterDate, setFilterDate] = useState(today);
 
   // o linie inițială
   const [lines, setLines] = useState([
@@ -131,8 +107,9 @@ export default function PsyhicalActivityPage() {
         <div className={styles.rightSideDate}>
           <div className={styles.dateWrapper}>
             <input
+              max={today}
               type="date"
-              value={filterDate ?? new Date().toISOString().split("T")[0]}
+              value={filterDate ?? today}
               onChange={(e) => setFilterDate(e.target.value)}
               className={styles.paramInput}
             />
@@ -140,7 +117,6 @@ export default function PsyhicalActivityPage() {
           <p className={styles.rightSideDateP}>Choose date</p>
         </div>
 
-        {/* from - till lines */}
         <div className={styles.fromToCont}>
           <div className={styles.fromToTitle}>
             <p className={styles.fromExercise}>Exercise Type</p>

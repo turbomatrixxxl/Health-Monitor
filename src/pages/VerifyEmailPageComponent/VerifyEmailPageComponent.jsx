@@ -8,6 +8,8 @@ import styles from "./VerifyEmailPageComponent.module.css";
 
 const VerifyEmailPage = () => {
   const { user, isLoggedIn, errorAuth } = useAuth();
+  // console.log("Verifyuser :", user);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,14 +59,14 @@ const VerifyEmailPage = () => {
     }
   };
 
-  const email = user?.email ?? "your email address";
+  const email = user?.email ?? null;
 
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>Please verify your email address</h2>
       <p className={styles.message}>
         We sent a verification link to your email:{" "}
-        <strong className={styles.strong}>{email}</strong>
+        {email !== null && <strong className={styles.strong}>{email}</strong>}
       </p>
       <a
         className={styles.emailLink}

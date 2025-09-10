@@ -24,12 +24,14 @@ const bloodTypeOptions = [
 export default function WeightLossForm({ onSubmit }) {
   const { formData = {}, isLoading, dispatch } = usePublic();
 
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn } = useAuth();
+  const { user } = usePrivate();
+  // console.log("userWeightForm :", user);
 
   const userHeight = user?.height;
   const userAge = user?.age;
   const userWeight = user?.weight;
-  const userDesiredWeightt = user?.desiredWeight;
+  const userDesiredWeight = user?.desiredWeight;
   const userBloodType = user?.bloodType;
   // console.log(userBloodType);
 
@@ -40,7 +42,7 @@ export default function WeightLossForm({ onSubmit }) {
   } = usePrivate();
   // console.log(isLoggedIn);
   // console.log(privateLoading);
-  // console.log(privateFormData);
+  // console.log("privateFormData :", privateFormData);
 
   // Initialize form state with default values
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function WeightLossForm({ onSubmit }) {
       height: isLoggedIn ? userHeight : "",
       age: isLoggedIn ? userAge : "",
       currentWeight: isLoggedIn ? userWeight : "",
-      desiredWeight: isLoggedIn ? userDesiredWeightt : "",
+      desiredWeight: isLoggedIn ? userDesiredWeight : "",
       bloodGroupIndex: isLoggedIn ? userBloodType : "",
     };
 
@@ -72,11 +74,11 @@ export default function WeightLossForm({ onSubmit }) {
     userHeight,
     userAge,
     userWeight,
-    userDesiredWeightt,
+    userDesiredWeight,
     userBloodType,
   ]);
 
-  // console.log(formData);
+  // console.log("formDataWeightForm :", privateFormData);
 
   // Check if all form fields are valid
   const isValid = Object.values(isLoggedIn ? privateFormData : formData).every(
@@ -129,31 +131,31 @@ export default function WeightLossForm({ onSubmit }) {
         {/* Left Section */}
         <div className={styles.formLeftCont}>
           <Input
+            step={1}
             type="number"
             placeholder="Height* /cm"
             name="height"
-            id
-            value={height ? (height > 0 ? height : "") : ""}
+            value={height > 0 ? height : ""}
             handleChange={handleChange}
             required
           />
 
           <Input
+            step={1}
             type="number"
             placeholder="Age* /years"
             name="age"
-            value={age ? (age > 0 ? age : "") : ""}
+            value={age > 0 ? age : ""}
             handleChange={handleChange}
             required
           />
 
           <Input
+            step="any"
             type="number"
             placeholder="Current weight* /kg"
             name="currentWeight"
-            value={
-              currentWeight ? (currentWeight > 0 ? currentWeight : "") : ""
-            }
+            value={currentWeight > 0 ? currentWeight : ""}
             handleChange={handleChange}
             required
           />
@@ -162,12 +164,11 @@ export default function WeightLossForm({ onSubmit }) {
         {/* Right Section */}
         <div className={styles.formRightCont}>
           <Input
+            step="any"
             type="number"
             placeholder="Desired weight* /kg"
             name="desiredWeight"
-            value={
-              desiredWeight ? (desiredWeight > 0 ? desiredWeight : "") : ""
-            }
+            value={desiredWeight > 0 ? desiredWeight : ""}
             handleChange={handleChange}
             required
           />

@@ -44,8 +44,9 @@
 
 /*Variant: formLogo => Logo placed in form (auth or log out) */
 .formLogo img {
-  width: 50px;
+  border-radius: 4px;
   height: 50px;
+  width: 50px;
 }
 
 .formLogo span {

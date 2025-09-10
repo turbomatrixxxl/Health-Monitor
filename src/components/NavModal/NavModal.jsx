@@ -201,17 +201,17 @@ export default function NavModal() {
                 <StyledLink
                   onClick={toggleIsLogoutModalVisible}
                   className={styles.link}
-                  to={"/alerts"}
+                  to={"/metrix"}
                 >
-                  Alerts
+                  Health Metrics
                 </StyledLink>
 
                 <StyledLink
                   onClick={toggleIsLogoutModalVisible}
                   className={styles.link}
-                  to={"/metrix"}
+                  to={"/alerts"}
                 >
-                  Health Metrics
+                  Alerts
                 </StyledLink>
 
                 <StyledLink

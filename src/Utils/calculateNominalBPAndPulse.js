@@ -4,7 +4,7 @@
  * @param {number} weight - weight in kg
  * @returns {object} - { heartRate, heartRateMin, heartRateMax, systolic, systolicMin, systolicMax, diastolic, diastolicMin, diastolicMax }
  */
-export default function calculateBPAndPulse(age, weight) {
+export default function calculateNominalBPAndPulse(age, weight) {
   if (!age) {
     return 0;
   }

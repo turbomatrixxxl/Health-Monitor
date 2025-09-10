@@ -18,10 +18,12 @@ export default function Input({
   autoComplete,
   handleBlur,
   min = 0,
+  step,
 }) {
   return (
     <div style={{ width: width || "auto" }} className={styles.inputContainer}>
       <input
+        step={step}
         min={min}
         autoComplete={autoComplete || "off"}
         style={{ paddingLeft: paddingLeft || "0px" }}
@@ -51,6 +53,7 @@ Input.propTypes = {
   type: PropTypes.string,
   variant: PropTypes.string,
   min: PropTypes.number,
+  step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   handleChange: PropTypes.func,
   required: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   placeholder: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

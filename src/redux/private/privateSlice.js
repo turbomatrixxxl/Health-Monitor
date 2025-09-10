@@ -66,7 +66,7 @@ const privateSlice = createSlice({
         state.isLoading = false;
         const { recommendedDailyCaloriesIntake, data } = action.payload;
         state.user = data; // Update user information
-        console.log("privateUser :", data);
+        // console.log("privateUser :", data);
 
         state.recommendedDailyCaloriesIntake = recommendedDailyCaloriesIntake; // Add daily calories intake to user
       })
@@ -82,8 +82,8 @@ const privateSlice = createSlice({
       })
       .addCase(addConsumedProductForSpecificDay.fulfilled, (state, action) => {
         state.isLoading = false;
-        const { user, message } = action.payload;
-        state.user = user; // Update user information
+        const { data, message } = action.payload;
+        state.user = data; // Update user information
         state.message = message; // Add success message
       })
       .addCase(addConsumedProductForSpecificDay.rejected, (state, action) => {

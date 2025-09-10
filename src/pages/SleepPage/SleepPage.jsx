@@ -7,6 +7,8 @@ import styles from "./SleepPage.module.css";
 
 export default function SleepPage() {
   const { user } = usePrivate();
+  // console.log("user sleep :", user);
+
   const userConditions =
     user?.age !== 0 &&
     user?.height !== 0 &&
@@ -92,6 +94,12 @@ export default function SleepPage() {
     ]);
   };
 
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(now.getDate()).padStart(2, "0")}`;
+
   return (
     <div className={styles.cont}>
       <div className={styles.leftSideCont}>
@@ -106,8 +114,9 @@ export default function SleepPage() {
         <div className={styles.rightSideDate}>
           <div className={styles.dateWrapper}>
             <input
+              max={today}
               type="date"
-              value={filterDate ?? new Date().toISOString().split("T")[0]}
+              value={filterDate ?? today}
               onChange={(e) => setFilterDate(e.target.value)}
               className={styles.paramInput}
             />

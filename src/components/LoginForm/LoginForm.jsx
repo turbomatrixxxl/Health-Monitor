@@ -31,15 +31,13 @@ function LoginForm() {
   );
 
   const { user, isLoggedIn } = useAuth();
-
   const { touched, handleBlur } = useFormTouched(fields);
 
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
-  const [type, setType] = useState("password");
-  const [eyeVisible, toggleEyeVisible] = useToggle(true);
-  const [closedEyeVisible, toggleClosedEyeVisible] = useToggle(false);
+  // doar un toggle pentru vizibilitatea parolei
+  const [isPasswordVisible, togglePasswordVisible] = useToggle(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,21 +46,23 @@ function LoginForm() {
 
     try {
       await dispatch(logIn(fields)).unwrap();
-
       toast.success("Login successful!");
     } catch (error) {
-      setFields((prevFields) => ({
-        ...prevFields,
-        errorMessage: setErrorMessage(
-          "You have entered an invalid username or password."
-        ),
-      }));
+      // Setează mesajul de eroare separat, fără a-l combina cu setFields
+      setErrorMessage("You have entered an invalid username or password.");
+
+      // Opțional: resetează câmpurile dacă vrei
+      // setFields((prevFields) => ({
+      //   ...prevFields,
+      //   password: "",
+      // }));
     }
   };
 
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
+        {/* Email input */}
         <div className={styles.inputContainer}>
           <div className={styles.inputWrapper}>
             <FontAwesomeIcon icon={faEnvelope} className={styles.inputIcon} />
@@ -85,28 +85,24 @@ function LoginForm() {
             <p className={styles.inputError}>Required</p>
           )}
         </div>
-        <div styles={styles.inputContainer}>
+
+        {/* Password input */}
+        <div className={styles.inputContainer}>
           <div className={styles.inputWrapper}>
             <FontAwesomeIcon icon={faLock} className={styles.inputIcon} />
 
-            {eyeVisible && (
-              <VscEye
+            {isPasswordVisible ? (
+              <VscEyeClosed
                 onClick={() => {
-                  toggleEyeVisible();
-                  toggleClosedEyeVisible();
-                  setType("text");
+                  togglePasswordVisible();
                 }}
                 size="24px"
                 className={styles.eyeIcon}
               />
-            )}
-
-            {closedEyeVisible && (
-              <VscEyeClosed
+            ) : (
+              <VscEye
                 onClick={() => {
-                  toggleEyeVisible();
-                  toggleClosedEyeVisible();
-                  setType("password");
+                  togglePasswordVisible();
                 }}
                 size="24px"
                 className={styles.eyeIcon}
@@ -117,7 +113,7 @@ function LoginForm() {
               autoComplete="on"
               paddingLeft="53.5px"
               width="100%"
-              type={type}
+              type={isPasswordVisible ? "text" : "password"}
               value={fields.password}
               handleChange={(e) => {
                 setFields({ ...fields, password: e.target.value });
@@ -133,18 +129,21 @@ function LoginForm() {
             </p>
           )}
         </div>
+
+        {/* Buttons */}
         <div className={styles.buttonsContainer}>
           <Button variant="colored" type="submit">
             Log in
           </Button>
-          {/* {errorMessage && <p className={styles.error}>{errorMessage}</p>} */}
           <Link to="/register" className={styles.navLink}>
             <Button className={styles.button} type="button">
               Register
             </Button>
-          </Link>{" "}
+          </Link>
           {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         </div>
+
+        {/* Email not verified warning */}
         {user !== null && !isLoggedIn && (
           <div className={styles.errorCont}>
             <p className={styles.error}>

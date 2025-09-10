@@ -61,6 +61,8 @@ export const addConsumedProductForSpecificDay = createAsyncThunk(
     try {
       setAuthHeader();
       const response = await axios.post("/api/private/consumed", credentials);
+      // console.log("Consumed product added:", response.data);
+
       return response.data;
     } catch (error) {
       return handleError(error, thunkAPI);
