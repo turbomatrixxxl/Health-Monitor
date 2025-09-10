@@ -245,169 +245,178 @@ export default function HealthMetricsPage() {
       <div className={styles.rightSideCont}>
         <h1 className={styles.title}>Logs</h1>
 
-        <div className={styles.fromToCont}>
-          <div className={styles.addSleepCont}>
-            <p>Add data for Today : {nowDate}</p>
-          </div>
-          <div className={styles.fromToTitle}>
-            <p className={styles.fromExercise}>Time</p>
-            <p className={styles.from}>Weight</p>
-            <p className={styles.from}>Pressure</p>
-            <p className={styles.from}>Pulse</p>
-            <p className={styles.rem}>Set</p>
-          </div>
-          <div className={styles.lineRowCont}>
-            <div className={styles.lineRow}>
-              <div className={clsx(styles.minutes, styles.date)}>{nowTime}</div>
-              <div className={styles.minutes}>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={line?.weight}
-                  onChange={(e) => updateLine("weight", e.target.value)}
-                  className={clsx(styles.timeInput)}
-                />{" "}
-                kg
-              </div>
-              <div className={styles.minutes}>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={line?.systolic}
-                  onChange={(e) => updateLine("systolic", e.target.value)}
-                  className={clsx(styles.timeInput)}
-                />
-                /
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={line?.diastolic}
-                  onChange={(e) => updateLine("diastolic", e.target.value)}
-                  className={clsx(styles.timeInput)}
-                />
-              </div>
-              <div className={styles.minutes}>
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value={line?.heartRate}
-                  onChange={(e) => updateLine("heartRate", e.target.value)}
-                  className={clsx(styles.timeInput)}
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => handleSet(line?.weight)}
-                className={styles.removeBtn}
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-        {(sysHi || sysLo) && (
-          <p
-            style={{
-              color: "red",
-              background: "var(--Gray5)",
-              textAlign: "left",
-              height: "fit-content",
-            }}
-            className={styles.metrixTitle}
-          >
-            Your Systolic blood pressure is too {sysHi ? "high" : "low"}.
-            Please, consult a doctor !
-          </p>
-        )}
-        {(diaHi || diaLo) && (
-          <p
-            style={{
-              color: "red",
-              background: "var(--Gray5)",
-              textAlign: "left",
-              height: "fit-content",
-            }}
-            className={styles.metrixTitle}
-          >
-            Your Diastolic blood pressure is too {diaHi ? "high" : "low"}.
-            Please, consult a doctor !
-          </p>
-        )}
-        {(pulseHi || pulseLo) && (
-          <p
-            style={{
-              color: "red",
-              background: "var(--Gray5)",
-              textAlign: "left",
-              height: "fit-content",
-            }}
-            className={styles.metrixTitle}
-          >
-            Your Pulse is too {pulseHi ? "high" : "low"}. Please, consult a
-            doctor !
-          </p>
-        )}
-        <div className={styles.rightSideDate}>
-          <p className={styles.rightSideDateP}>Choose records date to see :</p>
-          <div className={styles.dateWrapper}>
-            <input
-              max={today}
-              type="date"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
-              className={styles.paramInput}
-            />
-          </div>
-        </div>
-
-        {today === filterDate ? (
-          <p
-            style={{
-              color: "red",
-              background: "var(--Gray5)",
-              textAlign: "left",
-              height: "fit-content",
-            }}
-            className={styles.metrixTitle}
-          >
-            Not records date selected. Please select a past date to see records
-            !
-          </p>
-        ) : (
+        <div className={styles.rightSideContentCont}>
           <div className={styles.fromToCont}>
             <div className={styles.addSleepCont}>
-              <p>Health Records for : {filterDate}</p>
+              <p>Add data for Today : {nowDate}</p>
             </div>
             <div className={styles.fromToTitle}>
-              <p style={{ width: "33%" }} className={styles.from}>
-                Weight
-              </p>
-              <p style={{ width: "33%" }} className={styles.from}>
-                Blood Pressure
-              </p>
-              <p style={{ width: "33%" }} className={styles.from}>
-                HeartRate
-              </p>
+              <p className={styles.fromExercise}>Time</p>
+              <p className={styles.from}>Weight</p>
+              <p className={styles.from}>Pressure</p>
+              <p className={styles.from}>Pulse</p>
+              <p className={styles.rem}>Set</p>
             </div>
             <div className={styles.lineRowCont}>
               <div className={styles.lineRow}>
-                <div style={{ width: "33%" }} className={styles.minutes}>
-                  {lineRecords.weight} kg
+                <div className={clsx(styles.minutes, styles.date)}>
+                  {nowTime}
                 </div>
-                <div style={{ width: "33%" }} className={styles.minutes}>
-                  {lineRecords.systolic}/{lineRecords.diastolic} mmHg
+                <div className={styles.minutes}>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={line?.weight}
+                    onChange={(e) => updateLine("weight", e.target.value)}
+                    className={clsx(styles.timeInput)}
+                  />{" "}
+                  kg
                 </div>
-                <div style={{ width: "33%" }} className={styles.minutes}>
-                  {lineRecords?.heartRate} bpm
+                <div className={styles.minutes}>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={line?.systolic}
+                    onChange={(e) => updateLine("systolic", e.target.value)}
+                    className={clsx(styles.timeInput)}
+                  />
+                  /
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={line?.diastolic}
+                    onChange={(e) => updateLine("diastolic", e.target.value)}
+                    className={clsx(styles.timeInput)}
+                  />
                 </div>
+                <div className={styles.minutes}>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={line?.heartRate}
+                    onChange={(e) => updateLine("heartRate", e.target.value)}
+                    className={clsx(styles.timeInput)}
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleSet(line?.weight)}
+                  className={styles.removeBtn}
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
-        )}
+          <div className={styles.fromToCont}>
+            {(sysHi || sysLo) && (
+              <p
+                style={{
+                  color: "red",
+                  background: "var(--Gray5)",
+                  textAlign: "left",
+                  height: "fit-content",
+                }}
+                className={styles.metrixTitle}
+              >
+                Your Systolic blood pressure is too {sysHi ? "high" : "low"}.
+                Please, consult a doctor !
+              </p>
+            )}
+            {(diaHi || diaLo) && (
+              <p
+                style={{
+                  color: "red",
+                  background: "var(--Gray5)",
+                  textAlign: "left",
+                  height: "fit-content",
+                }}
+                className={styles.metrixTitle}
+              >
+                Your Diastolic blood pressure is too {diaHi ? "high" : "low"}.
+                Please, consult a doctor !
+              </p>
+            )}
+            {(pulseHi || pulseLo) && (
+              <p
+                style={{
+                  color: "red",
+                  background: "var(--Gray5)",
+                  textAlign: "left",
+                  height: "fit-content",
+                }}
+                className={styles.metrixTitle}
+              >
+                Your Pulse is too {pulseHi ? "high" : "low"}. Please, consult a
+                doctor !
+              </p>
+            )}
+          </div>
+          <div className={styles.rightSideSeeRecordsCont}>
+            <div className={styles.rightSideDate}>
+              <p className={styles.rightSideDateP}>
+                Choose records date to see :
+              </p>
+              <div className={styles.dateWrapper}>
+                <input
+                  max={today}
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className={styles.paramInput}
+                />
+              </div>
+            </div>
+            {today === filterDate ? (
+              <p
+                style={{
+                  color: "red",
+                  background: "var(--Gray5)",
+                  textAlign: "left",
+                  height: "fit-content",
+                }}
+                className={styles.metrixTitle}
+              >
+                Not records date selected. Please select a past date to see
+                records !
+              </p>
+            ) : (
+              <div className={styles.fromToCont}>
+                <div className={styles.addSleepCont}>
+                  <p>Health Records for : {filterDate}</p>
+                </div>
+                <div className={styles.fromToTitle}>
+                  <p style={{ width: "33%" }} className={styles.from}>
+                    Weight
+                  </p>
+                  <p style={{ width: "33%" }} className={styles.from}>
+                    Blood Pressure
+                  </p>
+                  <p style={{ width: "33%" }} className={styles.from}>
+                    HeartRate
+                  </p>
+                </div>
+                <div className={styles.lineRowCont}>
+                  <div className={styles.lineRow}>
+                    <div style={{ width: "33%" }} className={styles.minutes}>
+                      {lineRecords.weight} kg
+                    </div>
+                    <div style={{ width: "33%" }} className={styles.minutes}>
+                      {lineRecords.systolic}/{lineRecords.diastolic} mmHg
+                    </div>
+                    <div style={{ width: "33%" }} className={styles.minutes}>
+                      {lineRecords?.heartRate} bpm
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
