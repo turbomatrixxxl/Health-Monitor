@@ -151,8 +151,10 @@ export default function AlertForm({
                   min={1}
                   max={31}
                   step={1}
-                  value={parseInt(data.frequency) || 1}
-                  onChange={(e) => handleMonthlyChange(e.target.value)}
+                  value={parseInt(data.frequency)}
+                  onChange={(e) =>
+                    handleMonthlyChange(parseInt(e.target.value))
+                  }
                 />
               </div>
             )}
