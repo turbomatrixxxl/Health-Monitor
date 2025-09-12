@@ -1,0 +1,257 @@
+.cont {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: -webkit-fill-available;
+  padding: 16px;
+  padding-bottom: 10px;
+  overflow-y: auto;
+  width: -webkit-fill-available;
+  position: relative;
+}
+
+.leftSideCont,
+.rightSideCont {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* justify-content: space-between; */
+}
+
+.title {
+  color: #212121;
+  font-family: Verdana;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+}
+
+.rightSideTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--Gray-5);
+  border-radius: 5px;
+  padding: 8px 12px;
+}
+
+/* Header */
+.headerBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--Gray-5);
+  border-radius: 5px;
+  padding: 8px 12px;
+}
+
+.addBtn {
+  background: var(--brand-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.35s ease-in-out;
+}
+.addBtn:hover {
+  background: var(--Accent, #007bff);
+}
+
+/* Main */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Calendar */
+.calendarBox {
+  border: 1px solid var(--Gray-5);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 250px;
+}
+
+.calendar {
+  color: blue;
+  font-family: Verdana;
+  font-size: clamp(11px, 1.5vw, 14px);
+  font-style: normal;
+  font-weight: 600;
+  height: 100%;
+  line-height: 140%;
+  width: 100%;
+}
+
+/* Ziua curentă */
+.rbc-today {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Casetele orare */
+.rbc-time-slot {
+  border-top: 1px solid #ddd;
+  background-color: #fafafa;
+}
+
+/* Evenimente */
+.rbc-event {
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 14px;
+}
+
+/* Hover pe eveniment */
+.rbc-event:hover {
+  background-color: #005fcc;
+}
+
+.remindersList {
+  border: 1px solid var(--Gray-5);
+  border-radius: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.reminderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--Gray-5);
+}
+
+.reminderItem:last-child {
+  border-bottom: none;
+}
+
+.reminderItemDetailsCont {
+  /* align-items: center; */
+  color: var(--brand-color);
+  display: flex;
+  flex-direction: column;
+  font-family: Verdana;
+  font-size: clamp(11px, 1.5vw, 13px);
+  font-style: normal;
+  font-weight: 600;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
+  line-height: 140%;
+  width: max-content;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  width: clamp(101px, 4.5vw, 105px);
+}
+
+.link {
+  text-decoration: none;
+}
+
+.stopBtn,
+.goBtn,
+.startBtn,
+.doneBtn,
+.editBtn {
+  align-items: center;
+  border: none;
+  display: flex;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: clamp(11px, 1.5vw, 14px);
+  justify-content: center;
+  padding: 4px 0;
+  width: clamp(35px, 4.5vw, 45px);
+  transition: all 0.35s ease-in-out;
+}
+
+.startBtn {
+  background: var(--brand-color);
+  color: white;
+}
+
+.startBtn:hover {
+  background: green;
+}
+
+.stopBtn {
+  background: green;
+  color: white;
+}
+
+.stopBtn:hover {
+  background: var(--brand-color);
+}
+
+.goBtn {
+  background: #007bff;
+  color: white;
+}
+.goBtn:hover {
+  background: #005fcc;
+}
+
+.doneBtn {
+  background: #28a745;
+  color: white;
+}
+.doneBtn:hover {
+  background: #1e7e34;
+}
+
+.editBtn {
+  background: #ffc107;
+  color: black;
+}
+.editBtn:hover {
+  background: #e0a800;
+}
+
+.doneLabel {
+  color: green;
+  font-size: clamp(11px, 1.5vw, 14px);
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .cont {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+
+  .leftSideCont,
+  .rightSideCont {
+    height: -webkit-fill-available;
+    width: 50%;
+  }
+
+  .calendarBox {
+    height: -webkit-fill-available;
+  }
+
+  .remindersList {
+    max-height: max-content;
+    height: -webkit-fill-available;
+  }
+
+  .reminderItemDetailsCont {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

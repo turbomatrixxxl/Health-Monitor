@@ -211,7 +211,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/alerts"}
                 >
-                  Alerts
+                  Reminders
                 </StyledLink>
 
                 <StyledLink

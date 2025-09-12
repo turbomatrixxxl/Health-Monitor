@@ -14,7 +14,7 @@
 }
 
 .main {
-  align-items: center;
+  /* align-items: center; */
   background: transparent;
   display: flex;
   flex-direction: column;

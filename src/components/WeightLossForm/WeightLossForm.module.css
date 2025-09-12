@@ -24,6 +24,22 @@
   max-width: 239px;
 }
 
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  position: relative;
+}
+
+.inputWrapper > span {
+  bottom: 5px;
+  color: orangered;
+  font-size: 10px;
+  font-weight: 600;
+  position: absolute;
+  right: 0;
+}
+
 .bloodTypeContainer {
   display: flex;
   flex-direction: column;

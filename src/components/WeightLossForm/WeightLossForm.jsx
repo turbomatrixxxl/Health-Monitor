@@ -130,66 +130,81 @@ export default function WeightLossForm({ onSubmit }) {
       <div className={styles.formMainCont}>
         {/* Left Section */}
         <div className={styles.formLeftCont}>
-          <Input
-            step={1}
-            type="number"
-            placeholder="Height* /cm"
-            name="height"
-            value={height > 0 ? height : ""}
-            handleChange={handleChange}
-            required
-          />
+          <div className={styles.inputWrapper}>
+            <Input
+              step={1}
+              type="number"
+              placeholder="Height*/cm"
+              name="height"
+              value={height > 0 ? height : ""}
+              handleChange={handleChange}
+              required
+            />
+            {height > 0 && <span>Height*/cm</span>}
+          </div>
 
-          <Input
-            step={1}
-            type="number"
-            placeholder="Age* /years"
-            name="age"
-            value={age > 0 ? age : ""}
-            handleChange={handleChange}
-            required
-          />
+          <div className={styles.inputWrapper}>
+            <Input
+              step={1}
+              type="number"
+              placeholder="Age*/years"
+              name="age"
+              value={age > 0 ? age : ""}
+              handleChange={handleChange}
+              required
+            />
+            {age > 0 && <span>Age*/years</span>}
+          </div>
 
-          <Input
-            step="any"
-            type="number"
-            placeholder="Current weight* /kg"
-            name="currentWeight"
-            value={currentWeight > 0 ? currentWeight : ""}
-            handleChange={handleChange}
-            required
-          />
+          <div className={styles.inputWrapper}>
+            <Input
+              step="any"
+              type="number"
+              placeholder="Current weight*/kg"
+              name="currentWeight"
+              value={currentWeight > 0 ? currentWeight : ""}
+              handleChange={handleChange}
+              required
+            />
+            {currentWeight > 0 && <span>Current weight*/kg</span>}
+          </div>
         </div>
 
         {/* Right Section */}
         <div className={styles.formRightCont}>
-          <Input
-            step="any"
-            type="number"
-            placeholder="Desired weight* /kg"
-            name="desiredWeight"
-            value={desiredWeight > 0 ? desiredWeight : ""}
-            handleChange={handleChange}
-            required
-          />
+          <div className={styles.inputWrapper}>
+            <Input
+              step="any"
+              type="number"
+              placeholder="Desired weight*/kg"
+              name="desiredWeight"
+              value={desiredWeight > 0 ? desiredWeight : ""}
+              handleChange={handleChange}
+              required
+            />
+            {desiredWeight > 0 && <span>Desired weight*/kg</span>}
+          </div>
 
           <div className={styles.bloodTypeContainer}>
             <label className={styles.label}></label>
 
             {/* Read-Only Input */}
-            <Input
-              type="text"
-              placeholder="Blood type*"
-              name="bloodType"
-              value={
-                bloodTypeOptions.find(
-                  (opt) => opt.value === String(bloodGroupIndex)
-                )?.label || ""
-              }
-              handleChange={handleChange}
-              required
-              readOnly
-            />
+            <div className={styles.inputWrapper}>
+              <Input
+                type="text"
+                // placeholder="Blood type*"
+                name="bloodType"
+                value={
+                  bloodTypeOptions.find(
+                    (opt) => opt.value === String(bloodGroupIndex)
+                  )?.label || ""
+                }
+                handleChange={handleChange}
+                required
+                readOnly
+              />
+              <span>Blood type*</span>
+            </div>
 
             {/* Radio Buttons */}
             <div className={styles.radioGroup}>
@@ -229,5 +244,5 @@ export default function WeightLossForm({ onSubmit }) {
 }
 
 WeightLossForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };

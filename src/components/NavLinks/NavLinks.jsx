@@ -13,7 +13,7 @@ export default function NavLinks() {
     { path: "/sleep", label: "Sleep" },
     { path: "/physical", label: "Physical Activity" },
     { path: "/metrix", label: "Health Metrics" },
-    { path: "/alerts", label: "Alerts" },
+    { path: "/alerts", label: "Reminders" },
     { path: "/export", label: "Export & Reports" },
   ];
 
