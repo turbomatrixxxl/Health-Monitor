@@ -166,7 +166,7 @@ export default function AlertForm({
                   value={
                     /^\d{4}-\d{2}-\d{2}$/.test(data.frequency)
                       ? data.frequency
-                      : today
+                      : filterDate
                   }
                   onChange={(e) => {
                     handleDateChange(e.target.value);
