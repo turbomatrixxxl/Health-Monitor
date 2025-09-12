@@ -238,7 +238,7 @@
   .leftSideCont,
   .rightSideCont {
     height: -webkit-fill-available;
-    width: 50%;
+    width: 48%;
   }
 
   .calendarBox {
@@ -253,5 +253,13 @@
   .reminderItemDetailsCont {
     flex-direction: row;
     justify-content: space-between;
+  }
+}
+
+@media (min-width: 915px) {
+  .leftSideCont,
+  .rightSideCont {
+    height: -webkit-fill-available;
+    width: 50%;
   }
 }
