@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-import generateEventsFromReminders from "../../Utils/generateEventsFromReminders";
+import createEventFromReminder from "../../Utils/createEventFromReminder";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -201,7 +201,7 @@ export default function AlertsPage() {
   useEffect(() => {
     const newEvents = reminders
       .filter((r) => r.active)
-      .flatMap((r) => generateEventsFromReminders(r));
+      .flatMap((r) => createEventFromReminder(r));
     setEvents(newEvents);
   }, [reminders]);
 

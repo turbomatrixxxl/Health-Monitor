@@ -1,6 +1,7 @@
 // Funcție helper pentru a genera date pentru calendar
 export default function createEventFromReminder(rem) {
   if (!rem.active) return []; // doar active
+  if (rem.done) return [];
 
   const [hour, minute] = rem.time.split(":").map(Number);
   const [endHour, endMinute] = rem.end
