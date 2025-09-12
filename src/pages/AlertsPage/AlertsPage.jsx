@@ -186,17 +186,11 @@ export default function AlertsPage() {
     done: false,
   });
 
-  useEffect(() => {
-    console.log("events :", events);
-    console.log("editId :", editId);
-    console.log("formData :", formData);
-  }, [events, editId, formData]);
-
-  const handleGo = (id) => {
-    setReminders((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, done: true } : r))
-    );
-  };
+  // useEffect(() => {
+  //   console.log("events :", events);
+  //   console.log("editId :", editId);
+  //   console.log("formData :", formData);
+  // }, [events, editId, formData]);
 
   useEffect(() => {
     const newEvents = reminders
@@ -204,6 +198,12 @@ export default function AlertsPage() {
       .flatMap((r) => createEventFromReminder(r));
     setEvents(newEvents);
   }, [reminders]);
+
+  const handleGo = (id) => {
+    setReminders((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, done: true } : r))
+    );
+  };
 
   const handleDone = (id) => {
     setReminders((prev) =>
