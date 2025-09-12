@@ -23,7 +23,7 @@ export default function AlertsPage() {
     {
       id: 1,
       text: "Take breakfast",
-      time: "08:00",
+      time: "06:00",
       frequency: "daily",
       repeat: "noRepeat",
       end: "10:00",
@@ -45,7 +45,7 @@ export default function AlertsPage() {
     {
       id: 3,
       text: "Take dinner",
-      time: "05:00",
+      time: "17:00",
       frequency: "daily",
       repeat: "noRepeat",
       end: "19:00",
@@ -56,7 +56,7 @@ export default function AlertsPage() {
     {
       id: 4,
       text: "Go to sleep",
-      time: "22:00",
+      time: "20:00",
       frequency: "daily",
       repeat: "noRepeat",
       end: "00:00",
