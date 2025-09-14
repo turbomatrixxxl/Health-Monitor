@@ -123,40 +123,80 @@
 }
 
 .reminderItem {
+  border-bottom: 1px solid var(--Gray-5);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--Gray-5);
+  /* align-items: center; */
+  padding: 0 10px;
+  padding-left: 0;
+  position: relative;
 }
 
 .reminderItem:last-child {
   border-bottom: none;
 }
 
+.closeBtn {
+  align-items: center;
+  background: rgb(86, 129, 17);
+  border: none;
+  color: var(--Gray-5);
+  display: flex;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  height: 14px;
+  justify-content: center;
+  left: 2px;
+  position: absolute;
+  top: 2px;
+  transition: all 0.35s ease-in-out;
+  width: 14px;
+}
+
+.closeBtn:hover {
+  background: red;
+  scale: 1.03;
+}
+
 .reminderItemDetailsCont {
   /* align-items: center; */
   color: var(--brand-color);
   display: flex;
-  flex-direction: column;
   font-family: Verdana;
   font-size: clamp(11px, 1.5vw, 13px);
   font-style: normal;
   font-weight: 600;
   flex-wrap: wrap;
   gap: 2px;
-  justify-content: center;
+  height: fit-content;
   line-height: 140%;
-  width: max-content;
+  margin-left: 18px;
+  padding: 8px 0;
+  /* width: -webkit-fill-available; */
+}
+
+.reminderItemDetailsCont > span,
+.reminderItemDetailsCont > div {
+  height: fit-content;
+  width: fit-content;
 }
 
 .actions {
-  align-items: center;
+  align-items: flex-end;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 8px;
-  justify-content: flex-end;
+  justify-content: space-between;
+  padding: 8px 0;
   width: clamp(101px, 4.5vw, 105px);
+}
+
+.insideActions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
 }
 
 .link {
@@ -248,11 +288,6 @@
   .remindersList {
     max-height: max-content;
     height: -webkit-fill-available;
-  }
-
-  .reminderItemDetailsCont {
-    flex-direction: row;
-    justify-content: space-between;
   }
 }
 

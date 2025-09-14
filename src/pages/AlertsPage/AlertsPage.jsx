@@ -1,178 +1,24 @@
-import { useEffect, useState } from "react";
-
+// AlertsPage.jsx
+import { useState, useMemo } from "react";
+import { usePrivate } from "../../hooks/usePrivate";
+import {
+  addEditReminder,
+  deleteReminder,
+} from "../../redux/private/operationsPrivate";
 import { Link } from "react-router-dom";
-
 import createEventFromReminder from "../../Utils/createEventFromReminder";
-
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-
 import AlertForm from "../../components/AlertForm/AlertForm";
-
 import clsx from "clsx";
-
 import styles from "./AlertsPage.module.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
 export default function AlertsPage() {
-  const [events, setEvents] = useState([]);
-
-  const [reminders, setReminders] = useState([
-    {
-      id: 1,
-      text: "Take breakfast",
-      time: "06:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "10:00",
-      type: "meal",
-      active: false,
-      done: false,
-    },
-    {
-      id: 2,
-      text: "Take lunch",
-      time: "12:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "14:00",
-      type: "meal",
-      active: false,
-      done: false,
-    },
-    {
-      id: 3,
-      text: "Take dinner",
-      time: "17:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "19:00",
-      type: "meal",
-      active: false,
-      done: false,
-    },
-    {
-      id: 4,
-      text: "Go to sleep",
-      time: "20:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "00:00",
-      type: "sleep",
-      active: false,
-      done: false,
-    },
-    {
-      id: 5,
-      text: "Wake up",
-      time: "06:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "07:00",
-      type: "sleep",
-      active: false,
-      done: false,
-    },
-    {
-      id: 6,
-      text: "Do physical activities",
-      time: "09:00",
-      frequency: "Mo,We,Fri",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "alert",
-      active: false,
-      done: false,
-    },
-    {
-      id: 7,
-      text: "Record Breakfast meal",
-      time: "10:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "meal",
-      active: false,
-      done: false,
-      link: "/diary",
-    },
-    {
-      id: 8,
-      text: "Record Lunch meal",
-      time: "13:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "meal",
-      active: false,
-      done: false,
-      link: "/diary",
-    },
-    {
-      id: 9,
-      text: "Record Dinner meal",
-      time: "19:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "meal",
-      active: false,
-      done: false,
-      link: "/diary",
-    },
-    {
-      id: 10,
-      text: "Record Sleep period",
-      time: "19:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "sleep",
-      active: false,
-      done: false,
-      link: "/sleep",
-    },
-    {
-      id: 11,
-      text: "Record Health metrics",
-      time: "08:00",
-      frequency: "15 monthly",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "alert",
-      active: false,
-      done: false,
-      link: "/metrix",
-    },
-    {
-      id: 12,
-      text: "Record Exercise period",
-      time: "18:00",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "exercise",
-      active: false,
-      done: false,
-      link: "/physical",
-    },
-    {
-      id: 13,
-      text: "Drink water",
-      time: "06:00",
-      frequency: "daily",
-      repeat: "2 hours",
-      end: "23:00",
-      type: "alert",
-      active: false,
-      done: false,
-    },
-  ]);
-
+  const { user, privateDispatch } = usePrivate();
   const [showForm, setShowForm] = useState(false);
-
   const [editId, setEditId] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -184,48 +30,24 @@ export default function AlertsPage() {
     type: "alert",
     active: false,
     done: false,
+    doneDates: [], // <<< adăugat
   });
 
-  // useEffect(() => {
-  //   console.log("events :", events);
-  //   console.log("editId :", editId);
-  //   console.log("formData :", formData);
-  // }, [events, editId, formData]);
+  const reminders = useMemo(
+    () => [...(user.reminders || [])],
+    [user.reminders]
+  );
+  const [events, setEvents] = useState([]);
 
-  useEffect(() => {
-    const newEvents = reminders
-      .filter((r) => r.active)
-      .flatMap((r) => createEventFromReminder(r));
-    setEvents(newEvents);
-  }, [reminders]);
+  const handleAddEditReminder = (reminderData) =>
+    privateDispatch(addEditReminder(reminderData));
 
-  const handleGo = (id) => {
-    setReminders((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, done: true } : r))
-    );
-  };
+  const handleSetData = (field, value) =>
+    setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const handleDone = (id) => {
-    setReminders((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, done: true } : r))
-    );
-  };
-
-  const handleActiveTrue = (id) => {
-    setReminders((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, active: true } : r))
-    );
-  };
-
-  const handleActiveFalse = (id) => {
-    setReminders((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, active: false } : r))
-    );
-  };
-
-  function handleCloseFormModal() {
+  const handleCloseFormModal = () => {
     setShowForm(false);
-
+    setEditId(null);
     setFormData({
       text: "",
       time: "",
@@ -235,49 +57,58 @@ export default function AlertsPage() {
       type: "alert",
       active: false,
       done: false,
+      doneDates: [],
     });
+  };
 
-    setEditId(null);
-  }
-
-  const handleSubmitFormReminder = (e) => {
-    e.preventDefault(); // prevenim refresh
-
-    if (!formData.text || !formData.time) {
+  const handleSubmitFormReminder = (reminderData) => {
+    if (!reminderData.text || !reminderData.time) {
       alert("Please enter a reminder text and time.");
       return;
     }
-    setReminders((prev) => {
-      if (formData.id) {
-        // Edit
-        return prev.map((r) => (r.id === formData.id ? { ...formData } : r));
+    handleAddEditReminder({ ...reminderData, id: editId || undefined });
+    handleCloseFormModal();
+  };
+
+  // ==== Start/Stop folosind forEach ====
+  const handleActiveTrue = (id) =>
+    reminders.forEach(
+      (r) =>
+        r._id === id && handleAddEditReminder({ ...r, id: r._id, active: true })
+    );
+
+  const handleActiveFalse = (id) =>
+    reminders.forEach(
+      (r) =>
+        r._id === id &&
+        handleAddEditReminder({ ...r, id: r._id, active: false })
+    );
+
+  // ==== Done pentru ziua curentă ====
+  const handleDoneForToday = (id) =>
+    reminders.forEach((r) => {
+      if (r._id === id) {
+        const doneDates = r.doneDates ? [...r.doneDates] : [];
+        const today = new Date();
+        const todayStr = today
+          .toLocaleDateString("ro-RO", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+          .split(".")
+          .reverse()
+          .join("-");
+        if (!doneDates.includes(todayStr)) doneDates.push(todayStr);
+        handleAddEditReminder({ ...r, id: r._id, doneDates: doneDates });
       }
-      // Add
-      return [...prev, { ...formData, id: Date.now() }];
     });
 
-    setFormData({
-      text: "",
-      time: "",
-      frequency: "daily",
-      repeat: "noRepeat",
-      end: "23:00",
-      type: "alert",
-      active: false,
-      done: false,
-    });
+  // ==== Go ====
+  const handleGo = (id) =>
+    reminders.forEach((r) => (r._id === id ? handleDoneForToday(id) : null));
 
-    setEditId(null);
-
-    setShowForm(false);
-  };
-
-  const handleSetData = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const handleDeleteReminder = (id) => privateDispatch(deleteReminder({ id }));
 
   return (
     <div className={styles.cont}>
@@ -290,18 +121,15 @@ export default function AlertsPage() {
           editId={editId}
         />
       )}
+
       <div className={styles.leftSideCont}>
         <div className={styles.headerBox}>
           <h1 className={styles.title}>Calendar</h1>
-          <button
-            onClick={() => {
-              setShowForm(true);
-            }}
-            className={styles.addBtn}
-          >
+          <button onClick={() => setShowForm(true)} className={styles.addBtn}>
             + Add Reminder
           </button>
         </div>
+
         <div className={styles.calendarBox}>
           <Calendar
             localizer={localizer}
@@ -310,82 +138,129 @@ export default function AlertsPage() {
             endAccessor="end"
             className={styles.calendar}
             defaultView="week"
-            defaultDate={new Date()} // data curentă
-            min={new Date()}
+            defaultDate={new Date()}
+            onRangeChange={(range) => {
+              let viewStart, viewEnd;
+              if (Array.isArray(range)) {
+                viewStart = range[0];
+                viewEnd = range[range.length - 1];
+              } else {
+                viewStart = range.start;
+                viewEnd = range.end;
+              }
+              const todayLocal = new Date();
+              todayLocal.setHours(0, 0, 0, 0);
+
+              const newEvents = reminders
+                .filter((r) => r.active)
+                .flatMap((r) => createEventFromReminder(r, viewStart, viewEnd))
+                .filter((event) => event.start >= todayLocal);
+              setEvents(newEvents);
+            }}
           />
         </div>
       </div>
 
-      {/* Reminders section */}
       <div className={styles.rightSideCont}>
         <h1 className={clsx(styles.title, styles.rightSideTitle)}>Reminders</h1>
         <ul className={styles.remindersList}>
-          {reminders.map((rem) => (
-            <li key={`alerts-${rem.id}`} className={styles.reminderItem}>
-              <div className={styles.reminderItemDetailsCont}>
-                <span className={styles.text}>{rem.text} :</span>
-                <div className={styles.timeCont}>
-                  <span className={styles.time}>{rem.time}</span>/
-                  <span className={styles.repeat}>{rem.frequency}</span>
-                  {rem.repeat !== "noRepeat" && (
-                    <span className={styles.repeat}>/{rem.repeat}</span>
-                  )}
-                </div>
-              </div>
-              <div className={styles.actions}>
-                {rem.active ? (
-                  <button
-                    className={styles.stopBtn}
-                    onClick={() => handleActiveFalse(rem.id)}
-                  >
-                    Stop
-                  </button>
-                ) : (
-                  <button
-                    className={styles.startBtn}
-                    onClick={() => handleActiveTrue(rem.id)}
-                  >
-                    Start
-                  </button>
-                )}
+          {reminders.map((rem) => {
+            const today = new Date();
 
-                {rem.link && rem.active && !rem.done && (
-                  <Link className={styles.link} to={rem.link}>
+            const todayStr = today
+              .toLocaleDateString("ro-RO", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })
+              .split(".")
+              .reverse()
+              .join("-");
+
+            // console.log(todayStr);
+
+            const doneToday = rem.doneDates?.includes(todayStr);
+            return (
+              !doneToday && (
+                <li key={`alerts-${rem._id}`} className={styles.reminderItem}>
+                  {rem.type === "alert" && (
                     <button
-                      className={styles.goBtn}
-                      onClick={() => handleGo(rem.id)}
+                      type="button"
+                      className={styles.closeBtn}
+                      onClick={() => handleDeleteReminder(rem._id)}
                     >
-                      Go
+                      x
                     </button>
-                  </Link>
-                )}
+                  )}
+                  <div className={styles.reminderItemDetailsCont}>
+                    <span className={styles.text}>{rem.text} :</span>
+                    <div className={styles.timeCont}>
+                      <span className={styles.time}>{rem.time}</span>/
+                      <span className={styles.repeat}>
+                        {Array.isArray(rem.frequency)
+                          ? rem.frequency.join(",")
+                          : rem.frequency}
+                      </span>
+                      {rem.repeat !== "noRepeat" && (
+                        <span className={styles.repeat}>/{rem.repeat}</span>
+                      )}
+                    </div>
+                  </div>
 
-                {rem.active && !rem.done && (
-                  <button
-                    className={styles.doneBtn}
-                    onClick={() => handleDone(rem.id)}
-                  >
-                    Done
-                  </button>
-                )}
+                  <div className={styles.actions}>
+                    <div className={styles.insideActions}>
+                      <button
+                        className={clsx(
+                          rem.active ? styles.stopBtn : styles.startBtn
+                        )}
+                        onClick={() =>
+                          rem.active
+                            ? handleActiveFalse(rem._id)
+                            : handleActiveTrue(rem._id)
+                        }
+                      >
+                        {rem.active ? "Stop" : "Start"}
+                      </button>
+                      {rem.link && rem.active && !doneToday && (
+                        <Link className={styles.link} to={rem.link}>
+                          <button
+                            className={styles.goBtn}
+                            onClick={() => handleGo(rem._id)}
+                          >
+                            Go
+                          </button>
+                        </Link>
+                      )}
+                    </div>
 
-                {rem.active && rem.done && (
-                  <span className={styles.doneLabel}>✓ Done</span>
-                )}
-
-                <button
-                  className={styles.editBtn}
-                  onClick={() => {
-                    setShowForm(true);
-                    setFormData({ ...rem });
-                    setEditId(rem.id);
-                  }}
-                >
-                  Edit
-                </button>
-              </div>
-            </li>
-          ))}
+                    <div className={styles.insideActions}>
+                      {rem.active && (
+                        <button
+                          className={styles.doneBtn}
+                          onClick={() => handleDoneForToday(rem._id)}
+                        >
+                          Done
+                        </button>
+                      )}
+                      <button
+                        className={styles.editBtn}
+                        onClick={() => {
+                          setShowForm(true);
+                          setFormData({
+                            ...rem,
+                            doneDates: rem.doneDates || [],
+                          });
+                          setEditId(rem._id);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              )
+            );
+          })}
         </ul>
       </div>
     </div>

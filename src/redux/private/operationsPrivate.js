@@ -119,3 +119,56 @@ export const fetchConsumedProductsForSpecificDay = createAsyncThunk(
     }
   }
 );
+
+export const addEditReminder = createAsyncThunk(
+  "private/addEditReminder",
+  async (credentials, thunkAPI) => {
+    try {
+      setAuthHeader();
+      const response = await axios.post("/api/private/reminders", credentials);
+      // console.log("Reminder operations added/edited:", response.data);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);
+
+export const refreshDoneReminders = createAsyncThunk(
+  "private/refreshDoneReminders",
+  async (credentials, thunkAPI) => {
+    const url = `/api/private/reminders/refresh`;
+
+    try {
+      setAuthHeader();
+      const response = await axios.get(url);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);
+
+export const deleteReminder = createAsyncThunk(
+  "private/deleteReminder",
+  async (credentials, thunkAPI) => {
+    const { id } = credentials;
+
+    if (!id) {
+      return thunkAPI.rejectWithValue("Reminder Id is required");
+    }
+
+    const url = `/api/private/reminders/${id}`;
+
+    try {
+      setAuthHeader();
+      const response = await axios.delete(url);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);

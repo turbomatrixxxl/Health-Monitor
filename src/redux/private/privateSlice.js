@@ -4,6 +4,9 @@ import {
   addConsumedProductForSpecificDay,
   deleteConsumedProductForSpecificDay,
   fetchConsumedProductsForSpecificDay,
+  addEditReminder,
+  deleteReminder,
+  refreshDoneReminders,
 } from "./operationsPrivate";
 
 const initialState = {
@@ -149,7 +152,56 @@ const privateSlice = createSlice({
           state.isLoading = false;
           state.error = action.payload;
         }
-      );
+      )
+
+      .addCase(addEditReminder.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addEditReminder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+        console.log("addEditReminder Slice User :", action.payload.user);
+      })
+      .addCase(addEditReminder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(refreshDoneReminders.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(refreshDoneReminders.fulfilled, (state, action) => {
+        const { message, user } = action.payload;
+
+        state.isLoading = false;
+        state.user = user;
+        state.message = message;
+        console.log("refreshDoneReminders User :", user);
+      })
+      .addCase(refreshDoneReminders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(deleteReminder.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteReminder.fulfilled, (state, action) => {
+        const { message, user } = action.payload;
+
+        state.isLoading = false;
+        state.user = user;
+        state.message = message;
+        console.log("Reminder Delete Slice User :", user);
+      })
+      .addCase(deleteReminder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 

@@ -10,62 +10,107 @@ const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
   "0"
 )}-${String(now.getDate()).padStart(2, "0")}`;
 
-export default function AlertForm({
-  onClose,
-  handleSubmit,
-  data,
-  handleSet,
-  editId,
-}) {
+export default function AlertForm({ onClose, handleSubmit, data, editId }) {
   const modalRef = useRef();
+
+  const [freqType, setFreqType] = useState(() => {
+    if (data.frequency === "daily") return "daily";
+    if (
+      typeof data.frequency === "string" &&
+      data.frequency.includes("monthly")
+    )
+      return "monthly";
+    if (
+      typeof data.frequency === "string" &&
+      /^\d{4}-\d{2}-\d{2}$/.test(data.frequency)
+    )
+      return "date";
+    if (Array.isArray(data.frequency)) return "weekly";
+    return "weekly";
+  });
+
+  const [localFrequency, setLocalFrequency] = useState(
+    Array.isArray(data.frequency) ? [...data.frequency] : []
+  );
+
+  const [formData, setFormData] = useState({
+    ...data,
+    frequency: data.frequency,
+  });
 
   const [filterDate, setFilterDate] = useState(today);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
-
     const addCloseEvent = (event) => {
       if (event.key === "Escape") onClose();
     };
     document.addEventListener("keydown", addCloseEvent);
-
     return () => {
       document.body.style.overflow = "auto";
       document.removeEventListener("keydown", addCloseEvent);
     };
-  });
+  }, [onClose]);
 
-  const closeOnClickOutside = (event) => {
-    if (event.currentTarget === event.target) {
-      onClose();
-    }
+  useEffect(() => {
+    if (Array.isArray(data.frequency)) setLocalFrequency([...data.frequency]);
+  }, [data.frequency]);
+
+  const handleSet = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  const [freqType, setFreqType] = useState(
-    data.frequency === "daily"
-      ? "daily"
-      : data.frequency.includes("monthly")
-      ? "monthly"
-      : data.frequency.match(/^\d{4}-\d{2}-\d{2}$/)
-      ? "date"
-      : "weekly"
-  );
-
   const handleWeeklyChange = (day) => {
-    let selected = data.frequency === "daily" ? [] : data.frequency.split(",");
-    selected.includes(day)
-      ? (selected = selected.filter((d) => d !== day))
-      : selected.push(day);
-    if (selected.length === 7) {
-      handleSet("frequency", "daily");
+    let updated = localFrequency.includes(day)
+      ? localFrequency.filter((d) => d !== day)
+      : [...localFrequency, day];
+
+    if (updated.length === 7) {
       setFreqType("daily");
-    } else handleSet("frequency", selected.join(","));
+      setLocalFrequency([]);
+      handleSet("frequency", "daily");
+    } else {
+      setLocalFrequency(updated);
+      handleSet("frequency", updated);
+    }
   };
 
   const handleMonthlyChange = (day) => handleSet("frequency", `${day} monthly`);
   const handleDateChange = (dateStr) => handleSet("frequency", dateStr);
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
 
-  const alertCondition = data.type === "alert";
+    let frequencyValue;
+
+    if (freqType === "daily") {
+      frequencyValue = "daily";
+    } else if (freqType === "weekly") {
+      frequencyValue = localFrequency; // array cu zile
+    } else if (freqType === "monthly") {
+      frequencyValue = formData.frequency; // ex: "15 monthly"
+    } else if (freqType === "date") {
+      frequencyValue = filterDate; // ex: "2025-09-13"
+    } else {
+      frequencyValue = formData.frequency; // fallback
+    }
+
+    const submitData = {
+      ...formData,
+      frequency: frequencyValue,
+    };
+
+    handleSubmit(submitData);
+  };
+
+  const alertCondition =
+    formData.type === "alert" || formData.type === "metrix";
+
+  const closeOnClickOutside = (event) => {
+    if (event.currentTarget === event.target) onClose();
+  };
 
   return (
     <div
@@ -73,31 +118,34 @@ export default function AlertForm({
       onClick={closeOnClickOutside}
       className={styles.formModalCont}
     >
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleFormSubmit}>
         <button className={styles.close} onClick={onClose} type="button">
           x
         </button>
+
         {alertCondition && (
           <div className={styles.inputGroup}>
             <label>Reminder Text</label>
             <input
               type="text"
               placeholder="Enter reminder"
-              value={data.text}
+              value={formData.text}
               onChange={(e) => handleSet("text", e.target.value)}
               required
             />
           </div>
         )}
+
         <div className={styles.inputGroup}>
           <label>Time</label>
           <input
             type="time"
-            value={data.time}
+            value={formData.time}
             onChange={(e) => handleSet("time", e.target.value)}
             required
           />
         </div>
+
         {alertCondition && (
           <>
             <div className={styles.inputGroup}>
@@ -108,6 +156,7 @@ export default function AlertForm({
                   setFreqType(e.target.value);
                   if (e.target.value === "daily")
                     handleSet("frequency", "daily");
+                  if (e.target.value === "weekly") handleSet("frequency", []);
                 }}
               >
                 <option value="daily">Daily</option>
@@ -116,16 +165,14 @@ export default function AlertForm({
                 <option value="date">Specific Date</option>
               </select>
             </div>
+
             {freqType === "weekly" && (
               <div className={styles.weekly}>
                 {daysOfWeek.map((day) => (
                   <label key={day} className={styles.checkboxLabel}>
                     <input
                       type="checkbox"
-                      checked={
-                        data.frequency === "daily" ||
-                        data.frequency.split(",").includes(day)
-                      }
+                      checked={localFrequency.includes(day)}
                       onChange={() => handleWeeklyChange(day)}
                     />
                     {day}
@@ -135,14 +182,16 @@ export default function AlertForm({
                   type="button"
                   className={styles.smallBtn}
                   onClick={() => {
-                    handleSet("frequency", "daily");
                     setFreqType("daily");
+                    setLocalFrequency([]);
+                    handleSet("frequency", "daily");
                   }}
                 >
                   All
                 </button>
               </div>
             )}
+
             {freqType === "monthly" && (
               <div className={styles.inputGroup}>
                 <label>Day of Month</label>
@@ -151,13 +200,14 @@ export default function AlertForm({
                   min={1}
                   max={31}
                   step={1}
-                  value={parseInt(data.frequency)}
+                  value={parseInt(formData.frequency) || ""}
                   onChange={(e) =>
                     handleMonthlyChange(parseInt(e.target.value))
                   }
                 />
               </div>
             )}
+
             {freqType === "date" && (
               <div className={styles.inputGroup}>
                 <label>Specific Date</label>
@@ -166,8 +216,8 @@ export default function AlertForm({
                   type="date"
                   min={today}
                   value={
-                    /^\d{4}-\d{2}-\d{2}$/.test(data.frequency)
-                      ? data.frequency
+                    /^\d{4}-\d{2}-\d{2}$/.test(formData.frequency)
+                      ? formData.frequency
                       : filterDate
                   }
                   onChange={(e) => {
@@ -179,6 +229,7 @@ export default function AlertForm({
             )}
           </>
         )}
+
         <div className={styles.inputGroup}>
           <label>Repeat Interval (hours)</label>
           <input
@@ -186,14 +237,26 @@ export default function AlertForm({
             min={1}
             max={12}
             step={1}
-            value={parseInt(data.repeat) || ""}
+            value={
+              parseInt(formData.repeat) > 0
+                ? parseInt(formData.repeat)
+                : "noRepeat"
+            }
             onChange={(e) => {
               const h = parseInt(e.target.value);
-              handleSet("repeat", h === 1 ? "1 hour" : `${h} hours`);
+              handleSet(
+                "repeat",
+                isNaN(h) || h <= 0
+                  ? "noRepeat"
+                  : h === 1
+                  ? "1 hour"
+                  : `${h} hours`
+              );
             }}
             placeholder="No Repeat"
           />
         </div>
+
         <div className={styles.buttonGroup}>
           <button type="submit" className={styles.saveBtn}>
             {editId ? "Update Reminder" : "Add Reminder"}
@@ -210,7 +273,6 @@ export default function AlertForm({
 AlertForm.propTypes = {
   onClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  handleSet: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   editId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

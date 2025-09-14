@@ -14,6 +14,7 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 import "./App.css";
 import { setPrivateUser } from "./redux/private/privateSlice.js";
+import { refreshDoneReminders } from "./redux/private/operationsPrivate.js";
 
 // Lazy-loaded pages
 const LazyCalculatorPage = React.lazy(() =>
@@ -55,6 +56,12 @@ function App() {
   useEffect(() => {
     if (isLoggedIn && user) {
       dispatch(setPrivateUser(user));
+    }
+  }, [dispatch, isLoggedIn, user]);
+
+  useEffect(() => {
+    if (isLoggedIn && user) {
+      dispatch(refreshDoneReminders());
     }
   }, [dispatch, isLoggedIn, user]);
 

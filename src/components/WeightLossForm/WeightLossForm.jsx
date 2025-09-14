@@ -244,5 +244,5 @@ export default function WeightLossForm({ onSubmit }) {
 }
 
 WeightLossForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
