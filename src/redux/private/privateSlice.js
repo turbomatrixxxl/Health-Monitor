@@ -4,6 +4,8 @@ import {
   addConsumedProductForSpecificDay,
   deleteConsumedProductForSpecificDay,
   fetchConsumedProductsForSpecificDay,
+  setTotalSteps,
+  setHeartMetrix,
   addEditReminder,
   deleteReminder,
   refreshDoneReminders,
@@ -24,6 +26,7 @@ const initialState = {
     percentageCaloriesConsumed: 0,
   },
   consumedProducts: [], // Products consumed on a specific day
+  totalSteps: 0,
   isLoading: false,
   error: null, // Tracks API errors
   message: null, // Success or info messages from API responses
@@ -56,6 +59,10 @@ const privateSlice = createSlice({
     },
     resetPrivateFormError: (state) => {
       state.error = null;
+    },
+    setTotalStepsForToday: (state, action) => {
+      state.totalSteps = action.payload;
+      console.log("state.totalSteps :", state.totalSteps);
     },
   },
   extraReducers: (builder) => {
@@ -154,6 +161,36 @@ const privateSlice = createSlice({
         }
       )
 
+      .addCase(setTotalSteps.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(setTotalSteps.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+        console.log("setTotalSteps Slice User :", action.payload.user);
+      })
+      .addCase(setTotalSteps.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(setHeartMetrix.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(setHeartMetrix.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+        console.log("setHeartMetrix Slice  User :", action.payload.user);
+      })
+      .addCase(setHeartMetrix.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
       .addCase(addEditReminder.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -209,6 +246,7 @@ export const {
   setPrivateUser,
   setPrivateFormData,
   resetPrivateForm,
+  setTotalStepsForToday,
   clearMessage,
   resetPrivateFormError,
 } = privateSlice.actions;

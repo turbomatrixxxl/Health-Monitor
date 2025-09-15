@@ -11,6 +11,7 @@ import {
   selectPercentageCaloriesConsumed,
   selectDailyCalorieSummary,
   selectRecommendedDailyCaloriesIntake,
+  selectTotalStepsForToday,
 } from "../redux/private/selectorsPrivate";
 
 export const usePrivate = () => {
@@ -30,6 +31,7 @@ export const usePrivate = () => {
     selectPercentageCaloriesConsumed
   );
   const dailyCalorieSummary = useSelector(selectDailyCalorieSummary);
+  const totalSteps = useSelector(selectTotalStepsForToday);
 
   return {
     privateDispatch,
@@ -44,5 +46,6 @@ export const usePrivate = () => {
     totalCaloriesConsumed,
     percentageCaloriesConsumed,
     dailyCalorieSummary,
+    totalSteps,
   };
 };

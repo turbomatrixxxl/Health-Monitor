@@ -17,7 +17,7 @@ import Chart from "../../components/Chart";
 import styles from "./DailyProgressPage.module.css";
 
 export default function DailyProgressPage() {
-  const { dailyCalorieSummary, privateDispatch } = usePrivate();
+  const { dailyCalorieSummary, privateDispatch, totalSteps } = usePrivate();
   //   console.log("dailyCalorieSummary :", dailyCalorieSummary);
 
   const reminders = [
@@ -80,9 +80,8 @@ export default function DailyProgressPage() {
     : 0;
   const caloriesLeft = condition ? dailyCalorieSummary?.remainingCalories : 0;
 
-  const steps = 5000;
-  const stepsPer = condition ? Math.round((100 * steps) / neededSteps) : 0;
-  const stepsLeft = condition ? neededSteps - steps : 0;
+  const stepsPer = condition ? Math.round((100 * totalSteps) / neededSteps) : 0;
+  const stepsLeft = condition ? neededSteps - totalSteps : 0;
   //   console.log("stepsLeft :", stepsLeft);
 
   const sleep = 2;

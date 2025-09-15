@@ -120,6 +120,36 @@ export const fetchConsumedProductsForSpecificDay = createAsyncThunk(
   }
 );
 
+export const setTotalSteps = createAsyncThunk(
+  "private/setTotalSteps",
+  async (credentials, thunkAPI) => {
+    try {
+      setAuthHeader();
+      const response = await axios.post("/api/private/steps", credentials);
+      // console.log("Operations totalSteps:", response.data);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);
+
+export const setHeartMetrix = createAsyncThunk(
+  "private/setHeartMetrix",
+  async (credentials, thunkAPI) => {
+    try {
+      setAuthHeader();
+      const response = await axios.post("/api/private/heart", credentials);
+      console.log("Operations heartMetrix:", response.data);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);
+
 export const addEditReminder = createAsyncThunk(
   "private/addEditReminder",
   async (credentials, thunkAPI) => {

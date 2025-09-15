@@ -10,6 +10,18 @@ export default function createEventFromReminder(rem, viewStart, viewEnd) {
   const events = [];
   const doneDates = rem.doneDates || [];
 
+  // calculează repeatHours din string, ex: "2 hours" → 2
+  let repeatHours = 0;
+  if (typeof rem.repeat === "string" && rem.repeat !== "noRepeat") {
+    repeatHours = parseInt(rem.repeat, 10);
+  }
+
+  // dacă repeatHours < 1 => considerăm că nu se repetă
+  if (isNaN(repeatHours) || repeatHours < 1) repeatHours = 0;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const current = new Date(viewStart);
 
   while (current <= viewEnd) {
@@ -24,70 +36,78 @@ export default function createEventFromReminder(rem, viewStart, viewEnd) {
       .reverse()
       .join("-"); // format YYYY-MM-DD
 
-    if (doneDates.includes(dateStr)) {
+    // ignoră zilele trecute
+    if (current < today) {
       current.setDate(current.getDate() + 1);
-      continue; // sărim peste zilele deja făcute
+      continue;
     }
+
+    const pushEventsForDay = () => {
+      const startTime = new Date(current);
+      startTime.setHours(hour, minute, 0, 0);
+
+      const endTime = new Date(current);
+      endTime.setHours(endHour, endMinute, 0, 0);
+
+      if (repeatHours > 0) {
+        // repetă la interval de repeatHours între start și end
+        let tempStart = new Date(startTime);
+        while (tempStart < endTime) {
+          const tempEnd = new Date(tempStart);
+          tempEnd.setMinutes(tempEnd.getMinutes() + 1); // durata scurtă, poate fi modificată
+          events.push({
+            id: `${rem._id}-${+tempStart}`,
+            title: rem.text,
+            start: new Date(tempStart),
+            end: new Date(tempEnd),
+          });
+          tempStart.setHours(tempStart.getHours() + repeatHours);
+        }
+      } else {
+        // eveniment normal între time și end
+        events.push({
+          id: `${rem._id}-${+startTime}`,
+          title: rem.text,
+          start: startTime,
+          end: endTime,
+        });
+      }
+    };
 
     // DAILY
-    if (rem.frequency === "daily") {
-      const start = new Date(current);
-      start.setHours(hour, minute, 0, 0);
-      const end = new Date(current);
-      end.setHours(endHour, endMinute, 0, 0);
-      events.push({ id: `${rem._id}-${+start}`, title: rem.text, start, end });
+    if (rem.frequency === "daily" && !doneDates.includes(dateStr)) {
+      pushEventsForDay();
     }
 
-    // WEEKLY
-    if (Array.isArray(rem.frequency)) {
-      const daysMap = { Su: 0, Mo: 1, Tu: 2, We: 3, Th: 4, Fr: 5, Sa: 6 };
-      rem.frequency.forEach((dayCode) => {
-        if (daysMap[dayCode] === day) {
-          const start = new Date(current);
-          start.setHours(hour, minute, 0, 0);
-          const end = new Date(current);
-          end.setHours(endHour, endMinute, 0, 0);
-          events.push({
-            id: `${rem._id}-${dayCode}-${+start}`,
-            title: rem.text,
-            start,
-            end,
-          });
-        }
-      });
+    // WEEKLY (array de coduri zile)
+    if (
+      Array.isArray(rem.frequency) &&
+      rem.frequency.includes(dayToCode(day))
+    ) {
+      if (!doneDates.includes(dateStr)) pushEventsForDay();
     }
 
-    // MONTHLY
+    // MONTHLY (ex: "15 monthly")
     if (
       typeof rem.frequency === "string" &&
       rem.frequency.includes("monthly")
     ) {
       const dayOfMonth = parseInt(rem.frequency, 10);
-      if (current.getDate() === dayOfMonth) {
-        const start = new Date(current);
-        start.setHours(hour, minute, 0, 0);
-        const end = new Date(current);
-        end.setHours(endHour, endMinute, 0, 0);
-        events.push({
-          id: `${rem._id}-m-${+start}`,
-          title: rem.text,
-          start,
-          end,
-        });
+      if (current.getDate() === dayOfMonth && !doneDates.includes(dateStr)) {
+        pushEventsForDay();
       }
     }
 
-    // FIXED DATE
+    // FIXED DATE (ex: "2025-09-20")
     if (/^\d{4}-\d{2}-\d{2}$/.test(rem.frequency)) {
       const [y, m, d] = rem.frequency.split("-").map(Number);
       if (
         current.getFullYear() === y &&
         current.getMonth() === m - 1 &&
-        current.getDate() === d
+        current.getDate() === d &&
+        !doneDates.includes(dateStr)
       ) {
-        const start = new Date(y, m - 1, d, hour, minute);
-        const end = new Date(y, m - 1, d, endHour, endMinute);
-        events.push({ id: rem._id, title: rem.text, start, end });
+        pushEventsForDay();
       }
     }
 
@@ -95,4 +115,10 @@ export default function createEventFromReminder(rem, viewStart, viewEnd) {
   }
 
   return events;
+}
+
+// helper pentru a converti day numeric -> cod zi (0=Su,..)
+function dayToCode(dayNum) {
+  const map = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  return map[dayNum];
 }

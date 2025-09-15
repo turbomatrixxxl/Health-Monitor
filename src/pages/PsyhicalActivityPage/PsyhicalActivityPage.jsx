@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { usePrivate } from "../../hooks/usePrivate";
+import { setTotalStepsForToday } from "../../redux/private/privateSlice";
 
 import convertActivityToSteps from "../../Utils/convertActivityToSteps";
 import calculateMinimumDailyActivity from "../../Utils/calculateMinimumDailyActivity";
 
-import styles from "./PsyhicalActivityPage.module.css";
 import clsx from "clsx";
+
 import ActivitySelect from "../../components/ActivitySelect";
 
+import styles from "./PsyhicalActivityPage.module.css";
+
 export default function PsyhicalActivityPage() {
-  const { user } = usePrivate();
+  const { user, privateDispatch } = usePrivate();
   // console.log("user psyhical :", user);
 
   const age = user?.age ?? 0;
@@ -35,6 +38,10 @@ export default function PsyhicalActivityPage() {
 
   const totalSteps = lines.map((line) => line.steps).reduce((a, b) => a + b, 0);
   console.log("totalSteps :", totalSteps);
+
+  useEffect(() => {
+    privateDispatch(setTotalStepsForToday(totalSteps));
+  }, [privateDispatch, totalSteps]);
 
   const minDailyActivity = calculateMinimumDailyActivity(
     age,
@@ -91,7 +98,7 @@ export default function PsyhicalActivityPage() {
     ]);
   };
 
-  const formatNumber = (num) => String(num).padStart(2, "0");
+  const formatNumber = (num) => String(num);
 
   return (
     <div className={styles.cont}>
@@ -131,21 +138,6 @@ export default function PsyhicalActivityPage() {
           <div className={styles.lineRowCont}>
             {lines.map((line, idx) => (
               <div key={`physical-${idx}`} className={styles.lineRow}>
-                {/* From */}
-                {/* <select
-                  className={clsx(styles.activitySelect)}
-                  id="activity-select"
-                  value={line?.exerciseType}
-                  onChange={(e) =>
-                    updateLine(idx, "exerciseType", e.target.value)
-                  }
-                >
-                  {activities.map((act) => (
-                    <option key={act} value={act}>
-                      {act.charAt(0).toUpperCase() + act.slice(1)}
-                    </option>
-                  ))}
-                </select> */}
                 <ActivitySelect
                   value={line.exerciseType}
                   onChange={(val) => updateLine(idx, "exerciseType", val)}

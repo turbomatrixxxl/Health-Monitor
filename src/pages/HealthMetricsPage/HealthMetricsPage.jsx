@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { usePrivate } from "../../hooks/usePrivate";
 
@@ -14,7 +14,11 @@ import heartRateSvg from "../../images/icons/gen-heart-rate-svgrepo-com.svg";
 import styles from "./HealthMetricsPage.module.css";
 import { setPrivateFormData } from "../../redux/private/privateSlice";
 
-import { fetchPrivateCalculationData } from "../../redux/private/operationsPrivate";
+import {
+  fetchPrivateCalculationData,
+  setHeartMetrix,
+} from "../../redux/private/operationsPrivate";
+import HeartMetrixDateSelector from "../../components/HeartMetrixDateSelector/HeartMetrixDateSelector";
 
 export default function HealthMetricsPage() {
   const { user, privateFormData = {}, privateDispatch } = usePrivate();
@@ -27,6 +31,42 @@ export default function HealthMetricsPage() {
   const age = user?.age ?? 0;
   const height = user?.height ?? 0;
   const weightPrivate = user?.weight ?? 0;
+  const heartMetrix = user?.heart || [];
+
+  const heartMetrixCondition = heartMetrix.length > 0;
+
+  function normalizeDate(date) {
+    const dateToNormalize = new Date(date);
+
+    return `${dateToNormalize.getFullYear()}-${String(
+      dateToNormalize.getMonth() + 1
+    ).padStart(2, "0")}-${String(dateToNormalize.getDate()).padStart(2, "0")}`;
+  }
+
+  const heartMetrixDates = heartMetrixCondition
+    ? heartMetrix.map((record) => normalizeDate(record.date))
+    : [];
+
+  const lastHeartMetrixRecord =
+    heartMetrix.length > 0 ? heartMetrix[heartMetrix.length - 1] : false;
+
+  const lastHeartMetrixRecordDate = lastHeartMetrixRecord
+    ? lastHeartMetrixRecord.date
+    : false;
+
+  const resetedLastHeartMetrixRecordDate = lastHeartMetrixRecordDate
+    ? new Date(lastHeartMetrixRecordDate).setHours(0, 0, 0, 0)
+    : false;
+
+  // console.log(
+  //   "resetedLastHeartMetrixRecordDate :",
+  //   resetedLastHeartMetrixRecordDate
+  // );
+
+  const todayDate = new Date();
+  const resetedtodayDate = todayDate.setHours(0, 0, 0, 0);
+
+  // console.log("resetedtodayDate :", resetedtodayDate);
 
   const condition = age > 0 && height > 0 && weightPrivate > 0;
 
@@ -44,12 +84,15 @@ export default function HealthMetricsPage() {
   } = heartsMetrics;
 
   const now = new Date();
-  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}-${String(now.getDate()).padStart(2, "0")}`;
 
-  const [filterDate, setFilterDate] = useState(today);
+  const today = (day) => {
+    const daytoBe = new Date(day);
+    return daytoBe.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short", // prescurtat: Jan, Feb, Mar
+      year: "numeric",
+    });
+  };
 
   const nowTime = now.toTimeString().slice(0, 8);
   const nowDate = now.toLocaleDateString("en-GB", {
@@ -60,21 +103,20 @@ export default function HealthMetricsPage() {
   // console.log("nowDate :", nowDate);
   // console.log("nowTime :", nowTime);
 
-  const [line, setLine] = useState({
-    date: nowDate,
-    hour: nowTime,
-    weight: weightPrivate ?? 0,
-    systolic: 0,
-    diastolic: 0,
-    heartRate: 0,
-  });
+  const [line, setLine] = useState(
+    resetedLastHeartMetrixRecordDate === resetedtodayDate
+      ? { ...lastHeartMetrixRecord }
+      : {
+          date: nowDate,
+          hour: nowTime,
+          weight: weightPrivate ?? 0,
+          systolic: 0,
+          diastolic: 0,
+          pulse: 0,
+        }
+  );
 
-  const sysHi = line?.systolic > systolicMax;
-  const sysLo = line?.systolic < systolicMin;
-  const diaHi = line?.diastolic > diastolicMax;
-  const diaLo = line?.diastolic < diastolicMin;
-  const pulseHi = line?.heartRate > heartRateMax;
-  const pulseLo = line?.heartRate < heartRateMin;
+  // console.log("line :", line);
 
   // console.log("line :", line);
 
@@ -85,32 +127,44 @@ export default function HealthMetricsPage() {
     setLine(newLine);
   };
 
-  //  const [lineRecords, setLineRecords] = useState({
-  //    date: nowDate,
-  //    hour: nowTime,
-  //    weight: weight ?? 0,
-  //    systolic: 0,
-  //    diastolic: 0,
-  //    heartRate: 0,
-  //  });
+  const [lineRecords, setLineRecords] = useState(
+    resetedLastHeartMetrixRecordDate === resetedtodayDate
+      ? { ...lastHeartMetrixRecord }
+      : {
+          date: nowDate,
+          hour: nowTime,
+          weight: weightPrivate ?? 0,
+          systolic: line?.systolic,
+          diastolic: line?.diastolic,
+          pulse: line?.pulse,
+        }
+  );
 
-  const lineRecords = {
-    date: nowDate,
-    hour: nowTime,
-    weight: weightPrivate ?? 0,
-    systolic: 0,
-    diastolic: 0,
-    heartRate: 0,
-  };
+  const sysHi = lineRecords?.systolic > systolicMax;
+  const sysLo = lineRecords?.systolic < systolicMin;
+  const diaHi = lineRecords?.diastolic > diastolicMax;
+  const diaLo = lineRecords?.diastolic < diastolicMin;
+  const pulseHi = lineRecords?.pulse > heartRateMax;
+  const pulseLo = lineRecords?.pulse < heartRateMin;
 
-  //  const handleSubmit = (formData) => {
-  //     privateDispatch(fetchPrivateCalculationData(formData));
-  //   };
+  useEffect(() => {
+    if (resetedLastHeartMetrixRecordDate === resetedtodayDate) {
+      setLineRecords({ ...lastHeartMetrixRecord });
+    }
+  }, [
+    resetedLastHeartMetrixRecordDate,
+    resetedtodayDate,
+    lastHeartMetrixRecord,
+  ]);
+
+  console.log("lineRecords :", lineRecords);
 
   function handleSet(value) {
     setLine({ ...line, date: nowDate, hour: nowTime });
     const newWeight = line?.weight;
     // console.log("newWeight :", newWeight);
+
+    privateDispatch(setHeartMetrix(line));
 
     privateDispatch(setPrivateFormData({ name: "currentWeight", value }));
 
@@ -144,7 +198,7 @@ export default function HealthMetricsPage() {
                 user?.weight ? styles.hasData : null
               )}
             >
-              {line?.weight ? `${line.weight} kg` : "No data !"}
+              {lineRecords?.weight ? `${lineRecords.weight} kg` : "No data !"}
             </p>
           </div>
           <div className={clsx(styles.leftSideElementCont, styles.bloodIcon)}>
@@ -164,11 +218,13 @@ export default function HealthMetricsPage() {
             <p
               className={clsx(
                 styles.iconData,
-                line?.systolic && line?.diastolic ? styles.hasData : null
+                lineRecords?.systolic && lineRecords?.diastolic
+                  ? styles.hasData
+                  : null
               )}
             >
-              {line?.systolic && line?.diastolic
-                ? `${line?.systolic}/${line?.diastolic} mmHg`
+              {lineRecords?.systolic && lineRecords?.diastolic
+                ? `${lineRecords?.systolic}/${lineRecords?.diastolic} mmHg`
                 : "No data !"}
             </p>
           </div>
@@ -186,10 +242,10 @@ export default function HealthMetricsPage() {
             <p
               className={clsx(
                 styles.iconData,
-                line?.heartRate ? styles.hasData : null
+                line?.pulse ? styles.hasData : null
               )}
             >
-              {line?.heartRate ? `${line?.heartRate} bpm` : "No data !"}
+              {lineRecords?.pulse ? `${lineRecords?.pulse} bpm` : "No data !"}
             </p>
           </div>
         </div>
@@ -297,8 +353,8 @@ export default function HealthMetricsPage() {
                     type="number"
                     min="0"
                     step="1"
-                    value={line?.heartRate}
-                    onChange={(e) => updateLine("heartRate", e.target.value)}
+                    value={line?.pulse}
+                    onChange={(e) => updateLine("pulse", e.target.value)}
                     className={clsx(styles.timeInput)}
                   />
                 </div>
@@ -312,66 +368,85 @@ export default function HealthMetricsPage() {
               </div>
             </div>
           </div>
-          <div className={styles.fromToCont}>
-            {(sysHi || sysLo) && (
-              <p
-                style={{
-                  color: "red",
-                  background: "var(--Gray5)",
-                  textAlign: "left",
-                  height: "fit-content",
-                }}
-                className={styles.metrixTitle}
-              >
-                Your Systolic blood pressure is too {sysHi ? "high" : "low"}.
-                Please, consult a doctor !
-              </p>
-            )}
-            {(diaHi || diaLo) && (
-              <p
-                style={{
-                  color: "red",
-                  background: "var(--Gray5)",
-                  textAlign: "left",
-                  height: "fit-content",
-                }}
-                className={styles.metrixTitle}
-              >
-                Your Diastolic blood pressure is too {diaHi ? "high" : "low"}.
-                Please, consult a doctor !
-              </p>
-            )}
-            {(pulseHi || pulseLo) && (
-              <p
-                style={{
-                  color: "red",
-                  background: "var(--Gray5)",
-                  textAlign: "left",
-                  height: "fit-content",
-                }}
-                className={styles.metrixTitle}
-              >
-                Your Pulse is too {pulseHi ? "high" : "low"}. Please, consult a
-                doctor !
-              </p>
-            )}
-          </div>
+          {heartMetrixCondition ? (
+            <div className={styles.fromToCont}>
+              {(sysHi || sysLo) && (
+                <p
+                  style={{
+                    color: "red",
+                    background: "var(--Gray5)",
+                    textAlign: "left",
+                    height: "fit-content",
+                  }}
+                  className={styles.metrixTitle}
+                >
+                  Your Systolic blood pressure is too {sysHi ? "high" : "low"}.
+                  Please, consult a doctor !
+                </p>
+              )}
+              {(diaHi || diaLo) && (
+                <p
+                  style={{
+                    color: "red",
+                    background: "var(--Gray5)",
+                    textAlign: "left",
+                    height: "fit-content",
+                  }}
+                  className={styles.metrixTitle}
+                >
+                  Your Diastolic blood pressure is too {diaHi ? "high" : "low"}.
+                  Please, consult a doctor !
+                </p>
+              )}
+              {(pulseHi || pulseLo) && (
+                <p
+                  style={{
+                    color: "red",
+                    background: "var(--Gray5)",
+                    textAlign: "left",
+                    height: "fit-content",
+                  }}
+                  className={styles.metrixTitle}
+                >
+                  Your Pulse is too {pulseHi ? "high" : "low"}. Please, consult
+                  a doctor !
+                </p>
+              )}
+            </div>
+          ) : (
+            <p
+              style={{
+                color: "red",
+                background: "var(--Gray5)",
+                textAlign: "left",
+                height: "fit-content",
+              }}
+              className={styles.metrixTitle}
+            >
+              No records yet for today!
+            </p>
+          )}
           <div className={styles.rightSideSeeRecordsCont}>
             <div className={styles.rightSideDate}>
               <p className={styles.rightSideDateP}>
                 Choose records date to see :
               </p>
               <div className={styles.dateWrapper}>
-                <input
-                  max={today}
-                  type="date"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
-                  className={styles.paramInput}
+                <HeartMetrixDateSelector
+                  theme={"light"}
+                  dates={heartMetrixDates}
+                  onSelect={(selectedDate) => {
+                    const selectedRecord = heartMetrix.find(
+                      (r) => normalizeDate(r.date) === selectedDate
+                    );
+                    if (selectedRecord) {
+                      setLineRecords({ ...selectedRecord });
+                    }
+                  }}
                 />
               </div>
             </div>
-            {today === filterDate ? (
+            {!heartMetrixCondition ? (
               <p
                 style={{
                   color: "red",
@@ -381,13 +456,12 @@ export default function HealthMetricsPage() {
                 }}
                 className={styles.metrixTitle}
               >
-                Not records date selected. Please select a past date to see
-                records !
+                Not heart metrix records yet !
               </p>
             ) : (
               <div className={styles.fromToCont}>
                 <div className={styles.addSleepCont}>
-                  <p>Health Records for : {filterDate}</p>
+                  <p>Health Records for : {today(lineRecords.date)}</p>
                 </div>
                 <div className={styles.fromToTitle}>
                   <p style={{ width: "33%" }} className={styles.from}>
@@ -409,7 +483,7 @@ export default function HealthMetricsPage() {
                       {lineRecords.systolic}/{lineRecords.diastolic} mmHg
                     </div>
                     <div style={{ width: "33%" }} className={styles.minutes}>
-                      {lineRecords?.heartRate} bpm
+                      {lineRecords?.pulse} bpm
                     </div>
                   </div>
                 </div>

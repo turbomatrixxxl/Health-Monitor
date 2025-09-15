@@ -40,3 +40,6 @@ export const selectTotalCaloriesConsumed = (state) =>
 
 export const selectPercentageCaloriesConsumed = (state) =>
   state.privateSlice.dailyCalorieSummary?.percentageCaloriesConsumed;
+
+export const selectTotalStepsForToday = (state) =>
+  state.privateSlice.totalSteps || 0;

@@ -238,20 +238,17 @@ export default function AlertForm({ onClose, handleSubmit, data, editId }) {
             max={12}
             step={1}
             value={
-              parseInt(formData.repeat) > 0
-                ? parseInt(formData.repeat)
-                : "noRepeat"
+              formData.repeat === "noRepeat"
+                ? ""
+                : parseInt(formData.repeat) || ""
             }
             onChange={(e) => {
               const h = parseInt(e.target.value);
-              handleSet(
-                "repeat",
-                isNaN(h) || h <= 0
-                  ? "noRepeat"
-                  : h === 1
-                  ? "1 hour"
-                  : `${h} hours`
-              );
+              if (isNaN(h) || h < 1) {
+                handleSet("repeat", "noRepeat");
+              } else {
+                handleSet("repeat", h === 1 ? "1 hour" : `${h} hours`);
+              }
             }}
             placeholder="No Repeat"
           />

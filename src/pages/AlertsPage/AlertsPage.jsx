@@ -1,5 +1,5 @@
 // AlertsPage.jsx
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { usePrivate } from "../../hooks/usePrivate";
 import {
   addEditReminder,
@@ -29,8 +29,7 @@ export default function AlertsPage() {
     end: "23:00",
     type: "alert",
     active: false,
-    done: false,
-    doneDates: [], // <<< adăugat
+    doneDates: [],
   });
 
   const reminders = useMemo(
@@ -56,7 +55,6 @@ export default function AlertsPage() {
       end: "23:00",
       type: "alert",
       active: false,
-      done: false,
       doneDates: [],
     });
   };
@@ -70,7 +68,7 @@ export default function AlertsPage() {
     handleCloseFormModal();
   };
 
-  // ==== Start/Stop folosind forEach ====
+  // ==== Start / Stop ====
   const handleActiveTrue = (id) =>
     reminders.forEach(
       (r) =>
@@ -84,31 +82,46 @@ export default function AlertsPage() {
         handleAddEditReminder({ ...r, id: r._id, active: false })
     );
 
-  // ==== Done pentru ziua curentă ====
+  // ==== Done pentru ora curentă ====
   const handleDoneForToday = (id) =>
     reminders.forEach((r) => {
       if (r._id === id) {
         const doneDates = r.doneDates ? [...r.doneDates] : [];
-        const today = new Date();
-        const todayStr = today
-          .toLocaleDateString("ro-RO", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          })
-          .split(".")
-          .reverse()
-          .join("-");
-        if (!doneDates.includes(todayStr)) doneDates.push(todayStr);
-        handleAddEditReminder({ ...r, id: r._id, doneDates: doneDates });
+        const now = new Date();
+
+        const nowStr =
+          now
+            .toLocaleDateString("ro-RO", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })
+            .split(".")
+            .reverse()
+            .join("-") +
+          ` ${String(now.getHours()).padStart(2, "0")}:${String(
+            now.getMinutes()
+          ).padStart(2, "0")}`;
+
+        if (!doneDates.includes(nowStr)) doneDates.push(nowStr);
+        handleAddEditReminder({ ...r, id: r._id, doneDates });
       }
     });
 
-  // ==== Go ====
   const handleGo = (id) =>
     reminders.forEach((r) => (r._id === id ? handleDoneForToday(id) : null));
 
   const handleDeleteReminder = (id) => privateDispatch(deleteReminder({ id }));
+
+  // ==== rerender automat la fiecare ora ====
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEvents((prev) => [...prev]); // forțează rerender calendar
+      setFormData((f) => ({ ...f })); // forțează rerender lista reminders
+    }, 3600000); // 1 oră = 3600000ms
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className={styles.cont}>
@@ -165,21 +178,27 @@ export default function AlertsPage() {
         <h1 className={clsx(styles.title, styles.rightSideTitle)}>Reminders</h1>
         <ul className={styles.remindersList}>
           {reminders.map((rem) => {
-            const today = new Date();
+            const now = new Date();
 
-            const todayStr = today
-              .toLocaleDateString("ro-RO", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              })
-              .split(".")
-              .reverse()
-              .join("-");
+            const nowStr =
+              now
+                .toLocaleDateString("ro-RO", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })
+                .split(".")
+                .reverse()
+                .join("-") +
+              ` ${String(now.getHours()).padStart(2, "0")}:${String(
+                now.getMinutes()
+              ).padStart(2, "0")}`;
 
-            // console.log(todayStr);
+            // verificăm dacă reminderul a fost făcut deja la ultima execuție
+            const doneToday = rem.doneDates?.some((d) => {
+              return d.split(" ")[0] === nowStr.split(" ")[0];
+            });
 
-            const doneToday = rem.doneDates?.includes(todayStr);
             return (
               !doneToday && (
                 <li key={`alerts-${rem._id}`} className={styles.reminderItem}>

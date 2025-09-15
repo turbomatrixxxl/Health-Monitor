@@ -45,14 +45,11 @@ export default function CalculatorPage() {
     useToggle(false);
   const modalRef = useRef();
 
-  // const { isLoggedIn } = useAuth();
-  const { privateDispatch, user } = usePrivate();
+  const { privateDispatch, user, privateLoading } = usePrivate();
 
   // console.log("user :", user);
 
   const isDesktop = useMediaQuery({ query: breakpoints.desktop });
-
-  // const navigate = useNavigate();
 
   const today = getFormattedDate();
 
@@ -82,22 +79,11 @@ export default function CalculatorPage() {
   };
 
   useEffect(() => {
-    const today = getFormattedDate(); // Ensure the correct format YYYY-MM-DD
+    const today = getFormattedDate();
     // console.log("Fetching data for date:", today);
 
     privateDispatch(fetchConsumedProductsForSpecificDay({ date: today })); // Pass as an object
   }, [privateDispatch]);
-
-  // useEffect(() => {
-  //   if (error === "Not authorized") {
-  //     const timeout = setTimeout(() => {
-  //       dispatch(logOut());
-  //       navigate("/login");
-  //     }, 5000);
-
-  //     return () => clearTimeout(timeout); // Cleanup timeout
-  //   }
-  // }, [error, isLoggedIn, dispatch, navigate]);
 
   const handleClick = () => {
     privateDispatch(fetchConsumedProductsForSpecificDay({ date: today })); // Pass as an object
@@ -210,9 +196,7 @@ export default function CalculatorPage() {
                     </Link>
                   </>
                 ) : (
-                  <p className={styles.empty}>
-                    Loading your recommendations...
-                  </p>
+                  privateLoading && <p className={styles.empty}>Loading...</p>
                 )}
               </div>
             </Modal>
