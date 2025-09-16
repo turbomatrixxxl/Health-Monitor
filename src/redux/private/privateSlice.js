@@ -9,6 +9,7 @@ import {
   addEditReminder,
   deleteReminder,
   refreshDoneReminders,
+  setSleepDailyRegistrations,
 } from "./operationsPrivate";
 
 const initialState = {
@@ -176,6 +177,24 @@ const privateSlice = createSlice({
         state.error = action.payload;
       })
 
+      .addCase(setSleepDailyRegistrations.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(setSleepDailyRegistrations.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+        console.log(
+          "setSleepDailyRegistrations Slice  User :",
+          action.payload.user
+        );
+      })
+      .addCase(setSleepDailyRegistrations.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
       .addCase(setHeartMetrix.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -184,7 +203,7 @@ const privateSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.message = action.payload.message;
-        console.log("setHeartMetrix Slice  User :", action.payload.user);
+        // console.log("setHeartMetrix Slice  User :", action.payload.user);
       })
       .addCase(setHeartMetrix.rejected, (state, action) => {
         state.isLoading = false;
@@ -199,7 +218,7 @@ const privateSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.message = action.payload.message;
-        console.log("addEditReminder Slice User :", action.payload.user);
+        // console.log("addEditReminder Slice User :", action.payload.user);
       })
       .addCase(addEditReminder.rejected, (state, action) => {
         state.isLoading = false;
@@ -216,7 +235,7 @@ const privateSlice = createSlice({
         state.isLoading = false;
         state.user = user;
         state.message = message;
-        console.log("refreshDoneReminders User :", user);
+        // console.log("refreshDoneReminders User :", user);
       })
       .addCase(refreshDoneReminders.rejected, (state, action) => {
         state.isLoading = false;
@@ -233,7 +252,7 @@ const privateSlice = createSlice({
         state.isLoading = false;
         state.user = user;
         state.message = message;
-        console.log("Reminder Delete Slice User :", user);
+        // console.log("Reminder Delete Slice User :", user);
       })
       .addCase(deleteReminder.rejected, (state, action) => {
         state.isLoading = false;

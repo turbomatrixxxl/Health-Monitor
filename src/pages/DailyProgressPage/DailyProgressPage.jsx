@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { usePrivate } from "../../hooks/usePrivate";
-// import { useAuth } from "../../hooks/useAuth";
 
-import { fetchConsumedProductsForSpecificDay } from "../../redux/private/operationsPrivate";
+import {
+  addEditReminder,
+  fetchConsumedProductsForSpecificDay,
+  refreshDoneReminders,
+} from "../../redux/private/operationsPrivate";
 
 import getFormattedDate from "../../Utils/getFormattedDate";
 import calculateDailySteps from "../../Utils/calculateDailySteps";
 import calculateSleepHours from "../../Utils/calculateSleepHours";
 import calculateNominalBPAndPulse from "../../Utils/calculateNominalBPAndPulse";
+import formatTimeTo12h from "../../Utils/formatTimeTo12h";
 
 import clsx from "clsx";
 
@@ -17,30 +21,47 @@ import Chart from "../../components/Chart";
 import styles from "./DailyProgressPage.module.css";
 
 export default function DailyProgressPage() {
-  const { dailyCalorieSummary, privateDispatch, totalSteps } = usePrivate();
+  const { dailyCalorieSummary, privateDispatch, totalSteps, user } =
+    usePrivate();
   //   console.log("dailyCalorieSummary :", dailyCalorieSummary);
 
-  const reminders = [
-    { id: 1, hour: "9:00 AM", text: "Drink water", done: false },
-    { id: 2, hour: "9:00 AM", text: "Drink water", done: false },
-    { id: 3, hour: "9:00 AM", text: "Drink water", done: false },
-    { id: 4, hour: "9:00 AM", text: "Drink water", done: false },
-    { id: 5, hour: "9:00 AM", text: "Drink water", done: false },
-    { id: 6, hour: "9:00 AM", text: "Drink water", done: false },
-  ];
+  const reminders = user?.reminders || [];
+  const updatedReminders = reminders.filter(
+    (reminder) => !reminder.done && reminder.frequency === "daily"
+  );
+  const sortedReminders = updatedReminders.sort((a, b) => {
+    const [aH, aM] = a.time.split(":").map(Number);
+    const [bH, bM] = b.time.split(":").map(Number);
 
-  const [rem, setRem] = useState(...[reminders]);
-  const updatedReminders = rem.filter((reminder) => !reminder.done);
+    // console.log("aH, aM", aH, aM);
+
+    return aH !== bH ? aH - bH : aM - bM;
+  });
+
+  console.log("sortedReminders :", sortedReminders);
+
+  const rem = [...sortedReminders];
+
+  useEffect(() => {
+    privateDispatch(refreshDoneReminders());
+  }, [privateDispatch]);
+
   // console.log("updatedReminders :", updatedReminders.length);
-
-  const { user } = usePrivate();
-  // console.log("user:", user);
 
   const name = user?.username ?? "User";
   const age = user?.age ?? 0;
   const height = user?.height ?? 0;
   const weight = user?.weight ?? 0;
   const desiredWeight = user?.desiredWeight ?? 0;
+  const heartMetrix = user?.heart ?? [];
+
+  const heartMetrixCondition = heartMetrix?.length > 0;
+
+  const heartMetrixLength = heartMetrix.length;
+
+  const heartMetrixLastRecord = heartMetrixCondition
+    ? heartMetrix[heartMetrixLength - 1]
+    : [];
 
   const neededSteps = calculateDailySteps(age, weight, desiredWeight, height);
   const neededSleep = calculateSleepHours(age);
@@ -91,9 +112,9 @@ export default function DailyProgressPage() {
 
   const total = caloriesPer + stepsPer + sleepPer;
 
-  const systolicR = 130;
-  const diastolicR = 80;
-  const pulse = 80;
+  const systolicR = heartMetrixCondition ? heartMetrixLastRecord.systolic : 0;
+  const diastolicR = heartMetrixCondition ? heartMetrixLastRecord.diastolic : 0;
+  const pulse = heartMetrixCondition ? heartMetrixLastRecord.pulse : 0;
   const heartCondition = systolicR + diastolicR === 0 || pulse === 0;
   // console.log("heartCondition :", heartCondition);
 
@@ -119,12 +140,14 @@ export default function DailyProgressPage() {
   //   console.log("globalPercentage :", globalPercentage);
 
   function handleReminderDone(id) {
-    // Update the reminders state to mark the reminder as done
-    const newReminders = rem.map((reminder) =>
-      reminder.id === id ? { ...reminder, done: true } : reminder
-    );
+    const reminderDone = rem.find((r) => r._id === id);
+    if (!reminderDone) {
+      return;
+    }
 
-    return setRem(newReminders);
+    privateDispatch(
+      addEditReminder({ ...reminderDone, id: reminderDone._id, done: true })
+    );
   }
 
   let free = 100 - globalPercentage;
@@ -178,7 +201,7 @@ export default function DailyProgressPage() {
           )}
         </div>
         <div className={clsx(styles.metrixCont, styles.alerts)}>
-          {updatedReminders.length !== 0 ? (
+          {updatedReminders.length > 0 ? (
             <>
               <h3 className={styles.metrixTitle}>Daily Reminders</h3>
               <ul className={styles.remindersList}>
@@ -188,13 +211,15 @@ export default function DailyProgressPage() {
                       <li
                         style={{ color: "red" }}
                         className={styles.metrixTitle}
-                        key={`reminder-${reminder.id}`}
+                        key={`reminder-${reminder._id}`}
                       >
-                        <span>{reminder?.hour}</span> -{" "}
-                        <span>{reminder?.text}</span>
+                        <div className={styles.metrixTitleContent}>
+                          <span>{formatTimeTo12h(reminder?.time)}</span> -{" "}
+                          <span>{reminder?.text}</span>
+                        </div>
                         <button
                           className={styles.doneBtn}
-                          onClick={() => handleReminderDone(reminder.id)}
+                          onClick={() => handleReminderDone(reminder._id)}
                           type="button"
                         >
                           Done
@@ -467,8 +492,8 @@ export default function DailyProgressPage() {
                   }}
                   className={styles.metrixTitle}
                 >
-                  It seems that You did not recorded heart inputs for today !
-                  Please input datas !
+                  It seems that You did not recorded heart inputs ! Please input
+                  data !
                 </p>
               ) : (
                 <>
@@ -496,13 +521,8 @@ export default function DailyProgressPage() {
                       }}
                       className={styles.metrixTitle}
                     >
-                      It seems that your blood pressure is too{" "}
-                      {diastolicR < diastolicMin || systolicR < systolicMin
-                        ? "low"
-                        : diastolicR > diastolicMax || systolicR > systolicMax
-                        ? "high"
-                        : ""}
-                      ! Please consult doctor !
+                      It seems that your blood pressure is not good ! Please
+                      consult doctor !
                     </p>
                   )}
 

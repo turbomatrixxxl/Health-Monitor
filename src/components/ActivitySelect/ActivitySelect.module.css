@@ -84,14 +84,14 @@
 
 .option {
   font-family: Poppins;
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: normal;
   letter-spacing: -0.28px;
   padding: 8px;
   cursor: pointer;
-  color: var(--brand-color);
+  color: rgb(7, 99, 7);
   transition: all 0.3s ease-in-out;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .option:hover {
-  color: green;
+  color: var(--brand-color);
   font-weight: bold;
 }
 

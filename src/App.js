@@ -3,18 +3,22 @@ import { Route, Routes } from "react-router-dom";
 import RestrictedRoute from "./components/RestrictedRoute/RestrictedRoute";
 import RestrictedLoginRoute from "./components/RestrictedLoginRoute/RestrictedLoginRoute.jsx";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+
 import SharedLayout from "./components/SharedLayout/SharedLayout";
+
 import { useDispatch } from "react-redux";
-import { refreshUser } from "./redux/auth/operationsAuth"; // Import refreshUser
-import { useAuth } from "./hooks/useAuth"; // Import custom hook
+
+import { refreshUser } from "./redux/auth/operationsAuth";
+import { useAuth } from "./hooks/useAuth";
+
+import { setPrivateUser } from "./redux/private/privateSlice.js";
+import { refreshDoneReminders } from "./redux/private/operationsPrivate.js";
 
 import Loader from "./components/commonComponents/Loader";
 import VerifyEmailPage from "./pages/VerifyEmailPageComponent/VerifyEmailPageComponent";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 import "./App.css";
-import { setPrivateUser } from "./redux/private/privateSlice.js";
-import { refreshDoneReminders } from "./redux/private/operationsPrivate.js";
 
 // Lazy-loaded pages
 const LazyCalculatorPage = React.lazy(() =>

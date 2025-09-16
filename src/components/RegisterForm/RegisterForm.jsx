@@ -7,8 +7,7 @@ import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import Input from "../commonComponents/Input/Input";
 import Button from "../commonComponents/Button";
 import useToggle from "../../hooks/useToggle";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import useFormValidation from "../../hooks/useFormValidation";
 import validateRegister from "../../hooks/validateRegister";
@@ -234,7 +233,6 @@ function RegisterForm() {
         <Link to="/login" className={styles.navLink}>
           <Button type="button">Log in</Button>
         </Link>{" "}
-        <ToastContainer position="top-center" autoClose={5000} />
       </div>
     </form>
   );

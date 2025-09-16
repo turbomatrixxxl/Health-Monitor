@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import clsx from "clsx";
+import formatDate from "../../Utils/formatDate";
 
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 
@@ -18,10 +19,10 @@ export default function HeartMetrixDateSelector({ theme, dates, onSelect }) {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    if (reversedDates.length > 0) {
+    if (reversedDates.length > 0 && dateA === "No records yet.") {
       setDateA(reversedDates[0]);
     }
-  }, [dates, reversedDates]);
+  }, [reversedDates, dateA]);
 
   const handleSelect = (selectedDate) => {
     setDateA(selectedDate);
@@ -57,7 +58,7 @@ export default function HeartMetrixDateSelector({ theme, dates, onSelect }) {
               : styles.span
           )}
         >
-          {dateA}
+          {formatDate(dateA)}
         </span>
         {!isOpen ? (
           <HiChevronDown
@@ -102,7 +103,7 @@ export default function HeartMetrixDateSelector({ theme, dates, onSelect }) {
               )}
               onClick={() => handleSelect(option)}
             >
-              {option}
+              {formatDate(option)}
             </li>
           ))}
         </ul>

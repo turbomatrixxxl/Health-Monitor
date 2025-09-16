@@ -108,7 +108,7 @@ export default function HealthMetricsPage() {
       ? { ...lastHeartMetrixRecord }
       : {
           date: nowDate,
-          hour: nowTime,
+          time: nowTime,
           weight: weightPrivate ?? 0,
           systolic: 0,
           diastolic: 0,
@@ -132,7 +132,7 @@ export default function HealthMetricsPage() {
       ? { ...lastHeartMetrixRecord }
       : {
           date: nowDate,
-          hour: nowTime,
+          time: nowTime,
           weight: weightPrivate ?? 0,
           systolic: line?.systolic,
           diastolic: line?.diastolic,
@@ -160,11 +160,11 @@ export default function HealthMetricsPage() {
   console.log("lineRecords :", lineRecords);
 
   function handleSet(value) {
-    setLine({ ...line, date: nowDate, hour: nowTime });
+    setLine({ ...line, date: nowDate, time: nowTime });
     const newWeight = line?.weight;
     // console.log("newWeight :", newWeight);
 
-    privateDispatch(setHeartMetrix(line));
+    privateDispatch(setHeartMetrix({ ...line, time: nowTime }));
 
     privateDispatch(setPrivateFormData({ name: "currentWeight", value }));
 
@@ -461,7 +461,10 @@ export default function HealthMetricsPage() {
             ) : (
               <div className={styles.fromToCont}>
                 <div className={styles.addSleepCont}>
-                  <p>Health Records for : {today(lineRecords.date)}</p>
+                  <p>
+                    Health Records for : {today(lineRecords.date)}{" "}
+                    {lineRecords?.time.slice(0, 5) ?? "00:00:00"}
+                  </p>
                 </div>
                 <div className={styles.fromToTitle}>
                   <p style={{ width: "33%" }} className={styles.from}>

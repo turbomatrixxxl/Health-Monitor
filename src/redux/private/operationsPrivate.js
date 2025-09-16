@@ -135,6 +135,21 @@ export const setTotalSteps = createAsyncThunk(
   }
 );
 
+export const setSleepDailyRegistrations = createAsyncThunk(
+  "private/setSleepDailyRegistrations",
+  async (credentials, thunkAPI) => {
+    try {
+      setAuthHeader();
+      const response = await axios.post("/api/private/sleep", credentials);
+      // console.log("Operations sleep:", response.data);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);
+
 export const setHeartMetrix = createAsyncThunk(
   "private/setHeartMetrix",
   async (credentials, thunkAPI) => {

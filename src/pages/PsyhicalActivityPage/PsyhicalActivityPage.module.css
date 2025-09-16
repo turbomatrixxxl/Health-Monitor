@@ -130,7 +130,7 @@
 .lineRowCont {
   display: flex;
   flex-direction: column;
-  max-height: 125px;
+  height: 105px;
   overflow-y: auto;
 }
 

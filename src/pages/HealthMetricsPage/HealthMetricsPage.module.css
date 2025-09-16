@@ -138,7 +138,7 @@
   color: blue;
   display: flex;
   font-family: Verdana;
-  font-size: clamp(12px, 1.5vw, 14px);
+  font-size: clamp(11px, 1.5vw, 14px);
   font-style: normal;
   font-weight: 700;
   line-height: 140%;

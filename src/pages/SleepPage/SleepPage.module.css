@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: -webkit-fill-available;
   padding: 16px;
   overflow-y: auto;
   width: -webkit-fill-available;
@@ -30,10 +31,17 @@
   border: solid 1px var(--Gray-5);
   background: lightblue;
   display: flex;
-  /* height: 300px; */
+  max-height: 250px;
   justify-content: center;
   width: -webkit-fill-available;
   aspect-ratio: 2 / 1;
+}
+
+.rightSideUpCont {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 20px;
 }
 
 .rightSideContTitle {
@@ -125,7 +133,7 @@
 .lineRowCont {
   display: flex;
   flex-direction: column;
-  max-height: 85px;
+  max-height: 130px;
   overflow-y: auto;
 }
 
@@ -213,6 +221,22 @@
   color: blue;
 }
 
+.saveBtn {
+  align-items: center;
+  background: rgb(30, 108, 197);
+  border-radius: 4px;
+  color: var(--Gray-5);
+  display: flex;
+  justify-content: center;
+  padding: 2px 4px;
+  transition: all 0.35s ease-in-out;
+}
+
+.saveBtn:hover {
+  scale: 1.05;
+  background: green;
+}
+
 .adviceCont {
   border: 1px solid var(--Gray-5);
   border-radius: 4px;
@@ -235,8 +259,10 @@
 .adviceCont > p {
   color: rgb(16, 172, 16);
   display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
   font-family: Verdana;
-  font-size: clamp(12px, 2.5vw, 14px);
+  font-size: clamp(11px, 2.5vw, 14px);
   font-style: normal;
   font-weight: 600;
   line-height: 80%;

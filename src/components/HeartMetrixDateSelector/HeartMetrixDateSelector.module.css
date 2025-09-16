@@ -65,7 +65,7 @@
   margin: 8px 0 0;
   list-style: none;
   display: inline-flex;
-  padding: 5px;
+  padding: 0;
   flex-direction: column;
   height: 110px;
   /* justify-content: center; */
@@ -73,8 +73,9 @@
   border: 1px solid #bedbb0;
   background: #fcfcfc;
   box-shadow: 0px 4px 16px 0px rgba(17, 17, 17, 0.1);
+  overflow-x: hidden;
   overflow-y: auto;
-  width: 120px;
+  width: 130px;
   z-index: 10;
 }
 
@@ -94,9 +95,10 @@
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.28px;
-  padding: 8px 16px;
+  padding: 8px;
   cursor: pointer;
-  color: #161616;
+  color: var(--brand-color);
+  width: webbkit-fill-available;
   transition: all 0.3s ease-in-out;
 }
 
@@ -105,11 +107,11 @@
 }
 
 .option:hover {
-  scale: 1.04;
+  scale: 1.02;
 }
 
 .activeOption {
-  color: var(--brand-color);
+  color: rgb(13, 114, 148);
   font-weight: bold;
 }
 

@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import LoginForm from "../../components/LoginForm/LoginForm";
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 import styles from "./LoginPage.module.css";
 import { useAuth } from "../../hooks/useAuth";
@@ -49,7 +48,6 @@ export default function LoginPage() {
       )}
 
       <LoginForm />
-      <ToastContainer />
     </section>
   );
 }
