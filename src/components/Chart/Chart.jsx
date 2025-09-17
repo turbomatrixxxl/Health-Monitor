@@ -38,7 +38,8 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
     cal > 0 && {
       name: "Daily Cal",
       value: cal,
-      backgroundColor: calories > 100 || calories < 50 ? "orangered" : "orange",
+      backgroundColor:
+        calories > 100 || calories < 50 ? "orangered" : "var(--brand-color)",
       borderWidth: 0,
       hoverOffset: 5,
     },
@@ -160,7 +161,7 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
           style={
             calories > 100 || calories < 50
               ? { color: "orangered" }
-              : { color: "orange" }
+              : { color: "var(--brand-color)" }
           }
           className={clsx(
             styles.chartBalance,
