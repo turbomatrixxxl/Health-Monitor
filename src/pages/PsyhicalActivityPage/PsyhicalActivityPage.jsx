@@ -207,7 +207,9 @@ export default function PsyhicalActivityPage() {
           <div className={styles.graphCont}>Graphic container</div>
         </div>
         <div className={styles.adviceCont}>
-          <h2 className={styles.adviceTitle}>Total sleep hours</h2>
+          <h2 className={styles.adviceTitle}>
+            Total converted Exercises in steps
+          </h2>
           {totalSteps !== 0 ? (
             <p
               style={{
@@ -217,9 +219,10 @@ export default function PsyhicalActivityPage() {
               className={styles.advicep}
             >
               <span style={{ marginRight: "2px" }}>
-                Converted Activities in {totalSteps} steps for{" "}
+                Total Steps for{" "}
+                {isTodaycondition ? "today" : formatDate(filterDate)}:{" "}
               </span>{" "}
-              <span>{isTodaycondition ? "today" : formatDate(filterDate)}</span>
+              <span>{totalSteps} steps</span>
             </p>
           ) : (
             <p style={{ color: "red" }} className={styles.advicep}>

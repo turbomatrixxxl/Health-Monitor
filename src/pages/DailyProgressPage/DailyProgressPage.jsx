@@ -31,7 +31,8 @@ export default function DailyProgressPage() {
 
   const reminders = user?.reminders || [];
   const updatedReminders = reminders.filter(
-    (reminder) => !reminder.done && reminder.frequency === "daily"
+    (reminder) =>
+      !reminder.done && reminder.frequency === "daily" && reminder.active
   );
   const sortedReminders = updatedReminders.sort((a, b) => {
     const [aH, aM] = a.time.split(":").map(Number);
