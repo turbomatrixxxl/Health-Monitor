@@ -437,12 +437,12 @@ export default function HealthMetricsPage() {
             </p>
           )}
           <div className={styles.rightSideSeeRecordsCont}>
-            <div className={styles.rightSideDate}>
-              <p className={styles.rightSideDateP}>
-                Choose records date to see :
-              </p>
-              <div className={styles.dateWrapper}>
-                {heartMetrixCondition && (
+            {heartMetrixCondition && (
+              <div className={styles.rightSideDate}>
+                <p className={styles.rightSideDateP}>
+                  Choose records date to see :
+                </p>
+                <div className={styles.dateWrapper}>
                   <HeartMetrixDateSelector
                     theme={"light"}
                     dates={heartMetrixDates}
@@ -455,9 +455,9 @@ export default function HealthMetricsPage() {
                       }
                     }}
                   />
-                )}
+                </div>
               </div>
-            </div>
+            )}
             {!heartMetrixCondition ? (
               <p
                 style={{
