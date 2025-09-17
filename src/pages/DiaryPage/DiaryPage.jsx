@@ -36,7 +36,6 @@ const breakpoints = {
 
 export default function DiaryPage() {
   const isMobile = useMediaQuery({ query: breakpoints.mobile });
-  // const isTablet = useMediaQuery({ query: breakpoints.tablet });
   const isDesktop = useMediaQuery({ query: breakpoints.desktop });
 
   const { products, dispatch } = usePublic();
@@ -104,13 +103,13 @@ export default function DiaryPage() {
     if (searchTerm && quantity) {
       privateDispatch(
         addConsumedProductForSpecificDay({
-          product: searchTerm, // Send title (string) here
+          product: searchTerm,
           date,
           quantity,
         })
       );
-      setSearchTerm(""); // Clear selection
-      setQuantity(""); // Reset quantity
+      setSearchTerm("");
+      setQuantity("");
     }
   };
 
@@ -129,7 +128,7 @@ export default function DiaryPage() {
       }
       // console.log("not found");
 
-      return null; // Return null if no product is found
+      return null;
     };
 
     // console.log('delete');
@@ -146,7 +145,7 @@ export default function DiaryPage() {
   function handleProductsForSelectedDate(date) {
     setTimeout(() => {
       privateDispatch(fetchConsumedProductsForSpecificDay({ date: date }));
-    }, 1000); // Delay of 500ms
+    }, 1000);
   }
 
   function formatToDisplayDate(date) {
@@ -156,7 +155,6 @@ export default function DiaryPage() {
 
   const handleUpdateUser = () => {
     setUserUpdateShown(true);
-    console.log("click !!!");
   };
 
   return (

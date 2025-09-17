@@ -90,7 +90,6 @@ export default function NavModal() {
 
   const handleUpdateUser = () => {
     setUserUpdateShown(true);
-    console.log("click !!!");
   };
 
   return (

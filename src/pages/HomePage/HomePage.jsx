@@ -42,7 +42,6 @@ export default function HomePage() {
   const dispatch = useDispatch();
 
   const isMobile = useMediaQuery({ query: breakpoints.mobile });
-  // const isTablet = useMediaQuery({ query: breakpoints.tablet });
 
   useEffect(() => {
     if (isCalculatorModalVisible) {
@@ -69,12 +68,10 @@ export default function HomePage() {
     }
   };
 
-  // Function to handle form submission
   const handleSubmit = (formData) => {
     dispatch(fetchCalculationData(formData));
   };
 
-  // Redirect to CalculatorPage if `/home` is accessed
   if (location.pathname === "/home") {
     return <Navigate to="/home/calculator" />;
   }

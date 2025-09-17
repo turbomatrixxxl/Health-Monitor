@@ -1,11 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Set Axios base URL
-// axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.baseURL = "https://health-individual-project-node.onrender.com";
 
-// Authorization setup with fallback
 const setAuthHeader = () => {
   const token = localStorage.getItem("token")
     ? JSON.parse(localStorage.getItem("token"))
@@ -15,15 +12,12 @@ const setAuthHeader = () => {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {
     console.error("Token not found or expired. Please log in.");
-    // Optional: Redirect user or show login prompt here
   }
 };
 
-// Generic error handler
 const handleError = (error, thunkAPI) =>
   thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
 
-// Fetch private calculation data
 export const fetchPrivateCalculationData = createAsyncThunk(
   "private/fetchPrivateCalculationData",
   async (formData, { rejectWithValue }) => {
@@ -54,7 +48,6 @@ export const fetchPrivateCalculationData = createAsyncThunk(
   }
 );
 
-// Add consumed product
 export const addConsumedProductForSpecificDay = createAsyncThunk(
   "private/addConsumedProductForSpecificDay",
   async (credentials, thunkAPI) => {
@@ -70,7 +63,6 @@ export const addConsumedProductForSpecificDay = createAsyncThunk(
   }
 );
 
-// Delete consumed product
 export const deleteConsumedProductForSpecificDay = createAsyncThunk(
   "private/deleteConsumedProductForSpecificDay",
   async (credentials, thunkAPI) => {
@@ -95,7 +87,6 @@ export const deleteConsumedProductForSpecificDay = createAsyncThunk(
   }
 );
 
-// Fetch consumed products
 export const fetchConsumedProductsForSpecificDay = createAsyncThunk(
   "private/fetchConsumedProductsForSpecificDay",
   async (credentials, thunkAPI) => {
@@ -156,7 +147,7 @@ export const setHeartMetrix = createAsyncThunk(
     try {
       setAuthHeader();
       const response = await axios.post("/api/private/heart", credentials);
-      console.log("Operations heartMetrix:", response.data);
+      // console.log("Operations heartMetrix:", response.data);
 
       return response.data;
     } catch (error) {

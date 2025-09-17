@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { useMediaQuery } from "react-responsive";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom"; // Import Link
+import { Link } from "react-router-dom";
 import { logOut } from "../../redux/auth/operationsAuth";
 import { useAuth } from "../../hooks/useAuth";
 

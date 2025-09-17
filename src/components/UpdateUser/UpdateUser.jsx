@@ -25,11 +25,11 @@ export default function UpdateUser({ onClose, theme }) {
   const { user } = useAuth();
   const dispatch = useDispatch();
 
-  console.log("user :", user);
+  // console.log("user :", user);
 
   const formRef = useRef();
   const modalRef = useRef();
-  const fileInputRef = useRef(null); // File input reference
+  const fileInputRef = useRef(null);
 
   const [userNewName, setUserNewName] = useState(user?.username ?? user?.name);
   const [userNewMail, setUserNewMail] = useState(user?.email);
@@ -55,7 +55,6 @@ export default function UpdateUser({ onClose, theme }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Dispatch user info update
     dispatch(
       updateUserInfo({
         username: userNewName,
@@ -64,23 +63,21 @@ export default function UpdateUser({ onClose, theme }) {
       })
     );
 
-    // Dispatch the avatar update if a file is selected
     if (selectedFile) {
       const formData = new FormData();
       formData.append("avatar", selectedFile);
 
       dispatch(updateUserAvatar(formData))
         .then((response) => {
-          // Handle success response
           if (response) {
-            toast.success("Avatar updated successfully!"); // Success toast
+            toast.success("Avatar updated successfully!");
           } else {
-            toast.error("Failed to update avatar. Please try again."); // Error toast
+            toast.error("Failed to update avatar. Please try again.");
           }
         })
         .catch((error) => {
-          // console.error("Error during avatar upload:", error.message);
-          toast.error("An error occurred. Please try again later."); // Error toast
+          console.log("Error during avatar upload:", error.message);
+          toast.error("An error occurred. Please try again later.");
         });
     }
 
@@ -107,14 +104,13 @@ export default function UpdateUser({ onClose, theme }) {
 
   const handleModalClick = (e) => e.stopPropagation();
 
-  // Set correct avatar URL
   const imageUrl = selectedFile
     ? URL.createObjectURL(selectedFile)
     : user?.avatarURL
     ? user?.avatarURL.startsWith("http")
       ? user?.avatarURL
       : `https://taskpro-nodejs.onrender.com/${user.avatarURL}`
-    : "/default-avatar.jpg"; // Default fallback image
+    : "/default-avatar.jpg";
 
   return (
     <div

@@ -12,9 +12,6 @@ import {
 import { resetPrivateForm } from "../../redux/private/privateSlice";
 import { usePrivate } from "../../hooks/usePrivate";
 
-// import { useAuth } from "../../hooks/useAuth";
-// import { logOut } from "../../redux/auth/operationsAuth";
-
 import useToggle from "../../hooks/useToggle";
 
 import NavLinks from "../../components/NavLinks/NavLinks";
@@ -38,7 +35,6 @@ const breakpoints = {
 };
 
 export default function CalculatorPage() {
-  // const location = useLocation();
   const dispatch = useDispatch();
 
   const [isCalculatorModalVisible, toggleIsCalculatorModalVisible] =
@@ -82,16 +78,15 @@ export default function CalculatorPage() {
     const today = getFormattedDate();
     // console.log("Fetching data for date:", today);
 
-    privateDispatch(fetchConsumedProductsForSpecificDay({ date: today })); // Pass as an object
+    privateDispatch(fetchConsumedProductsForSpecificDay({ date: today }));
   }, [privateDispatch]);
 
   const handleClick = () => {
-    privateDispatch(fetchConsumedProductsForSpecificDay({ date: today })); // Pass as an object
+    privateDispatch(fetchConsumedProductsForSpecificDay({ date: today }));
   };
 
   // console.log(getFormattedDate());
 
-  // Function to handle form submission
   const handleSubmit = (formData) => {
     privateDispatch(fetchPrivateCalculationData(formData));
   };
@@ -104,15 +99,10 @@ export default function CalculatorPage() {
   function handleProductsForSelectedDate(date) {
     setTimeout(() => {
       privateDispatch(fetchConsumedProductsForSpecificDay({ date: date }));
-    }, 1000); // Delay of 1000ms
+    }, 1000);
   }
 
   const isMobile = useMediaQuery({ query: breakpoints.mobile });
-
-  // // Redirect to CalculatorPage if `/home` is accessed
-  // if (location.pathname === "/home") {
-  //   return <Navigate to="/home/calculator" />;
-  // }
 
   return (
     <section className={styles.section}>

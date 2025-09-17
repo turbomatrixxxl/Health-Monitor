@@ -1,9 +1,9 @@
 export default function getStepsRegistrationsForAWeek(user) {
-  const date = new Date(); // data de referință, poate fi orice zi
+  const date = new Date();
   const day = date.getDay(); // 0 = Duminică, 1 = Luni, ..., 6 = Sâmbătă
 
   // Dacă vrem luni ca început de săptămână
-  const diffToMonday = day === 0 ? -6 : 1 - day; // dacă e duminică, mergem 6 zile înapoi
+  const diffToMonday = day === 0 ? -6 : 1 - day;
   const startOfWeek = new Date(date);
   startOfWeek.setDate(date.getDate() + diffToMonday);
   startOfWeek.setHours(0, 0, 0, 0);

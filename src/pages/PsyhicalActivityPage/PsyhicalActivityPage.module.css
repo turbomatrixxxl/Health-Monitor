@@ -14,6 +14,13 @@
   gap: 20px;
 }
 
+.rightSideUpCont {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 20px;
+}
+
 .title {
   color: #212121;
   font-family: Verdana;
@@ -236,6 +243,22 @@
   color: blue;
 }
 
+.saveBtn {
+  align-items: center;
+  background: rgb(30, 108, 197);
+  border-radius: 4px;
+  color: var(--Gray-5);
+  display: flex;
+  justify-content: center;
+  padding: 2px 4px;
+  transition: all 0.35s ease-in-out;
+}
+
+.saveBtn:hover {
+  scale: 1.05;
+  background: green;
+}
+
 .adviceCont {
   border: 1px solid var(--Gray-5);
   border-radius: 4px;
@@ -258,11 +281,35 @@
 .adviceCont > p {
   color: rgb(16, 172, 16);
   display: flex;
+  flex-wrap: wrap;
+
   font-family: Verdana;
-  font-size: clamp(12px, 2.5vw, 14px);
+  font-size: clamp(12px, 2.5vw, 13px);
   font-style: normal;
   font-weight: 600;
   /* line-height: 80%; */
+}
+
+.navBtn {
+  align-items: center;
+  background: var(--brand-color);
+  border: none;
+  border-radius: 5px;
+  color: var(--Gray-5);
+  display: inline;
+  font-family: Verdana;
+  font-size: clamp(11px, 2.5vw, 12px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  justify-content: center;
+  padding: 2px 4px;
+  transition: all 0.35s ease-in-out;
+}
+
+.navBtn:hover {
+  background: rgb(11, 131, 11);
+  scale: 1.01;
 }
 
 @media screen and (width >=768px) {

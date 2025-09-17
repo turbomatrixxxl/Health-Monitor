@@ -20,7 +20,6 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 import "./App.css";
 
-// Lazy-loaded pages
 const LazyCalculatorPage = React.lazy(() =>
   import("./pages/CalculatorPage/CalculatorPage")
 );
@@ -46,11 +45,9 @@ const LazyExportReportsPage = React.lazy(() =>
 );
 
 function App() {
-  const { isLoggedIn, isRefreshing, user } = useAuth(); // Check user verification status
-
+  const { isLoggedIn, isRefreshing, user } = useAuth();
   const dispatch = useDispatch();
 
-  // Dispatch refreshUser when the app starts (or when page is refreshed)
   useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(refreshUser());
@@ -70,14 +67,14 @@ function App() {
   }, [dispatch, isLoggedIn, user]);
 
   if (isRefreshing) {
-    return <Loader />; // Loader while checking refresh status
+    return <Loader />;
   }
 
   return (
     <React.Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<SharedLayout />}>
-          {/* Public Routes */}
+          {/* Public Routes  */}
           <Route
             index
             element={

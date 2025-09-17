@@ -27,5 +27,5 @@ export default function Calculator({ onSubmit }) {
 }
 
 Calculator.propTypes = {
-  onSubmit: PropTypes.func.isRequired, // Ensure onSubmit is provided as a prop
+  onSubmit: PropTypes.func.isRequired,
 };

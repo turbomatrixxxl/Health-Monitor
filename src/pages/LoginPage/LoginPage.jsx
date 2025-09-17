@@ -15,12 +15,11 @@ export default function LoginPage() {
 
   const dispatch = useDispatch();
 
-  // Show a toast notification when login is successful
   useEffect(() => {
     if (isLoggedIn || user?.verify) {
       toast.success("Login successful!");
     }
-  }, [isLoggedIn, user?.verify]); // Dependency array ensures the effect runs when these values change.
+  }, [isLoggedIn, user?.verify]);
 
   useEffect(() => {
     if (error === "Not authorized") {

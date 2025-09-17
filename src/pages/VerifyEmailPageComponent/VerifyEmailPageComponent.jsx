@@ -14,7 +14,6 @@ const VerifyEmailPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Navigate to home if user is logged in or already verified
     if (isLoggedIn || user?.verify) {
       navigate("/");
     }

@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { usePrivate } from "../../hooks/usePrivate";
+import { setPrivateFormData } from "../../redux/private/privateSlice";
+import {
+  fetchPrivateCalculationData,
+  setHeartMetrix,
+} from "../../redux/private/operationsPrivate";
+
+import clsx from "clsx";
 
 import calculateIdealWeight from "../../Utils/calculateIdealWeight";
 import calculateNominalBPAndPulse from "../../Utils/calculateNominalBPAndPulse";
 
-import clsx from "clsx";
+import HeartMetrixDateSelector from "../../components/HeartMetrixDateSelector/HeartMetrixDateSelector";
 
 import weightSvg from "../../images/icons/weight-svgrepo-com.svg";
 import bloodPressureSvg2 from "../../images/icons/sphygmomanometer-blood-pressure-gauge-svgrepo-com.svg";
 import heartRateSvg from "../../images/icons/gen-heart-rate-svgrepo-com.svg";
 
 import styles from "./HealthMetricsPage.module.css";
-import { setPrivateFormData } from "../../redux/private/privateSlice";
-
-import {
-  fetchPrivateCalculationData,
-  setHeartMetrix,
-} from "../../redux/private/operationsPrivate";
-import HeartMetrixDateSelector from "../../components/HeartMetrixDateSelector/HeartMetrixDateSelector";
 
 export default function HealthMetricsPage() {
-  const { user, privateFormData = {}, privateDispatch } = usePrivate();
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   console.log("privateFormData has changed:", privateFormData);
-  // }, [privateFormData]);
+  const { user, privateFormData = {}, privateDispatch } = usePrivate();
 
   const name = user?.username ?? user?.name ?? "User";
   const age = user?.age ?? 0;
@@ -157,7 +156,7 @@ export default function HealthMetricsPage() {
     lastHeartMetrixRecord,
   ]);
 
-  console.log("lineRecords :", lineRecords);
+  // console.log("lineRecords :", lineRecords);
 
   function handleSet(value) {
     setLine({ ...line, date: nowDate, time: nowTime });
@@ -273,11 +272,24 @@ export default function HealthMetricsPage() {
                 color: "red",
                 background: "var(--Gray5)",
                 textAlign: "left",
+                border: "1px solid red",
+                flexWrap: "wrap",
+                gap: "3px",
+                padding: "10px",
+                justifyContent: "flex-start",
+                height: "fit-content",
               }}
               className={styles.metrixTitle}
             >
-              It seems that you did not set up your personal info. Please check
-              Diet Calculator page to set things right !
+              Personal info missing. Please click
+              <button
+                className={styles.navBtn}
+                onClick={() => navigate("/")}
+                type="button"
+              >
+                Diet Calculator
+              </button>{" "}
+              to update !
             </p>
           )}
           {condition ? (

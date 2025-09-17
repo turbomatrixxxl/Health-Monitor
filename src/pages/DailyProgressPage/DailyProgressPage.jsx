@@ -18,11 +18,15 @@ import clsx from "clsx";
 
 import Chart from "../../components/Chart";
 
+import calculateIntervalSleeptHours from "../../Utils/calculateIntervalSleeptHours";
+
 import styles from "./DailyProgressPage.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function DailyProgressPage() {
-  const { dailyCalorieSummary, privateDispatch, totalSteps, user } =
-    usePrivate();
+  const navigate = useNavigate();
+
+  const { dailyCalorieSummary, privateDispatch, user } = usePrivate();
   //   console.log("dailyCalorieSummary :", dailyCalorieSummary);
 
   const reminders = user?.reminders || [];
@@ -38,7 +42,7 @@ export default function DailyProgressPage() {
     return aH !== bH ? aH - bH : aM - bM;
   });
 
-  console.log("sortedReminders :", sortedReminders);
+  // console.log("sortedReminders :", sortedReminders);
 
   const rem = [...sortedReminders];
 
@@ -54,6 +58,47 @@ export default function DailyProgressPage() {
   const weight = user?.weight ?? 0;
   const desiredWeight = user?.desiredWeight ?? 0;
   const heartMetrix = user?.heart ?? [];
+  const stepsRecords = user?.steps || [];
+  // console.log("stepsRecords :", stepsRecords);
+
+  const sleepRecords = user?.sleep || [];
+  // console.log("sleepRecords :", sleepRecords);
+
+  const today = getFormattedDate();
+
+  const todayStepsRecords = stepsRecords.find(
+    (record) => new Date(record.date).toISOString().split("T")[0] === today
+  );
+  // console.log("todayStepsRecords :", todayStepsRecords);
+
+  const todaySleepRecords = sleepRecords.find(
+    (record) => new Date(record.date).toISOString().split("T")[0] === today
+  );
+  // console.log("todaySleepRecords :", todaySleepRecords);
+
+  const totalSteps = todayStepsRecords
+    ? todayStepsRecords.interval.reduce((ac, line) => {
+        const steps = Number(line.steps) || 0;
+        ac += steps;
+        return ac;
+      }, 0)
+    : 0;
+
+  const totalSleptHoursForToday = todaySleepRecords
+    ? todaySleepRecords?.interval?.reduce((acc, int) => {
+        acc =
+          acc +
+          calculateIntervalSleeptHours(
+            int.fromHour,
+            int.fromMinute,
+            int.fromAmPm,
+            int.tillHour,
+            int.tillMinute,
+            int.tillAmPm
+          );
+        return acc;
+      }, 0)
+    : 0;
 
   const heartMetrixCondition = heartMetrix?.length > 0;
 
@@ -79,10 +124,10 @@ export default function DailyProgressPage() {
   } = heartsMetrics;
 
   useEffect(() => {
-    const today = getFormattedDate(); // Ensure the correct format YYYY-MM-DD
+    const today = getFormattedDate();
     // console.log("Fetching data for date:", today);
 
-    privateDispatch(fetchConsumedProductsForSpecificDay({ date: today })); // Pass as an object
+    privateDispatch(fetchConsumedProductsForSpecificDay({ date: today })); //
   }, [privateDispatch]);
 
   function formatNumber(num) {
@@ -105,7 +150,7 @@ export default function DailyProgressPage() {
   const stepsLeft = condition ? neededSteps - totalSteps : 0;
   //   console.log("stepsLeft :", stepsLeft);
 
-  const sleep = 2;
+  const sleep = totalSleptHoursForToday;
   const sleepPer = condition ? Math.round((100 * sleep) / neededSleep) : 0;
   const sleepLeft = condition ? neededSleep - sleep : 0;
   //   console.log("over :", sleepPer > 100);
@@ -234,7 +279,7 @@ export default function DailyProgressPage() {
               style={{ color: "red" }}
               className={clsx(styles.metrixTitle, styles.alerts)}
             >
-              No Reminders set !!!
+              Nothing to resolve. You’re all set!
             </p>
           )}
         </div>
@@ -245,28 +290,13 @@ export default function DailyProgressPage() {
           <>
             {/* Calories */}
             <div className={styles.metrixCont}>
-              {totalCalories ? (
-                <p className={styles.metrixTitle}>
-                  <span className={styles.metrixName}>
-                    Calories to consume :
-                  </span>
-                  <span className={clsx(styles.metrixQuantity, styles.needed)}>
-                    {formatNumber(totalCalories)} calories
-                  </span>
-                </p>
-              ) : (
-                <p
-                  style={{
-                    color: "red",
-                    background: "var(--Gray5)",
-                    textAlign: "left",
-                  }}
-                  className={styles.metrixTitle}
-                >
-                  It seems that you did not set up your personal info. Please
-                  check Diet Calculator page to set things right !
-                </p>
-              )}
+              <p className={styles.metrixTitle}>
+                <span className={styles.metrixName}>Calories to consume :</span>
+                <span className={clsx(styles.metrixQuantity, styles.needed)}>
+                  {formatNumber(totalCalories)} calories
+                </span>
+              </p>
+
               <p className={styles.metrixTitle}>
                 <span className={styles.metrixName}>Calories consumed :</span>
                 <span
@@ -279,7 +309,7 @@ export default function DailyProgressPage() {
                     caloriesPer < 80 &&
                       caloriesLeft > 50 &&
                       styles.mediumResult,
-                    caloriesPer >= 80 && styles.goodResult
+                    caloriesPer >= 80 && caloriesPer <= 100 && styles.goodResult
                   )}
                 >
                   {caloriesPer}%
@@ -287,8 +317,13 @@ export default function DailyProgressPage() {
               </p>
               {caloriesPer !== 0 ? (
                 <p className={styles.metrixTitle}>
-                  <span className={styles.metrixName}>
-                    Remaining calories :
+                  <span
+                    style={caloriesLeft < 0 ? { color: "red" } : {}}
+                    className={styles.metrixName}
+                  >
+                    {caloriesLeft >= 0
+                      ? "Remaining calories :"
+                      : "Over intake:"}
                   </span>
                   <span
                     className={clsx(
@@ -298,10 +333,12 @@ export default function DailyProgressPage() {
                       caloriesPer < 80 &&
                         caloriesLeft > 50 &&
                         styles.mediumResult,
-                      caloriesPer >= 80 && styles.goodResult
+                      caloriesPer >= 80 &&
+                        caloriesPer <= 100 &&
+                        styles.goodResult
                     )}
                   >
-                    {formatNumber(caloriesLeft)} calories
+                    {Math.abs(formatNumber(caloriesLeft))} calories
                   </span>
                 </p>
               ) : (
@@ -313,26 +350,13 @@ export default function DailyProgressPage() {
 
             {/* Steps */}
             <div className={styles.metrixCont}>
-              {neededSteps !== 0 ? (
-                <p className={styles.metrixTitle}>
-                  <span className={styles.metrixName}>Steps to do :</span>
-                  <span className={clsx(styles.metrixQuantity, styles.needed)}>
-                    {formatNumber(neededSteps)} steps
-                  </span>
-                </p>
-              ) : (
-                <p
-                  style={{
-                    color: "red",
-                    background: "var(--Gray5)",
-                    textAlign: "left",
-                  }}
-                  className={styles.metrixTitle}
-                >
-                  It seems that you did not set up your personal info. Please
-                  check Diet Calculator page to set things right !
-                </p>
-              )}
+              <p className={styles.metrixTitle}>
+                <span className={styles.metrixName}>Steps to do :</span>
+                <span className={clsx(styles.metrixQuantity, styles.needed)}>
+                  {formatNumber(neededSteps)} steps
+                </span>
+              </p>
+
               <p className={styles.metrixTitle}>
                 <span className={styles.metrixName}>Steps taken :</span>
                 <span
@@ -359,7 +383,7 @@ export default function DailyProgressPage() {
                       stepsPer >= 80 && styles.goodResult
                     )}
                   >
-                    {formatNumber(stepsLeft)} steps
+                    {stepsLeft > 0 ? formatNumber(stepsLeft) : 0} steps
                   </span>
                 </p>
               ) : (
@@ -372,26 +396,13 @@ export default function DailyProgressPage() {
 
             {/* Sleep */}
             <div className={styles.metrixCont}>
-              {neededSleep !== 0 ? (
-                <p className={styles.metrixTitle}>
-                  <span className={styles.metrixName}>Hours to sleep :</span>
-                  <span className={clsx(styles.metrixQuantity, styles.needed)}>
-                    {neededSleep.toFixed(1)} hr
-                  </span>
-                </p>
-              ) : (
-                <p
-                  style={{
-                    color: "red",
-                    background: "var(--Gray5)",
-                    textAlign: "left",
-                  }}
-                  className={styles.metrixTitle}
-                >
-                  It seems that you did not set up your personal info. Please
-                  check Diet Calculator page to set things right !
-                </p>
-              )}
+              <p className={styles.metrixTitle}>
+                <span className={styles.metrixName}>Hours to sleep :</span>
+                <span className={clsx(styles.metrixQuantity, styles.needed)}>
+                  {neededSleep.toFixed(1)} hr
+                </span>
+              </p>
+
               <p className={styles.metrixTitle}>
                 <span className={styles.metrixName}>Hours slept :</span>
                 <span
@@ -450,38 +461,18 @@ export default function DailyProgressPage() {
 
             {/* Heart Metrics */}
             <div className={styles.metrixCont}>
-              {heartsMetrics !== 0 ? (
-                <>
-                  <p className={styles.metrixTitle}>
-                    <span className={styles.metrixName}>Normal BP :</span>
-                    <span
-                      className={clsx(styles.metrixQuantity, styles.needed)}
-                    >
-                      {systolic}/{diastolic} mm/Hg
-                    </span>
-                  </p>
-                  <p className={styles.metrixTitle}>
-                    <span className={styles.metrixName}>Normal Pulse :</span>
-                    <span
-                      className={clsx(styles.metrixQuantity, styles.needed)}
-                    >
-                      {heartRate} bpm
-                    </span>
-                  </p>
-                </>
-              ) : (
-                <p
-                  style={{
-                    color: "red",
-                    background: "var(--Gray5)",
-                    textAlign: "left",
-                  }}
-                  className={styles.metrixTitle}
-                >
-                  It seems that you did not set up your personal info. Please
-                  check Diet Calculator page to set things right !
-                </p>
-              )}
+              <p className={styles.metrixTitle}>
+                <span className={styles.metrixName}>Normal BP :</span>
+                <span className={clsx(styles.metrixQuantity, styles.needed)}>
+                  {systolic}/{diastolic} mm/Hg
+                </span>
+              </p>
+              <p className={styles.metrixTitle}>
+                <span className={styles.metrixName}>Normal Pulse :</span>
+                <span className={clsx(styles.metrixQuantity, styles.needed)}>
+                  {heartRate} bpm
+                </span>
+              </p>
 
               {heartCondition ? (
                 <p
@@ -568,11 +559,22 @@ export default function DailyProgressPage() {
               textAlign: "left",
               border: "1px solid red",
               flexWrap: "wrap",
+              gap: "3px",
+              padding: "10px",
+              justifyContent: "flex-start",
+              height: "fit-content",
             }}
             className={styles.metrixTitle}
           >
-            It seems that you did not set up your personal info. Please check
-            Diet Calculator page to set things right !
+            Personal info missing. Please click
+            <button
+              className={styles.navBtn}
+              onClick={() => navigate("/")}
+              type="button"
+            >
+              Diet Calculator
+            </button>{" "}
+            to update !
           </p>
         )}
       </div>

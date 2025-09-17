@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { useMediaQuery } from "react-responsive";
 
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -55,17 +54,6 @@ function SharedLayout() {
       navigate("/login", { replace: true });
     }
   }, [error, dispatch, navigate]);
-
-  // console.log({
-  //   isLoggedIn: isLoggedIn,
-  //   toastShown: toastShown,
-  //   logoutShown: logoutShown,
-  //   isLoggedOut: isLoggedOut,
-  //   error: error,
-  //   errorAuth: errorAuth,
-  //   message: message,
-  //   isRegistered: isRegistered,
-  // });
 
   const handleUpdateUser = () => {
     setUserUpdateShown(true);

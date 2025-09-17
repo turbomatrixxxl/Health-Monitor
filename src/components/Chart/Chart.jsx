@@ -4,8 +4,6 @@ import React from "react";
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from "recharts";
 import "animate.css";
 
-// import "chart.js/auto";
-
 import clsx from "clsx";
 
 import styles from "./Chart.module.css";
@@ -36,7 +34,6 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
     fre = 100;
   }
 
-  //  data
   const data = [
     cal > 0 && {
       name: "Daily Cal",
@@ -55,7 +52,7 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
     sl > 0 && {
       name: "Sleep",
       value: sl,
-      backgroundColor: sleep < 50 || sleep > 100 ? "darkred" : "blue",
+      backgroundColor: sleep < 50 || sleep > 100 ? "crimson" : "blue",
       borderWidth: 0,
       hoverOffset: 5,
     },
@@ -146,7 +143,6 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
             dataKey="value"
             outerRadius={105}
             innerRadius={85}
-            // paddingAngle={5}
             fill="rgba(255, 255, 255, 0.6)"
           >
             {data.map((entry, index) => {
@@ -190,7 +186,7 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
         </p>{" "}
         <p
           style={
-            sleep > 100 || sleep < 50 ? { color: "darkred" } : { color: "blue" }
+            sleep > 100 || sleep < 50 ? { color: "crimson" } : { color: "blue" }
           }
           className={clsx(
             styles.chartBalance,
@@ -199,7 +195,7 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
           )}
         >
           <span>Sleep</span>
-          {balance ? Number(sl) : Number(0)}
+          {balance ? Number(sleep) : Number(0)}
           <span>%</span>
         </p>
       </div>

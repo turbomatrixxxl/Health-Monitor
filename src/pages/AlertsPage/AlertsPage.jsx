@@ -1,4 +1,3 @@
-// AlertsPage.jsx
 import { useState, useMemo, useEffect } from "react";
 import { usePrivate } from "../../hooks/usePrivate";
 import {
@@ -68,7 +67,6 @@ export default function AlertsPage() {
     handleCloseFormModal();
   };
 
-  // ==== Start / Stop ====
   const handleActiveTrue = (id) =>
     reminders.forEach(
       (r) =>
@@ -82,7 +80,6 @@ export default function AlertsPage() {
         handleAddEditReminder({ ...r, id: r._id, active: false })
     );
 
-  // ==== Done pentru ora curentă ====
   const handleDoneForToday = (id) =>
     reminders.forEach((r) => {
       if (r._id === id) {

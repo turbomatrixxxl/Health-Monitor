@@ -5,7 +5,6 @@ import { FaGithub, FaPhoneAlt } from "react-icons/fa";
 import FormButton from "../commonComponents/FormButton/FormButton";
 import "animate.css";
 
-// Corectarea importului imaginii
 import Ionela from "../../images/Ionela.jpg";
 
 import styles from "./ModalFooter.module.css";
@@ -49,12 +48,11 @@ const ModalFooter = ({ closeModal }) => {
           <h2>Fullstack Developer:</h2>
 
           <div className={styles.footerCards}>
-            {/* Card pentru Ionela */}
             <div
               className={`${styles.footerTeamCard} ${animation} ${styles.Ionela}`}
             >
               <img
-                src={Ionela} // Folosește variabila corectă pentru imagine
+                src={Ionela}
                 alt="Ionela"
                 className={styles.teamMemberImage}
               />

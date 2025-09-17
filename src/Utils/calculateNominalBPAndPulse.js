@@ -70,6 +70,3 @@ export default function calculateNominalBPAndPulse(age, weight) {
     diastolicMax: diaMax,
   };
 }
-
-// const noAge = calculateBPAndPulse();
-// console.log("noAge :", noAge);

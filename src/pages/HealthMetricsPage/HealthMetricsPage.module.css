@@ -130,6 +130,28 @@
   width: -webkit-fill-available;
 }
 
+.navBtn {
+  align-items: center;
+  background: var(--brand-color);
+  border: none;
+  border-radius: 5px;
+  color: var(--Gray-5);
+  display: inline;
+  font-family: Verdana;
+  font-size: clamp(11px, 2.5vw, 12px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  justify-content: center;
+  padding: 2px 4px;
+  transition: all 0.35s ease-in-out;
+}
+
+.navBtn:hover {
+  background: rgb(11, 131, 11);
+  scale: 1.01;
+}
+
 .addSleepCont {
   align-items: center;
   border: 1px solid var(--Gray-5);

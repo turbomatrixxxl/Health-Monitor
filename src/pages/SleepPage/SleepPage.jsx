@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { toast } from "react-toastify";
 
 import calculateSleepHours from "../../Utils/calculateSleepHours";
@@ -11,6 +13,8 @@ import { setSleepDailyRegistrations } from "../../redux/private/operationsPrivat
 import styles from "./SleepPage.module.css";
 
 export default function SleepPage() {
+  const navigate = useNavigate();
+
   const { user, privateDispatch } = usePrivate();
 
   const userConditions =
@@ -189,7 +193,7 @@ export default function SleepPage() {
     const newInterval = [...interval];
     const updated = { ...newInterval[intervalIdx], [field]: value };
 
-    // verificăm dacă se suprapune
+    // verificăm dacă se suprapun intervalele de somn
     if (overlaps(updated, newInterval, intervalIdx)) {
       toast.error("Intervalele de somn nu trebuie să se suprapună!");
       return;
@@ -454,11 +458,27 @@ export default function SleepPage() {
             </p>
           ) : (
             <p
-              style={{ color: "red", lineHeight: "inherit" }}
+              style={{
+                color: "red",
+                background: "var(--Gray5)",
+                textAlign: "left",
+                flexWrap: "wrap",
+                gap: "3px",
+                justifyContent: "flex-start",
+                height: "fit-content",
+                fontSize: "clamp(11px, 2.5vw, 12px)",
+              }}
               className={styles.advicep}
             >
-              It seems that you did not set up your personal info. Please check
-              Diet Calculator page to set things right !
+              Personal info missing. Please click
+              <button
+                className={styles.navBtn}
+                onClick={() => navigate("/")}
+                type="button"
+              >
+                Diet Calculator
+              </button>{" "}
+              to update !
             </p>
           )}
         </div>

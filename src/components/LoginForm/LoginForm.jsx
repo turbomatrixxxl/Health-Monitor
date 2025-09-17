@@ -36,7 +36,6 @@ function LoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
-  // doar un toggle pentru vizibilitatea parolei
   const [isPasswordVisible, togglePasswordVisible] = useToggle(false);
 
   const handleSubmit = async (e) => {
@@ -48,21 +47,13 @@ function LoginForm() {
       await dispatch(logIn(fields)).unwrap();
       toast.success("Login successful!");
     } catch (error) {
-      // Setează mesajul de eroare separat, fără a-l combina cu setFields
       setErrorMessage("You have entered an invalid username or password.");
-
-      // Opțional: resetează câmpurile dacă vrei
-      // setFields((prevFields) => ({
-      //   ...prevFields,
-      //   password: "",
-      // }));
     }
   };
 
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
-        {/* Email input */}
         <div className={styles.inputContainer}>
           <div className={styles.inputWrapper}>
             <FontAwesomeIcon icon={faEnvelope} className={styles.inputIcon} />

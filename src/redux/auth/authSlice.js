@@ -11,7 +11,7 @@ import {
 
 const initialState = {
   user: null,
-  avatarURL: null, // Add avatar URL here
+  avatarURL: null,
   token: null,
   isLoading: false,
   isLoggedIn: false,
@@ -19,27 +19,25 @@ const initialState = {
   isRefreshing: false,
   error: null,
   isLoggedOut: false,
-  emailResendStatus: null, // New state for resend email
+  emailResendStatus: null,
 };
 
 const handlePending = (state) => {
   state.isLoading = true;
   state.error = null;
 
-  // Only clear user and token if it's a critical operation like login/register
   if (!state.isLoggedIn) {
     state.user = null;
     state.token = null;
   }
 
-  state.isRefreshing = false; // Ensure this reflects the operation's context
+  state.isRefreshing = false;
 };
 
 const handleRejected = (state, action) => {
   state.isLoading = false;
   state.error = action.payload;
 
-  // If the rejection invalidates the session, clear user and token
   if (!state.isRefreshing) {
     state.user = null;
     state.token = null;
@@ -55,7 +53,6 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Log In
       .addCase(logIn.pending, handlePending)
       .addCase(logIn.fulfilled, (state, { payload }) => {
         state.user = payload.user;
@@ -63,7 +60,6 @@ const authSlice = createSlice({
         // console.log(payload.user);
 
         if (payload.user.verify === false) {
-          // If not verified, clear token and prevent login
           state.token = null;
           state.isLoggedIn = false;
         } else {
@@ -77,7 +73,6 @@ const authSlice = createSlice({
       })
       .addCase(logIn.rejected, handleRejected)
 
-      // Register
       .addCase(register.pending, handlePending)
       .addCase(register.fulfilled, (state, { payload }) => {
         state.user = payload.user;
@@ -94,7 +89,6 @@ const authSlice = createSlice({
       })
       .addCase(register.rejected, handleRejected)
 
-      // Log Out
       .addCase(logOut.pending, handlePending)
       .addCase(logOut.fulfilled, (state) => {
         const token = JSON.parse(localStorage.getItem("token"));
@@ -113,7 +107,7 @@ const authSlice = createSlice({
         }
 
         state.user = null;
-        state.avatarURL = null; // Clear avatar URL
+        state.avatarURL = null;
         state.token = null;
         state.isLoggedIn = false;
         state.isLoading = false;
@@ -123,7 +117,6 @@ const authSlice = createSlice({
       })
       .addCase(logOut.rejected, handleRejected)
 
-      // Refresh User
       .addCase(refreshUser.pending, (state) => {
         state.isRefreshing = true;
         state.error = null;
@@ -134,7 +127,6 @@ const authSlice = createSlice({
         state.avatarURL = payload.data.avatarURL || null;
 
         if (payload.verify === false) {
-          // If not verified, ensure user is not logged in
           state.token = null;
           state.isLoggedIn = false;
           state.isLoggedOut = true;
@@ -151,20 +143,18 @@ const authSlice = createSlice({
         state.user = null;
       })
 
-      // Resend Verification Email
       .addCase(resendVerificationEmail.pending, (state) => {
         state.emailResendStatus = null;
         state.error = null;
       })
       .addCase(resendVerificationEmail.fulfilled, (state, { payload }) => {
-        state.emailResendStatus = payload; // Success message
+        state.emailResendStatus = payload;
       })
       .addCase(resendVerificationEmail.rejected, (state, action) => {
-        state.emailResendStatus = null; // Reset resend status on error
+        state.emailResendStatus = null;
         state.error = action.payload;
       })
 
-      // Update User Info
       .addCase(updateUserInfo.pending, handlePending)
       .addCase(updateUserInfo.fulfilled, (state, { payload }) => {
         state.user = payload?.data?.user;
@@ -179,7 +169,6 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Update User Avatar
       .addCase(updateUserAvatar.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -187,12 +176,11 @@ const authSlice = createSlice({
       .addCase(updateUserAvatar.fulfilled, (state, { payload }) => {
         // console.log("Avatar payload :", payload);
 
-        state.avatarURL = payload.avatarUrl; // Set the new avatar URL
+        state.avatarURL = payload.avatarUrl;
         state.isLoading = false;
         state.error = null;
         state.isLoggedOut = false;
       })
-      // Update User Avatar Rejected
       .addCase(updateUserAvatar.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;

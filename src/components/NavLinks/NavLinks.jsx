@@ -18,10 +18,9 @@ export default function NavLinks() {
   ];
 
   const handleChange = (e) => {
-    navigate(e.target.value); // redirect către ruta selectată
+    navigate(e.target.value);
   };
 
-  // dacă suntem pe "/", să fie echivalent cu "/calculator"
   const currentPath =
     location.pathname === "/" ? "/calculator" : location.pathname;
 
@@ -30,7 +29,7 @@ export default function NavLinks() {
       <span>|</span>
       <select
         className={styles.dropdown}
-        value={currentPath} // linkul curent apare selectat
+        value={currentPath}
         onChange={handleChange}
       >
         {links.map((link) => (

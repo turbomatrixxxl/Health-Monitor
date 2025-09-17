@@ -15,7 +15,7 @@ import {
 } from "../redux/private/selectorsPrivate";
 
 export const usePrivate = () => {
-  const privateDispatch = useDispatch(); // Add dispatch for triggering actions
+  const privateDispatch = useDispatch();
   const privateFormData = useSelector(selectPrivateFormData) || [];
   const recommendedDailyCaloriesIntake = useSelector(
     selectRecommendedDailyCaloriesIntake

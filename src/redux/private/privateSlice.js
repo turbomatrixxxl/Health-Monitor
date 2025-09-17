@@ -13,7 +13,7 @@ import {
 } from "./operationsPrivate";
 
 const initialState = {
-  user: null, // Centralized user data
+  user: null,
   height: "",
   desiredWeight: "",
   age: "",
@@ -26,11 +26,11 @@ const initialState = {
     remainingCalories: 0,
     percentageCaloriesConsumed: 0,
   },
-  consumedProducts: [], // Products consumed on a specific day
+  consumedProducts: [],
   totalSteps: 0,
   isLoading: false,
-  error: null, // Tracks API errors
-  message: null, // Success or info messages from API responses
+  error: null,
+  message: null,
 };
 
 const privateSlice = createSlice({
@@ -63,12 +63,11 @@ const privateSlice = createSlice({
     },
     setTotalStepsForToday: (state, action) => {
       state.totalSteps = action.payload;
-      console.log("state.totalSteps :", state.totalSteps);
+      // console.log("state.totalSteps :", state.totalSteps);
     },
   },
   extraReducers: (builder) => {
     builder
-      // Handle fetchPrivateCalculationData
       .addCase(fetchPrivateCalculationData.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -76,17 +75,16 @@ const privateSlice = createSlice({
       .addCase(fetchPrivateCalculationData.fulfilled, (state, action) => {
         state.isLoading = false;
         const { recommendedDailyCaloriesIntake, data } = action.payload;
-        state.user = data; // Update user information
+        state.user = data;
         // console.log("privateUser :", data);
 
-        state.recommendedDailyCaloriesIntake = recommendedDailyCaloriesIntake; // Add daily calories intake to user
+        state.recommendedDailyCaloriesIntake = recommendedDailyCaloriesIntake;
       })
       .addCase(fetchPrivateCalculationData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
 
-      // Handle addConsumedProductForSpecificDay
       .addCase(addConsumedProductForSpecificDay.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -94,15 +92,14 @@ const privateSlice = createSlice({
       .addCase(addConsumedProductForSpecificDay.fulfilled, (state, action) => {
         state.isLoading = false;
         const { data, message } = action.payload;
-        state.user = data; // Update user information
-        state.message = message; // Add success message
+        state.user = data;
+        state.message = message;
       })
       .addCase(addConsumedProductForSpecificDay.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
 
-      // Handle deleteConsumedProductForSpecificDay
       .addCase(deleteConsumedProductForSpecificDay.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -126,7 +123,6 @@ const privateSlice = createSlice({
         }
       )
 
-      // Handle fetchConsumedProductsForSpecificDay
       .addCase(fetchConsumedProductsForSpecificDay.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -170,7 +166,7 @@ const privateSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.message = action.payload.message;
-        console.log("setTotalSteps Slice User :", action.payload.user);
+        // console.log("setTotalSteps Slice User :", action.payload.user);
       })
       .addCase(setTotalSteps.rejected, (state, action) => {
         state.isLoading = false;
@@ -185,10 +181,10 @@ const privateSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.message = action.payload.message;
-        console.log(
-          "setSleepDailyRegistrations Slice  User :",
-          action.payload.user
-        );
+        // console.log(
+        //   "setSleepDailyRegistrations Slice  User :",
+        //   action.payload.user
+        // );
       })
       .addCase(setSleepDailyRegistrations.rejected, (state, action) => {
         state.isLoading = false;

@@ -2,16 +2,15 @@ export default function calculateSleepHours(age, activityLevel = "moderate") {
   let sleepRange;
 
   if (age < 14) {
-    sleepRange = [9, 11]; // children
+    sleepRange = [9, 11];
   } else if (age <= 17) {
-    sleepRange = [8, 10]; // teens
+    sleepRange = [8, 10];
   } else if (age <= 64) {
-    sleepRange = [7, 9]; // adults
+    sleepRange = [7, 9];
   } else {
-    sleepRange = [7, 8]; // seniors
+    sleepRange = [7, 8];
   }
 
-  // adjust if activity level is high
   if (activityLevel === "high") {
     sleepRange = [sleepRange[0] + 0.5, sleepRange[1] + 1];
   }

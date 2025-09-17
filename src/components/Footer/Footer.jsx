@@ -3,10 +3,10 @@ import Modal from "../ModalFooter/ModalFooter";
 import styles from "./Footer.module.css";
 
 const Footer = () => {
-  const [modalOpen, setModalOpen] = useState(false); // Starea pentru a ține evidența dacă modalul este deschis sau nu
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleTextClick = () => {
-    setModalOpen(true); // Deschide modalul la click
+    setModalOpen(true);
   };
 
   return (
@@ -15,7 +15,6 @@ const Footer = () => {
         <p>℗ & © Bachelor’s thesis 2025</p>
         <p>Powered by Ionela </p>
       </div>
-      {/* Randează Modal-ul dacă este deschis */}
       {modalOpen && <Modal closeModal={() => setModalOpen(false)} />}
     </footer>
   );

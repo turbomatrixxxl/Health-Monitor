@@ -9,5 +9,5 @@ export default function calculateIdealWeight(age, height) {
   // Maxim sănătos (IMC = 24.9)
   const maxWeight = 24.9 * (heightM * heightM);
 
-  return Number(maxWeight.toFixed(1)); // rotunjit la o zecimală
+  return Number(maxWeight.toFixed(1));
 }
