@@ -117,8 +117,6 @@ export default function HealthMetricsPage() {
 
   // console.log("line :", line);
 
-  // console.log("line :", line);
-
   const updateLine = (field, value) => {
     const newLine = { ...line };
     newLine[field] = value;
@@ -444,18 +442,20 @@ export default function HealthMetricsPage() {
                 Choose records date to see :
               </p>
               <div className={styles.dateWrapper}>
-                <HeartMetrixDateSelector
-                  theme={"light"}
-                  dates={heartMetrixDates}
-                  onSelect={(selectedDate) => {
-                    const selectedRecord = heartMetrix.find(
-                      (r) => normalizeDate(r.date) === selectedDate
-                    );
-                    if (selectedRecord) {
-                      setLineRecords({ ...selectedRecord });
-                    }
-                  }}
-                />
+                {heartMetrixCondition && (
+                  <HeartMetrixDateSelector
+                    theme={"light"}
+                    dates={heartMetrixDates}
+                    onSelect={(selectedDate) => {
+                      const selectedRecord = heartMetrix.find(
+                        (r) => normalizeDate(r.date) === selectedDate
+                      );
+                      if (selectedRecord) {
+                        setLineRecords({ ...selectedRecord });
+                      }
+                    }}
+                  />
+                )}
               </div>
             </div>
             {!heartMetrixCondition ? (
