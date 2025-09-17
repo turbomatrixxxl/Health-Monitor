@@ -38,7 +38,7 @@ export default function Chart({ calories, steps, sleep, free, totalPercent }) {
     cal > 0 && {
       name: "Daily Cal",
       value: cal,
-      backgroundColor: calories > 100 ? "orangered" : "orange",
+      backgroundColor: calories > 100 || calories < 50 ? "orangered" : "orange",
       borderWidth: 0,
       hoverOffset: 5,
     },
