@@ -173,6 +173,8 @@ export default function HealthMetricsPage() {
     );
   }
 
+  const formatNumber = (num) => String(num).replace(/^0+(?=\d)/, "");
+
   return (
     <div className={styles.cont}>
       <div className={styles.leftSideCont}>
@@ -333,8 +335,13 @@ export default function HealthMetricsPage() {
                     type="number"
                     min="0"
                     step="1"
-                    value={line?.weight}
-                    onChange={(e) => updateLine("weight", e.target.value)}
+                    value={formatNumber(line?.weight)}
+                    onChange={(e) =>
+                      updateLine(
+                        "weight",
+                        e.target.value.replace(/^0+(?=\d)/, "") || "0"
+                      )
+                    }
                     className={clsx(styles.timeInput)}
                   />{" "}
                   kg
@@ -344,8 +351,13 @@ export default function HealthMetricsPage() {
                     type="number"
                     min="0"
                     step="1"
-                    value={line?.systolic}
-                    onChange={(e) => updateLine("systolic", e.target.value)}
+                    value={formatNumber(line?.systolic)}
+                    onChange={(e) =>
+                      updateLine(
+                        "systolic",
+                        e.target.value.replace(/^0+(?=\d)/, "") || "0"
+                      )
+                    }
                     className={clsx(styles.timeInput)}
                   />
                   /
@@ -353,8 +365,13 @@ export default function HealthMetricsPage() {
                     type="number"
                     min="0"
                     step="1"
-                    value={line?.diastolic}
-                    onChange={(e) => updateLine("diastolic", e.target.value)}
+                    value={formatNumber(line?.diastolic)}
+                    onChange={(e) =>
+                      updateLine(
+                        "diastolic",
+                        e.target.value.replace(/^0+(?=\d)/, "") || "0"
+                      )
+                    }
                     className={clsx(styles.timeInput)}
                   />
                 </div>
@@ -363,8 +380,13 @@ export default function HealthMetricsPage() {
                     type="number"
                     min="0"
                     step="1"
-                    value={line?.pulse}
-                    onChange={(e) => updateLine("pulse", e.target.value)}
+                    value={formatNumber(line?.pulse)}
+                    onChange={(e) =>
+                      updateLine(
+                        "pulse",
+                        e.target.value.replace(/^0+(?=\d)/, "") || "0"
+                      )
+                    }
                     className={clsx(styles.timeInput)}
                   />
                 </div>
