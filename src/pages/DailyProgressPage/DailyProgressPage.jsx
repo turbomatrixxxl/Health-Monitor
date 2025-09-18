@@ -47,6 +47,47 @@ export default function DailyProgressPage() {
 
   const rem = [...sortedReminders];
 
+  const handleDoneForToday = (id) => {
+    const reminder = sortedReminders.find((r) => r._id === id);
+    if (!reminder) return;
+
+    const doneDates = reminder.doneDates ? [...reminder.doneDates] : [];
+    const now = new Date();
+
+    const nowStr =
+      now
+        .toLocaleDateString("ro-RO", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+        .split(".")
+        .reverse()
+        .join("-") +
+      ` ${String(now.getHours()).padStart(2, "0")}:${String(
+        now.getMinutes()
+      ).padStart(2, "0")}`;
+
+    if (!doneDates.includes(nowStr)) {
+      doneDates.push(nowStr);
+    }
+
+    privateDispatch(
+      addEditReminder({
+        ...reminder,
+        id: reminder._id,
+        doneDates,
+        done: true,
+      })
+    );
+  };
+
+  let free = 100 - globalPercentage;
+
+  if (free < 0) {
+    free = 0;
+  }
+
   useEffect(() => {
     privateDispatch(refreshDoneReminders());
   }, [privateDispatch]);
@@ -185,23 +226,6 @@ export default function DailyProgressPage() {
 
   //   console.log("globalPercentage :", globalPercentage);
 
-  function handleReminderDone(id) {
-    const reminderDone = rem.find((r) => r._id === id);
-    if (!reminderDone) {
-      return;
-    }
-
-    privateDispatch(
-      addEditReminder({ ...reminderDone, id: reminderDone._id, done: true })
-    );
-  }
-
-  let free = 100 - globalPercentage;
-
-  if (free < 0) {
-    free = 0;
-  }
-
   // console.log("percent :", caloriesPer, stepsPer, sleepPer, free);
 
   // console.log("sleepLeft === neededSleep :", sleepLeft === neededSleep);
@@ -265,7 +289,7 @@ export default function DailyProgressPage() {
                         </div>
                         <button
                           className={styles.doneBtn}
-                          onClick={() => handleReminderDone(reminder._id)}
+                          onClick={() => handleDoneForToday(reminder._id)}
                           type="button"
                         >
                           Done
