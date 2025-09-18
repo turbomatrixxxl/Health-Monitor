@@ -1,0 +1,4 @@
+.barChart {
+  font-size: clamp(11px, 2.5vw, 12px);
+  font-family: Verdana;
+}

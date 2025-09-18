@@ -6,9 +6,12 @@ import { toast } from "react-toastify";
 import calculateSleepHours from "../../Utils/calculateSleepHours";
 import calculateIntervalSleeptHours from "../../Utils/calculateIntervalSleeptHours";
 import formatDate from "../../Utils/formatDate";
+import getRegistrationsForAWeek from "../../Utils/getRegistrationsForAWeek";
 
 import { usePrivate } from "../../hooks/usePrivate";
 import { setSleepDailyRegistrations } from "../../redux/private/operationsPrivate";
+
+import WeeklyChart from "../../components/WeeklyChart";
 
 import styles from "./SleepPage.module.css";
 
@@ -244,12 +247,20 @@ export default function SleepPage() {
     );
   }
 
+  const weeklySleep = getRegistrationsForAWeek(sleep, "sleep");
+
   return (
     <div className={styles.cont}>
       <div className={styles.leftSideCont}>
         <div className={styles.rightSideUpCont}>
           <h1 className={styles.title}>Sleep statistics</h1>
-          <div className={styles.graphCont}>Graphic container</div>
+          <div className={styles.graphCont}>
+            <WeeklyChart
+              target={sleepHours}
+              weeklyData={weeklySleep}
+              type={"sleep"}
+            />
+          </div>
         </div>
         <div className={styles.adviceCont}>
           <h2 className={styles.adviceTitle}>Total sleep hours</h2>

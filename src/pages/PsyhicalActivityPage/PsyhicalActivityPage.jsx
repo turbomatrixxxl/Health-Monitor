@@ -14,6 +14,9 @@ import clsx from "clsx";
 import ActivitySelect from "../../components/ActivitySelect";
 
 import styles from "./PsyhicalActivityPage.module.css";
+import getRegistrationsForAWeek from "../../Utils/getRegistrationsForAWeek";
+import calculateDailySteps from "../../Utils/calculateDailySteps";
+import WeeklyChart from "../../components/WeeklyChart";
 
 export default function PsyhicalActivityPage() {
   const navigate = useNavigate();
@@ -199,12 +202,22 @@ export default function PsyhicalActivityPage() {
     );
   }
 
+  const weeklySteps = getRegistrationsForAWeek(steps, "steps");
+  const neededSteps = calculateDailySteps(age, weight, desiredWeight, height);
+
   return (
     <div className={styles.cont}>
       <div className={styles.leftSideCont}>
         <div className={styles.rightSideUpCont}>
           <h1 className={styles.title}>Physical Activity</h1>
-          <div className={styles.graphCont}>Graphic container</div>
+          <div className={styles.graphCont}>
+            {" "}
+            <WeeklyChart
+              target={neededSteps}
+              weeklyData={weeklySteps}
+              type={"steps"}
+            />
+          </div>
         </div>
         <div className={styles.adviceCont}>
           <h2 className={styles.adviceTitle}>
