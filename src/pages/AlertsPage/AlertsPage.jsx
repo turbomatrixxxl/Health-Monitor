@@ -31,10 +31,16 @@ export default function AlertsPage() {
     doneDates: [],
   });
 
-  const reminders = useMemo(
-    () => [...(user.reminders || [])],
-    [user.reminders]
-  );
+  const reminders = useMemo(() => {
+    const sortedReminders = [...(user?.reminders || [])].sort((a, b) => {
+      const [aH, aM] = a.time.split(":").map(Number);
+      const [bH, bM] = b.time.split(":").map(Number);
+
+      return aH !== bH ? aH - bH : aM - bM;
+    });
+
+    return [...sortedReminders];
+  }, [user.reminders]);
   const [events, setEvents] = useState([]);
 
   const handleAddEditReminder = (reminderData) =>
@@ -197,84 +203,109 @@ export default function AlertsPage() {
             });
 
             return (
-              !doneToday && (
-                <li key={`alerts-${rem._id}`} className={styles.reminderItem}>
-                  {rem.type === "alert" && (
+              <li key={`alerts-${rem._id}`} className={styles.reminderItem}>
+                {rem.type === "alert" && (
+                  <button
+                    type="button"
+                    className={styles.closeBtn}
+                    onClick={() => handleDeleteReminder(rem._id)}
+                  >
+                    x
+                  </button>
+                )}
+                <div className={styles.reminderItemDetailsCont}>
+                  <span className={styles.text}>{rem.text} :</span>
+                  <div className={styles.timeCont}>
+                    <span className={styles.time}>{rem.time}</span>/
+                    <span className={styles.repeat}>
+                      {Array.isArray(rem.frequency)
+                        ? rem.frequency.join(",")
+                        : rem.frequency}
+                    </span>
+                    {rem.repeat !== "noRepeat" && (
+                      <span className={styles.repeat}>/{rem.repeat}</span>
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.actions}>
+                  <div className={styles.insideActions}>
                     <button
-                      type="button"
-                      className={styles.closeBtn}
-                      onClick={() => handleDeleteReminder(rem._id)}
+                      className={clsx(
+                        rem.active ? styles.stopBtn : styles.startBtn
+                      )}
+                      onClick={() =>
+                        rem.active
+                          ? handleActiveFalse(rem._id)
+                          : handleActiveTrue(rem._id)
+                      }
                     >
-                      x
+                      {rem.active ? "Stop" : "Start"}
                     </button>
-                  )}
-                  <div className={styles.reminderItemDetailsCont}>
-                    <span className={styles.text}>{rem.text} :</span>
-                    <div className={styles.timeCont}>
-                      <span className={styles.time}>{rem.time}</span>/
-                      <span className={styles.repeat}>
-                        {Array.isArray(rem.frequency)
-                          ? rem.frequency.join(",")
-                          : rem.frequency}
-                      </span>
-                      {rem.repeat !== "noRepeat" && (
-                        <span className={styles.repeat}>/{rem.repeat}</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className={styles.actions}>
-                    <div className={styles.insideActions}>
-                      <button
-                        className={clsx(
-                          rem.active ? styles.stopBtn : styles.startBtn
-                        )}
-                        onClick={() =>
-                          rem.active
-                            ? handleActiveFalse(rem._id)
-                            : handleActiveTrue(rem._id)
-                        }
-                      >
-                        {rem.active ? "Stop" : "Start"}
-                      </button>
-                      {rem.link && rem.active && !doneToday && (
-                        <Link className={styles.link} to={rem.link}>
-                          <button
-                            className={styles.goBtn}
-                            onClick={() => handleGo(rem._id)}
-                          >
-                            Go
-                          </button>
-                        </Link>
-                      )}
-                    </div>
-
-                    <div className={styles.insideActions}>
-                      {rem.active && (
+                    {rem.link && rem.active && !doneToday && (
+                      <Link className={styles.link} to={rem.link}>
                         <button
-                          className={styles.doneBtn}
-                          onClick={() => handleDoneForToday(rem._id)}
+                          className={styles.goBtn}
+                          onClick={() => handleGo(rem._id)}
                         >
-                          Done
+                          Go
                         </button>
-                      )}
-                      <button
-                        className={styles.editBtn}
-                        onClick={() => {
-                          setShowForm(true);
-                          setFormData({
-                            ...rem,
-                            doneDates: rem.doneDates || [],
-                          });
-                          setEditId(rem._id);
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </div>
+                      </Link>
+                    )}
                   </div>
-                </li>
-              )
+
+                  <div className={styles.insideActions}>
+                    {rem.active &&
+                      (!rem.done ? (
+                        !doneToday ? (
+                          <button
+                            className={styles.doneBtn}
+                            onClick={() => handleDoneForToday(rem._id)}
+                          >
+                            Done
+                          </button>
+                        ) : (
+                          <span
+                            style={{
+                              color: "green",
+                              fontWeight: "600",
+                              display: "flex",
+                              alignItems: "center",
+                              fontSize: "clamp(11px, 1.5vw, 13px)",
+                            }}
+                          >
+                            ✔ Done
+                          </span>
+                        )
+                      ) : (
+                        <span
+                          style={{
+                            color: "green",
+                            fontWeight: "600",
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "clamp(11px, 1.5vw, 13px)",
+                          }}
+                        >
+                          ✔ Done
+                        </span>
+                      ))}
+                    <button
+                      className={styles.editBtn}
+                      onClick={() => {
+                        setShowForm(true);
+                        setFormData({
+                          ...rem,
+                          doneDates: rem.doneDates || [],
+                        });
+                        setEditId(rem._id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </li>
             );
           })}
         </ul>

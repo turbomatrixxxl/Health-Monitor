@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { usePrivate } from "../../hooks/usePrivate";
 
 import {
   addEditReminder,
   fetchConsumedProductsForSpecificDay,
-  refreshDoneReminders,
 } from "../../redux/private/operationsPrivate";
 
 import getFormattedDate from "../../Utils/getFormattedDate";
@@ -21,7 +21,6 @@ import Chart from "../../components/Chart";
 import calculateIntervalSleeptHours from "../../Utils/calculateIntervalSleeptHours";
 
 import styles from "./DailyProgressPage.module.css";
-import { useNavigate } from "react-router-dom";
 
 export default function DailyProgressPage() {
   const navigate = useNavigate();
@@ -34,6 +33,8 @@ export default function DailyProgressPage() {
     (reminder) =>
       !reminder.done && reminder.frequency === "daily" && reminder.active
   );
+  // console.log("updatedReminders :", updatedReminders.length);
+
   const sortedReminders = updatedReminders.sort((a, b) => {
     const [aH, aM] = a.time.split(":").map(Number);
     const [bH, bM] = b.time.split(":").map(Number);
@@ -48,7 +49,7 @@ export default function DailyProgressPage() {
   const rem = [...sortedReminders];
 
   const handleDoneForToday = (id) => {
-    const reminder = sortedReminders.find((r) => r._id === id);
+    const reminder = rem.find((r) => r._id === id);
     if (!reminder) return;
 
     const doneDates = reminder.doneDates ? [...reminder.doneDates] : [];
@@ -77,22 +78,9 @@ export default function DailyProgressPage() {
         ...reminder,
         id: reminder._id,
         doneDates,
-        done: true,
       })
     );
   };
-
-  let free = 100 - globalPercentage;
-
-  if (free < 0) {
-    free = 0;
-  }
-
-  useEffect(() => {
-    privateDispatch(refreshDoneReminders());
-  }, [privateDispatch]);
-
-  // console.log("updatedReminders :", updatedReminders.length);
 
   const name = user?.username ?? "User";
   const age = user?.age ?? 0;
@@ -224,6 +212,12 @@ export default function DailyProgressPage() {
     sleepPer
   );
 
+  let free = 100 - globalPercentage;
+
+  if (free < 0) {
+    free = 0;
+  }
+
   //   console.log("globalPercentage :", globalPercentage);
 
   // console.log("percent :", caloriesPer, stepsPer, sleepPer, free);
@@ -275,8 +269,28 @@ export default function DailyProgressPage() {
             <>
               <h3 className={styles.metrixTitle}>Daily Reminders</h3>
               <ul className={styles.remindersList}>
-                {rem.map(
-                  (reminder) =>
+                {rem.map((reminder) => {
+                  const now = new Date();
+
+                  const nowStr =
+                    now
+                      .toLocaleDateString("ro-RO", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })
+                      .split(".")
+                      .reverse()
+                      .join("-") +
+                    ` ${String(now.getHours()).padStart(2, "0")}:${String(
+                      now.getMinutes()
+                    ).padStart(2, "0")}`;
+
+                  // verificăm dacă reminderul a fost făcut deja la ultima execuție
+                  const doneToday = reminder.doneDates?.some((d) => {
+                    return d.split(" ")[0] === nowStr.split(" ")[0];
+                  });
+                  return (
                     !reminder?.done && (
                       <li
                         style={{ color: "red" }}
@@ -287,16 +301,31 @@ export default function DailyProgressPage() {
                           <span>{formatTimeTo12h(reminder?.time)}</span> -{" "}
                           <span>{reminder?.text}</span>
                         </div>
-                        <button
-                          className={styles.doneBtn}
-                          onClick={() => handleDoneForToday(reminder._id)}
-                          type="button"
-                        >
-                          Done
-                        </button>
+                        {!doneToday ? (
+                          <button
+                            className={styles.doneBtn}
+                            onClick={() => handleDoneForToday(reminder._id)}
+                          >
+                            Done
+                          </button>
+                        ) : (
+                          <span
+                            style={{
+                              color: "green",
+                              fontWeight: "600",
+                              display: "flex",
+                              alignItems: "center",
+                              fontSize: "clamp(11px, 1.5vw, 13px)",
+                              width: "-webkit-fill-available",
+                            }}
+                          >
+                            ✔ Done
+                          </span>
+                        )}
                       </li>
                     )
-                )}
+                  );
+                })}
               </ul>
             </>
           ) : (

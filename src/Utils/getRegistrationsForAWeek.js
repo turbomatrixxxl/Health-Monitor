@@ -31,7 +31,7 @@ export default function getRegistrationsForAWeek(userData, param) {
         : 0;
       weekTotal.push({
         day: currentDay.toLocaleDateString("en-US", { weekday: "short" }),
-        total: totalSteps,
+        "Total steps": totalSteps,
       });
     } else {
       const totalSleptHours = dayData
@@ -51,7 +51,7 @@ export default function getRegistrationsForAWeek(userData, param) {
         : 0;
       weekTotal.push({
         day: currentDay.toLocaleDateString("en-US", { weekday: "short" }),
-        total: totalSleptHours,
+        "Total hours": totalSleptHours,
       });
     }
   }

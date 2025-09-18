@@ -32,17 +32,22 @@ export default function WeeklyChart({ weeklyData, type, target }) {
           <Tooltip
             contentStyle={{ color: "var(--brand-color)", fontWeight: "700" }}
           />
-          <Bar dataKey="total" radius={[6, 6, 0, 0]}>
+          <Bar
+            dataKey={type === "sleep" ? "Total hours" : "Total steps"}
+            radius={[6, 6, 0, 0]}
+          >
             {weeklyData.map((entry, index) => {
+              const value =
+                type === "sleep" ? entry["Total hours"] : entry["Total steps"];
+
               const fillColor =
                 (type === "sleep" &&
-                  (entry.total < target * 0.6 || entry.total > target + 1)) ||
-                (type === "steps" && entry.total < target * 0.6)
+                  (value < target * 0.6 || value > target + 1)) ||
+                (type === "steps" && value < target * 0.6)
                   ? "red"
                   : type === "steps" &&
-                    entry.total >= target * 0.6 &&
-                    type === "steps" &&
-                    entry.total <= target * 0.8
+                    value >= target * 0.6 &&
+                    value <= target * 0.8
                   ? "var(--brand-color)"
                   : "#4cafef";
               return <Cell key={`cell-${index}`} fill={fillColor} />;
