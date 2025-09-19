@@ -22,6 +22,7 @@
 }
 
 .leftSideCont {
+  overflow-y: hidden;
   padding-bottom: 10px;
 }
 
@@ -102,7 +103,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  max-height: 300px;
+  max-height: 110px;
   overflow-y: auto;
   padding: 0;
   padding-bottom: 10px;
@@ -132,6 +133,15 @@
   flex-direction: column;
   gap: 5px;
   justify-content: space-between;
+}
+
+.btnsCont {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  height: fit-content;
+  justify-content: space-between;
+  width: fit-content;
 }
 
 .openReportModalBtn {
@@ -175,6 +185,12 @@
 .downloadBtn:hover {
   background: var(--brand-color);
   color: lightgreen;
+}
+
+.deleteBtn {
+  background: rgb(189, 28, 28);
+  border: none;
+  color: var(--Gray-5);
 }
 
 .empty {

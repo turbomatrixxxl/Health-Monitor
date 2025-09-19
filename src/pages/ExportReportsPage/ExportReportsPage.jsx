@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 import styles from "./ExportReportsPage.module.css";
-import { usePrivate } from "../../hooks/usePrivate";
+// import { usePrivate } from "../../hooks/usePrivate";
 import clsx from "clsx";
 
 export default function ExportReportsPage() {
-  const { user } = usePrivate();
-  console.log("user exports:", user);
+  // const { user } = usePrivate();
+  // console.log("user exports:", user);
 
   const now = new Date();
   const today = now.toISOString().split("T")[0];
@@ -26,6 +26,10 @@ export default function ExportReportsPage() {
 
   function handleOpenReportModal() {
     console.log("click open report modal");
+  }
+
+  function handleDeleteReport() {
+    console.log("click delete report ");
   }
 
   return (
@@ -68,13 +72,23 @@ export default function ExportReportsPage() {
         <ul className={styles.rightSideContList}>
           <li className={styles.rightSideContListItem}>
             <div className={styles.rightSideContListItemLeftCont}>
-              <button
-                onClick={handleOpenReportModal}
-                type="button"
-                className={styles.openReportModalBtn}
-              >
-                PDF Report
-              </button>
+              <div className={styles.btnsCont}>
+                <button
+                  onClick={handleOpenReportModal}
+                  type="button"
+                  className={styles.openReportModalBtn}
+                >
+                  PDF Report
+                </button>
+
+                <button
+                  onClick={handleDeleteReport}
+                  type="button"
+                  className={clsx(styles.openReportModalBtn, styles.deleteBtn)}
+                >
+                  Delete
+                </button>
+              </div>
               <div className={styles.rightSideContListItemDatesCont}>
                 <span>{startDay}</span>
                 {startDate !== endDate && <span>-{endDay}</span>}
@@ -87,6 +101,18 @@ export default function ExportReportsPage() {
             >
               Download
             </button>
+          </li>
+          <li className={clsx(styles.rightSideContListItem, styles.empty)}>
+            No Reports Yet
+          </li>
+          <li className={clsx(styles.rightSideContListItem, styles.empty)}>
+            No Reports Yet
+          </li>
+          <li className={clsx(styles.rightSideContListItem, styles.empty)}>
+            No Reports Yet
+          </li>
+          <li className={clsx(styles.rightSideContListItem, styles.empty)}>
+            No Reports Yet
           </li>
           <li className={clsx(styles.rightSideContListItem, styles.empty)}>
             No Reports Yet
