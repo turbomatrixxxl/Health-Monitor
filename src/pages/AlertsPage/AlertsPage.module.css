@@ -278,7 +278,6 @@
   .leftSideCont,
   .rightSideCont {
     height: -webkit-fill-available;
-    width: 48%;
   }
 
   .calendarBox {

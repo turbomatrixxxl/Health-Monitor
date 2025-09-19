@@ -7,14 +7,14 @@ export default function NavLinks() {
   const navigate = useNavigate();
 
   const links = [
-    { path: "/calculator", label: "Diet Calculator" },
-    { path: "/daily", label: "Daily Progress" },
-    { path: "/diary", label: "Food Diary" },
-    { path: "/sleep", label: "Sleep" },
-    { path: "/physical", label: "Physical Activity" },
-    { path: "/metrix", label: "Health Metrics" },
-    { path: "/alerts", label: "Reminders" },
-    { path: "/export", label: "Export & Reports" },
+    { path: "/calculator", label: "🥗 Diet Calculator" },
+    { path: "/daily", label: "📈 Daily Progress" },
+    { path: "/diary", label: "🍽️ Food Diary" },
+    { path: "/sleep", label: "🌙 Sleep" },
+    { path: "/physical", label: "🏃‍♂️ Psyhical Activity" },
+    { path: "/metrix", label: "❤️ Health Metrics" },
+    { path: "/alerts", label: "⏰ Reminders" },
+    { path: "/export", label: "📑 Export & Reports" },
   ];
 
   const handleChange = (e) => {

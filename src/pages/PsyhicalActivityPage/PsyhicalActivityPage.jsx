@@ -220,9 +220,7 @@ export default function PsyhicalActivityPage() {
           </div>
         </div>
         <div className={styles.adviceCont}>
-          <h2 className={styles.adviceTitle}>
-            Total converted Exercises in steps
-          </h2>
+          <h2 className={styles.adviceTitle}>Steps Equivalent of Exercises </h2>
           {totalSteps !== 0 ? (
             <p
               style={{

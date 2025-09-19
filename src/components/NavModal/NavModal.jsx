@@ -20,7 +20,10 @@ import healthMonitorImage from "../../images/Health Monitor.jpg";
 import styles from "./NavModal.module.css";
 
 const StyledLink = styled(NavLink)`
+  align-items: center;
   color: #9b9faa;
+  display: flex;
+  gap: 4px;
   text-align: center;
   font-family: Verdana;
   font-size: 17px;
@@ -30,7 +33,6 @@ const StyledLink = styled(NavLink)`
   letter-spacing: 0.72px;
   text-transform: uppercase;
   text-decoration: none;
-
   border-radius: 6px;
   background: rgb(16, 133, 16);
   padding: 5px 10px;
@@ -162,7 +164,7 @@ export default function NavModal() {
                       : ""
                   }
                 >
-                  Diet Calculator
+                  🥗 Diet Calculator
                 </StyledLink>
 
                 <StyledLink
@@ -170,7 +172,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/daily"}
                 >
-                  Daily Progress
+                  📈 Daily Progress
                 </StyledLink>
 
                 <StyledLink
@@ -178,7 +180,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/diary"}
                 >
-                  Food Diary
+                  🍽️ Food Diary
                 </StyledLink>
 
                 <StyledLink
@@ -186,7 +188,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/sleep"}
                 >
-                  Sleep
+                  🌙 Sleep
                 </StyledLink>
 
                 <StyledLink
@@ -194,7 +196,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/physical"}
                 >
-                  Psyhical Activity
+                  🏃‍♂️ Psyhical Activity
                 </StyledLink>
 
                 <StyledLink
@@ -202,7 +204,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/metrix"}
                 >
-                  Health Metrics
+                  ❤️ Health Metrics
                 </StyledLink>
 
                 <StyledLink
@@ -210,7 +212,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/alerts"}
                 >
-                  Reminders
+                  ⏰ Reminders
                 </StyledLink>
 
                 <StyledLink
@@ -218,7 +220,7 @@ export default function NavModal() {
                   className={styles.link}
                   to={"/export"}
                 >
-                  Export & Reports
+                  📑 Export & Reports
                 </StyledLink>
               </nav>
             </Modal>

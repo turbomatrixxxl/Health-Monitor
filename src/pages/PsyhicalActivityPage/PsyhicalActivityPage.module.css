@@ -35,7 +35,8 @@
 .graphCont {
   align-items: center;
   border: solid 1px var(--Gray-5);
-  background: lightblue;
+  border-radius: 6px;
+  background: aliceblue;
   display: flex;
   /* height: 300px; */
   justify-content: center;
@@ -272,7 +273,7 @@
   color: rgb(0, 17, 255);
   display: flex;
   font-family: Verdana;
-  font-size: clamp(14px, 2.5vw, 18px);
+  font-size: clamp(12px, 2.5vw, 16px);
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
@@ -284,7 +285,7 @@
   flex-wrap: wrap;
 
   font-family: Verdana;
-  font-size: clamp(12px, 2.5vw, 13px);
+  font-size: clamp(11px, 2.5vw, 13px);
   font-style: normal;
   font-weight: 600;
   /* line-height: 80%; */
@@ -327,6 +328,8 @@
   }
 }
 
-/* @media screen and (width >=1024px) {
-
-} */
+@media screen and (width >=1024px) {
+  .graphCont {
+    aspect-ratio: 2 / 0.78;
+  }
+}

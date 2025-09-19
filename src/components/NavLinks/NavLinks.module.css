@@ -26,6 +26,12 @@
   outline: 1px solid var(--Gray-5);
   padding: 6px 10px;
   text-transform: uppercase;
+  transition: all 0.35s ease-in-out;
+}
+
+.dropdown:hover {
+  background: bisque;
+  color: var(--brand-color);
 }
 
 .dropdown > option {

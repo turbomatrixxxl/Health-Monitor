@@ -7,19 +7,27 @@ export default function getRegistrationsForAWeek(userData, param) {
 
   const startOfTheWeek = new Date(date);
   startOfTheWeek.setDate(date.getDate() + diffToMonday);
-  console.log("date.getDate() :", date.getDate());
+  // console.log("date.getDate() :", date.getDate());
+  // date.getDate() : 19
 
   startOfTheWeek.setHours(0, 0, 0, 0);
-  console.log("startOfTheWeek :", startOfTheWeek);
+  // console.log("startOfTheWeek :", startOfTheWeek);
+  // getRegistrationsForAWeek.js:13 startOfTheWeek : Mon Sep 15 2025 00:00:00 GMT+0300 (Eastern European Summer Time)
 
   const weekTotal = [];
 
   for (let index = 0; index < 7; index++) {
     const currentDay = new Date(startOfTheWeek);
     currentDay.setDate(startOfTheWeek.getDate() + index);
-    console.log("currentDay:", currentDay);
-    console.log("startOfTheWeek.getDate() :", startOfTheWeek.getDate());
-    console.log("currentDay.toDateString() :", currentDay.toDateString());
+
+    // console.log("currentDay:", currentDay);
+    // getRegistrationsForAWeek.js:20 currentDay: Fri Sep 19 2025 00:00:00 GMT+0300 (Eastern European Summer Time)
+
+    // console.log("startOfTheWeek.getDate() :", startOfTheWeek.getDate());
+    // getRegistrationsForAWeek.js:21 startOfTheWeek.getDate() : 15
+
+    // console.log("currentDay.toDateString() :", currentDay.toDateString());
+    // getRegistrationsForAWeek.js:22 currentDay.toDateString() : Thu Sep 18 2025
 
     const dayData = userData.find(
       (day) => new Date(day.date).toDateString() === currentDay.toDateString()
