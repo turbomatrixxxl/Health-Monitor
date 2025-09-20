@@ -63,6 +63,14 @@
   font-weight: 700;
   line-height: 140%;
   gap: 10px;
+  width: calc((100% - 10px) / 2);
+}
+
+.dateCont > p {
+  align-items: center;
+  display: flex;
+  height: fit-content;
+  width: fit-content;
 }
 
 .date {
