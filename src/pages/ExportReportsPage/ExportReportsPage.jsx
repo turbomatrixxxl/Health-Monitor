@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 import styles from "./ExportReportsPage.module.css";
-// import { usePrivate } from "../../hooks/usePrivate";
+import { usePrivate } from "../../hooks/usePrivate";
 import clsx from "clsx";
 
 export default function ExportReportsPage() {
-  // const { user } = usePrivate();
-  // console.log("user exports:", user);
+  const { user } = usePrivate();
+  console.log("user exports:", user);
 
   const now = new Date();
   const today = now.toISOString().split("T")[0];
