@@ -54,7 +54,12 @@ export default function ExportReportsPage() {
     desiredWeight !== undefined ||
     blood !== 0 ||
     blood !== "" ||
-    blood !== undefined;
+    blood !== undefined ||
+    !age ||
+    !height ||
+    !weight ||
+    !desiredWeight ||
+    !blood;
 
   // console.log("bloodType :", bloodType);
 
