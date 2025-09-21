@@ -40,13 +40,21 @@ export default function ExportReportsPage() {
   //   bloodTypeOptions.find((opt) => opt.value === String(blood))?.label || "A";
 
   const usersCondition =
-    (age !== 0 || age !== "" || age !== undefined) &&
-    (height !== 0 || height !== "" || height !== undefined) &&
-    (weight !== 0 || weight !== "" || weight !== undefined) &&
-    (desiredWeight !== 0 ||
-      desiredWeight !== "" ||
-      desiredWeight !== undefined) &&
-    (blood !== 0 || blood !== "" || blood !== undefined);
+    age !== 0 ||
+    age !== "" ||
+    age !== undefined ||
+    height !== 0 ||
+    height !== "" ||
+    height !== undefined ||
+    weight !== 0 ||
+    weight !== "" ||
+    weight !== undefined ||
+    desiredWeight !== 0 ||
+    desiredWeight !== "" ||
+    desiredWeight !== undefined ||
+    blood !== 0 ||
+    blood !== "" ||
+    blood !== undefined;
 
   // console.log("bloodType :", bloodType);
 
