@@ -208,3 +208,40 @@ export const deleteReminder = createAsyncThunk(
     }
   }
 );
+
+export const addUpdateReport = createAsyncThunk(
+  "private/addUpdateReport",
+  async (credentials, thunkAPI) => {
+    try {
+      setAuthHeader();
+      const response = await axios.post("/api/private/reports", credentials);
+      // console.log("Reports operations added/edited:", response.data);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);
+
+export const deleteRport = createAsyncThunk(
+  "private/deleteRport",
+  async (credentials, thunkAPI) => {
+    const { id } = credentials;
+
+    if (!id) {
+      return thunkAPI.rejectWithValue("Report Id is required");
+    }
+
+    const url = `/api/private/reports/${id}`;
+
+    try {
+      setAuthHeader();
+      const response = await axios.delete(url);
+
+      return response.data;
+    } catch (error) {
+      return handleError(error, thunkAPI);
+    }
+  }
+);

@@ -29,7 +29,10 @@ export default function calculateDailySteps(
   }
 
   // Final calculation with age factor
-  let dailySteps = Math.round((baseSteps + adjustment) * ageFactor);
+  let dailySteps =
+    age && currentWeight && desiredWeight & height
+      ? Math.round((baseSteps + adjustment) * ageFactor)
+      : 0;
 
   // Ensure a healthy minimum and maximum
   if (dailySteps < 4000) dailySteps = 4000;

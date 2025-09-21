@@ -7,6 +7,7 @@
   padding: 16px;
   padding-bottom: 10px;
   overflow-y: auto;
+  position: relative;
   width: -webkit-fill-available;
 }
 
@@ -22,12 +23,14 @@
 }
 
 .leftSideCont {
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   padding-bottom: 10px;
+  height: fit-content;
 }
 
 .rightSideCont {
   flex-grow: 1;
+  overflow-y: auto;
 }
 
 .title {
@@ -176,7 +179,7 @@
   color: gray;
   display: flex;
   font-family: Verdana;
-  font-size: clamp(9px, 1.5vw, 11px);
+  font-size: clamp(8px, 1.5vw, 12px);
   font-style: normal;
   font-weight: 700;
 }
@@ -187,7 +190,6 @@
   border-radius: 5px;
   color: var(--Gray-5);
   display: flex;
-  height: -webkit-fill-available;
   justify-content: center;
   padding: 10px;
   transition: all 0.35s ease-in-out;

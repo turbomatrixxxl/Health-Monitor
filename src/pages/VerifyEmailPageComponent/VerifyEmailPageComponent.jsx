@@ -9,15 +9,16 @@ import styles from "./VerifyEmailPageComponent.module.css";
 const VerifyEmailPage = () => {
   const { user, isLoggedIn, errorAuth } = useAuth();
   // console.log("Verifyuser :", user);
+  // console.log("errorAuth :", errorAuth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn || user?.verify) {
+    if (isLoggedIn || user?.verify || !user) {
       navigate("/");
     }
-  }, [isLoggedIn, user, navigate]);
+  }, [isLoggedIn, user, navigate, errorAuth]);
 
   const handleResendVerificationEmail = () => {
     if (!user) {

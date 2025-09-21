@@ -10,6 +10,8 @@ import {
   deleteReminder,
   refreshDoneReminders,
   setSleepDailyRegistrations,
+  addUpdateReport,
+  deleteRport,
 } from "./operationsPrivate";
 
 const initialState = {
@@ -251,6 +253,38 @@ const privateSlice = createSlice({
         // console.log("Reminder Delete Slice User :", user);
       })
       .addCase(deleteReminder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(addUpdateReport.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addUpdateReport.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+        // console.log("addUpdateReport Slice User :", action.payload.user);
+      })
+      .addCase(addUpdateReport.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(deleteRport.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteRport.fulfilled, (state, action) => {
+        const { message, user } = action.payload;
+
+        state.isLoading = false;
+        state.user = user;
+        state.message = message;
+        // console.log("deleteRport Delete Slice User :", user);
+      })
+      .addCase(deleteRport.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
