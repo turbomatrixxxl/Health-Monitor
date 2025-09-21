@@ -20,14 +20,14 @@ export default function ExportReportsPage() {
   const navigate = useNavigate();
 
   const { user, privateDispatch } = usePrivate();
-  // console.log("user exports:", user);
+  console.log("user exports:", user);
 
   const name = user?.username || user?.name || "User";
-  const age = user?.age;
-  const height = user?.height;
-  const weight = user?.weight;
-  const desiredWeight = user?.desiredWeight;
-  const blood = user?.bloodType;
+  const age = user?.age || 0;
+  const height = user?.height || 0;
+  const weight = user?.weight || 0;
+  const desiredWeight = user?.desiredWeight || 0;
+  const blood = user?.bloodType || 0;
 
   // const bloodTypeOptions = [
   //   { value: "1", label: "A" },
@@ -40,21 +40,7 @@ export default function ExportReportsPage() {
   //   bloodTypeOptions.find((opt) => opt.value === String(blood))?.label || "A";
 
   const usersCondition =
-    age > 0 ||
-    age !== "" ||
-    age !== undefined ||
-    height > 0 ||
-    height !== "" ||
-    height !== undefined ||
-    weight > 0 ||
-    weight !== "" ||
-    weight !== undefined ||
-    desiredWeight > 0 ||
-    desiredWeight !== "" ||
-    desiredWeight !== undefined ||
-    blood > 0 ||
-    blood !== "" ||
-    blood !== undefined;
+    age > 0 || height > 0 || weight > 0 || desiredWeight > 0 || blood > 0;
 
   // console.log("bloodType :", bloodType);
 
@@ -95,7 +81,7 @@ export default function ExportReportsPage() {
       (a, b) => new Date(b.from) - new Date(a.from)
     );
 
-    console.log("sortedReports :", sortedReports);
+    // console.log("sortedReports :", sortedReports);
 
     setReports([...sortedReports]);
   }, [setReports, userReports]);
