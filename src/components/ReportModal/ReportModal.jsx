@@ -18,6 +18,7 @@ export default function ReportModal({ report, onClose }) {
   const [pdfUrl, setPdfUrl] = useState("");
 
   const isMobile = useMediaQuery({ query: breakpoints.mobile });
+  const isTablet = useMediaQuery({ query: breakpoints.tablet });
 
   const normalizedDay = (day) => new Date(day).toDateString();
 
@@ -26,9 +27,13 @@ export default function ReportModal({ report, onClose }) {
       const doc = generateReportPdf(report);
       const pdfBlob = doc.output("blob");
       const url = URL.createObjectURL(pdfBlob);
-      setPdfUrl(url);
+      if (isMobile || isTablet) {
+        window.open(url, "_blank");
+      } else {
+        setPdfUrl(url);
+      }
     }
-  }, [report]);
+  }, [report, isMobile, isTablet]);
 
   const handleDownload = () => {
     const doc = generateReportPdf(report);
