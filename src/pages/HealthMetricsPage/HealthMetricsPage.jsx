@@ -108,7 +108,7 @@ export default function HealthMetricsPage() {
       : {
           date: nowDate,
           time: nowTime,
-          weight: weightPrivate ?? 0,
+          weight: weightPrivate,
           systolic: 0,
           diastolic: 0,
           pulse: 0,
@@ -118,10 +118,10 @@ export default function HealthMetricsPage() {
   // console.log("line :", line);
 
   const updateLine = (field, value) => {
-    const newLine = { ...line };
-    newLine[field] = value;
-
-    setLine(newLine);
+    setLine((prev) => ({
+      ...prev,
+      [field]: value === "" ? "" : parseFloat(value),
+    }));
   };
 
   const [lineRecords, setLineRecords] = useState(
@@ -130,7 +130,7 @@ export default function HealthMetricsPage() {
       : {
           date: nowDate,
           time: nowTime,
-          weight: weightPrivate ?? 0,
+          weight: weightPrivate,
           systolic: line?.systolic,
           diastolic: line?.diastolic,
           pulse: line?.pulse,
@@ -156,24 +156,45 @@ export default function HealthMetricsPage() {
 
   // console.log("lineRecords :", lineRecords);
 
-  function handleSet(value) {
-    setLine({ ...line, date: nowDate, time: nowTime });
-    const newWeight = line?.weight;
-    // console.log("newWeight :", newWeight);
+  function handleSet() {
+    const newLine = { ...line, date: nowDate, time: nowTime };
 
-    privateDispatch(setHeartMetrix({ ...line, time: nowTime }));
+    // 1. Actualizează lineRecords pentru UI
+    setLineRecords(newLine);
 
-    privateDispatch(setPrivateFormData({ name: "currentWeight", value }));
+    // 2. Actualizează line (input)
+    setLine(newLine);
 
+    // 3. Trimite în Redux
+    privateDispatch(setHeartMetrix(newLine));
+    privateDispatch(
+      setPrivateFormData({ name: "currentWeight", value: newLine.weight })
+    );
     privateDispatch(
       fetchPrivateCalculationData({
         ...privateFormData,
-        currentWeight: newWeight,
+        currentWeight: newLine.weight,
       })
     );
   }
 
   const formatNumber = (num) => String(num).replace(/^0+(?=\d)/, "");
+
+  useEffect(() => {
+    if (weightPrivate > 0 && (!line || line.date !== nowDate)) {
+      const todayLine = {
+        date: nowDate,
+        time: nowTime,
+        weight: weightPrivate,
+        systolic: 0,
+        diastolic: 0,
+        pulse: 0,
+      };
+      setLine(todayLine);
+      setLineRecords(todayLine);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [weightPrivate, nowDate, nowTime]);
 
   return (
     <div className={styles.cont}>
@@ -334,14 +355,9 @@ export default function HealthMetricsPage() {
                   <input
                     type="number"
                     min="0"
-                    step="1"
-                    value={formatNumber(line?.weight)}
-                    onChange={(e) =>
-                      updateLine(
-                        "weight",
-                        e.target.value.replace(/^0+(?=\d)/, "") || "0"
-                      )
-                    }
+                    step="0.1"
+                    value={line?.weight ?? ""}
+                    onChange={(e) => updateLine("weight", e.target.value)}
                     className={clsx(styles.timeInput)}
                   />{" "}
                   kg
@@ -392,7 +408,7 @@ export default function HealthMetricsPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => handleSet(line?.weight)}
+                  onClick={() => handleSet()}
                   className={styles.removeBtn}
                 >
                   +

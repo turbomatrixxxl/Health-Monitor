@@ -1,26 +1,42 @@
 import React, { useEffect, useMemo, useState } from "react";
-
-import styles from "./ExportReportsPage.module.css";
-import { usePrivate } from "../../hooks/usePrivate";
-import clsx from "clsx";
-import calculateDailySteps from "../../Utils/calculateDailySteps";
-import calculateSleepHours from "../../Utils/calculateSleepHours";
+import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import calculateNominalBPAndPulse from "../../Utils/calculateNominalBPAndPulse";
-import getDaysInterval from "../../Utils/getDaysInterval";
-import calculateIntervalSleeptHours from "../../Utils/calculateIntervalSleeptHours";
+
+import { toast } from "react-toastify";
+
+import { usePrivate } from "../../hooks/usePrivate";
 import {
   addUpdateReport,
   deleteRport,
 } from "../../redux/private/operationsPrivate";
-import ReportModal from "../../components/ReportModal/ReportModal";
+
+import calculateDailySteps from "../../Utils/calculateDailySteps";
+import calculateSleepHours from "../../Utils/calculateSleepHours";
+import calculateNominalBPAndPulse from "../../Utils/calculateNominalBPAndPulse";
+import getDaysInterval from "../../Utils/getDaysInterval";
+import calculateIntervalSleeptHours from "../../Utils/calculateIntervalSleeptHours";
+
 import generateReportPdf from "../../assets/generateReportPdf";
+
+import ReportModal from "../../components/ReportModal/ReportModal";
+
+import clsx from "clsx";
+
+import styles from "./ExportReportsPage.module.css";
+
+const breakpoints = {
+  mobile: "(max-width: 767px)",
+  tablet: "(min-width:768px)",
+  desktop: "(min-width:1024px)",
+};
 
 export default function ExportReportsPage() {
   const navigate = useNavigate();
 
+  const isMobile = useMediaQuery({ query: breakpoints.mobile });
+
   const { user, privateDispatch } = usePrivate();
-  console.log("user exports:", user);
+  // console.log("user exports:", user);
 
   const name = user?.username || user?.name || "User";
   const age = user?.age || 0;
@@ -243,6 +259,7 @@ export default function ExportReportsPage() {
     }.pdf`;
 
     doc.save(fileName);
+    isMobile && toast.success("Report saved sucsessfully");
   };
 
   const [selectedReport, setSelectedReport] = useState(null);

@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import generateReportPdf from "../../assets/generateReportPdf"; // <-- funcția cu tabelul
+
+import { useMediaQuery } from "react-responsive";
+
+import { toast } from "react-toastify";
+
+import generateReportPdf from "../../assets/generateReportPdf";
+
 import styles from "./ReportModal.module.css";
 
+const breakpoints = {
+  mobile: "(max-width: 767px)",
+  tablet: "(min-width:768px)",
+  desktop: "(min-width:1024px)",
+};
 export default function ReportModal({ report, onClose }) {
   const [pdfUrl, setPdfUrl] = useState("");
+
+  const isMobile = useMediaQuery({ query: breakpoints.mobile });
 
   const normalizedDay = (day) => new Date(day).toDateString();
 
@@ -27,6 +40,7 @@ export default function ReportModal({ report, onClose }) {
     }.pdf`;
 
     doc.save(fileName);
+    isMobile && toast.success("Report saved sucsessfully");
   };
 
   if (!report) return null;
