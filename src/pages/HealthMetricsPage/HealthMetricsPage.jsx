@@ -30,6 +30,8 @@ export default function HealthMetricsPage() {
   const age = user?.age ?? 0;
   const height = user?.height ?? 0;
   const weightPrivate = user?.weight ?? 0;
+  // console.log("weightPrivate :", weightPrivate);
+
   const heartMetrix = user?.heart || [];
 
   const heartMetrixCondition = heartMetrix.length > 0;
@@ -158,6 +160,7 @@ export default function HealthMetricsPage() {
 
   function handleSet() {
     const newLine = { ...line, date: nowDate, time: nowTime };
+    console.log("newLine :", newLine);
 
     // 1. Actualizează lineRecords pentru UI
     setLineRecords(newLine);
@@ -218,7 +221,7 @@ export default function HealthMetricsPage() {
                 user?.weight ? styles.hasData : null
               )}
             >
-              {lineRecords?.weight ? `${lineRecords.weight} kg` : "No data !"}
+              {weightPrivate ? `${weightPrivate} kg` : "No data !"}
             </p>
           </div>
           <div className={clsx(styles.leftSideElementCont, styles.bloodIcon)}>
@@ -488,6 +491,8 @@ export default function HealthMetricsPage() {
                       const selectedRecord = heartMetrix.find(
                         (r) => normalizeDate(r.date) === selectedDate
                       );
+                      // console.log("selectedRecord :", selectedRecord);
+
                       if (selectedRecord) {
                         setLineRecords({ ...selectedRecord });
                       }
@@ -530,7 +535,7 @@ export default function HealthMetricsPage() {
                 <div className={styles.lineRowCont}>
                   <div className={styles.lineRow}>
                     <div style={{ width: "33%" }} className={styles.minutes}>
-                      {lineRecords.weight} kg
+                      {lineRecords.weight ?? weightPrivate} kg
                     </div>
                     <div style={{ width: "33%" }} className={styles.minutes}>
                       {lineRecords.systolic}/{lineRecords.diastolic} mmHg
